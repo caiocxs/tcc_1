@@ -31,3 +31,4 @@ _minted*
 .latexmkrc
 .idea/
 .vscode/
+*.brf
