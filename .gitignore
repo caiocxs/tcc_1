@@ -35,3 +35,6 @@ _minted*
 
 # Pasta de arquivos locais (PDFs, livros, materiais de apoio)
 arquivos/
+
+# Configurações do Claude Code
+.claude/
