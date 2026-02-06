@@ -3,6 +3,8 @@
 % ---------------------------------------------------------------
 % Trabalho de Conclusão de Curso 1
 % Elaborado para apresentação da proposta inicial do TCC
+% Estrutura: 4 capítulos (Introdução, Revisão Bibliográfica,
+%            Desenvolvimento, Referências Bibliográficas)
 % ---------------------------------------------------------------
 
 \documentclass[
@@ -30,6 +32,7 @@
 \usepackage{multirow}               % Células mescladas em tabelas
 \usepackage{longtable}              % Tabelas longas
 \usepackage{amsmath,amssymb}        % Símbolos matemáticos
+\usepackage{pgfgantt}               % Diagramas de Gantt
 \usepackage[brazilian,hyperpageref]{backref}  % Páginas com citações
 \usepackage[alf]{abntex2cite}       % Citações ABNT
 
@@ -114,7 +117,7 @@
 % RESUMO
 % ---------------------------------------------------------------
 \begin{resumo}
-Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é [descrever brevemente o objetivo principal do TCC]. A metodologia a ser empregada inclui [mencionar a abordagem metodológica]. Como resultados esperados, pretende-se [descrever os principais resultados esperados]. Este trabalho está organizado em seções que apresentam a introdução ao tema, o referencial teórico que fundamenta a pesquisa, o plano de desenvolvimento detalhado e o cronograma de execução das atividades planejadas para o TCC2.
+Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é [descrever brevemente o objetivo principal do TCC]. A justificativa para este estudo baseia-se em [descrever brevemente a justificativa]. A revisão bibliográfica abrange [mencionar os principais tópicos]. Como solução proposta, pretende-se [descrever brevemente a solução]. Este trabalho está organizado em três capítulos que apresentam a introdução ao tema, a revisão bibliográfica que fundamenta a pesquisa, o desenvolvimento com a solução proposta e o cronograma de trabalho, seguidos das referências bibliográficas.
 
 \vspace{\onelineskip}
 
@@ -148,192 +151,332 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 % ---------------------------------------------------------------
 \textual
 
-% ---------------------------------------------------------------
-% INTRODUÇÃO
-% ---------------------------------------------------------------
+% ===============================================================
+% CAPÍTULO 1 - INTRODUÇÃO
+% ===============================================================
 \chapter{Introdução}
 \label{cap:introducao}
 
-Baseada em \textit{Metodologia de Pesquisa para Ciência da Computação} (Wazlawick), esta introdução deixa explícitos o problema que será investigado, os objetivos que orientam o estudo, a justificativa para a escolha do tema e como o trabalho está organizado — tudo isso sem se perder em descrições históricas, pois o foco do TCC1 é planejar a pesquisa.
+A introdução deve apresentar o tema do trabalho de forma clara e objetiva, situando o leitor no contexto da pesquisa. Neste capítulo, são apresentados o contexto no qual o problema se insere, a justificativa para a realização do estudo e os objetivos que norteiam o desenvolvimento do trabalho.
 
-\section{Contextualização do problema}
+% ---------------------------------------------------------------
+\section{Contexto}
+\label{sec:contexto}
 
-Apresente o cenário que originou o problema, ressaltando fatos, indicadores e lacunas identificadas. Em TCC1, essa contextualização demonstra que o problema já foi mapeado e justifica sua importância para a Computação.
+Apresente o cenário que originou o problema, ressaltando fatos, indicadores e lacunas identificadas na área de estudo. O contexto deve situar o leitor sobre o estado atual do tema, mostrando a relevância do assunto para a Computação e para a sociedade.
 
-Use listas ou marcadores para organizar dados (ex.: políticas públicas, padrões da indústria ou pesquisas recentes) e sempre cite as fontes para mostrar que o problema já foi investigado.
+Descreva o ambiente ou domínio em que o problema ocorre, utilizando dados e referências que comprovem a existência do problema. Explique quem são os principais afetados e quais são as consequências de não resolvê-lo.
 
-Por exemplo, uma citação direta pode aparecer assim: segundo \citeonline{RCoreTeam2025}, a reproducibilidade em análises estatísticas depende de ambientes controlados. Já uma citação indireta pode relatar que estudos sobre “tidy data” vêm destacando boas práticas de organização dos dados \cite{Wickham2014}.
+\vspace{0.3cm}
+\noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
+\textbf{Orientação sobre citações (ABNT NBR 10520:2023)}
 
-\section{Formulação do problema}
+\vspace{0.2cm}
+O aluno deve \textbf{priorizar citações indiretas} (paráfrases), nas quais a ideia do autor é reescrita com as próprias palavras. Citações diretas (transcrições literais) \textbf{não são recomendadas}, exceto quando o texto original for insubstituível --- por exemplo, definições consagradas, leis, normas técnicas ou trechos cuja reformulação alteraria o sentido.
 
-Defina o problema em forma de pergunta clara e objetiva. Em TCC1, já se espera um foco preciso: o problema deve apontar o que será investigado (o “o quê”), quem é impactado e a motivação da Computação por trás da investigação.
+\vspace{0.2cm}
+\textbf{Citação indireta} (recomendada) --- o autor interpreta e reescreve a ideia:
 
-Delimite o escopo, deixando explícito o que está dentro do projeto e o que será deixado para etapas futuras, para evitar confundir tema com problema.
+\vspace{0.1cm}
+\textit{Exemplo 1 --- sistema autor-data entre parênteses:}\\
+A definição clara do problema é considerada um fator determinante para o sucesso de qualquer pesquisa na área de Computação \cite{Wazlawick2020}.
 
-\section{Objetivos e hipótese}
+\vspace{0.1cm}
+\textit{Exemplo 2 --- autor como parte do texto:}\\
+Para \citeonline{Pressman2016}, a escolha de uma metodologia adequada impacta diretamente na qualidade dos resultados obtidos em projetos de software.
 
-Como o foco do TCC1 é o planejamento investigativo, esta seção precisa mostrar objetivos bem escolhidos (geral e específicos) e uma hipótese/critério de validação definido.
+\vspace{0.2cm}
+\textbf{Citação direta curta} (até 3 linhas, apenas quando indispensável) --- entre aspas, com indicação de página:
 
-\subsection{Objetivo geral}
+\vspace{0.1cm}
+Segundo \citeonline[p.~42]{Wazlawick2020}, ``a formulação do problema deve ser expressa de forma clara, objetiva e delimitada, evitando ambiguidades que possam comprometer o escopo da pesquisa''.
 
-Declare em uma frase direta o ganho científico que se pretende alcançar (entendimento, comparação, validação ou melhoria). Vincule o objetivo ao problema para reforçar que o trabalho tem uma direção.
+\vspace{0.2cm}
+\textbf{Citação direta longa} (mais de 3 linhas, apenas quando indispensável) --- recuo de 4\,cm, fonte menor, sem aspas:
 
- \subsection{Objetivos específicos}
+\begin{citacao}
+A revisão bibliográfica não consiste em simplesmente listar os trabalhos encontrados, mas em analisá-los criticamente, identificando convergências, divergências e lacunas que justifiquem a realização de uma nova pesquisa \cite[p.~87]{Wazlawick2020}.
+\end{citacao}
 
-Liste objetivos mensuráveis que compõem o plano: exemplos incluem revisão crítica da literatura, definição de parâmetros e requisitos da hipótese, planejamento dos experimentos, e identificação das métricas.
+\textbf{Resumo}: use citações indiretas como regra. Reserve a citação direta para casos excepcionais em que a transcrição literal seja realmente necessária.
+}}
+
+% ---------------------------------------------------------------
+\section{Justificativa}
+\label{sec:justificativa}
+
+Explicite por que resolver esse problema é importante. A justificativa deve abordar:
+
 \begin{itemize}
-    \item Revisar criticamente o estado da arte sobre [tema];
-    \item Identificar variáveis chave que influenciam o fenômeno estudado;
-    \item Desenhar o esboço da metodologia e dos experimentos;
-    \item Definir métricas de validação e critérios de sucesso.
+    \item \textbf{Relevância acadêmica}: como este trabalho contribui para o avanço do conhecimento na área;
+    \item \textbf{Relevância prática/profissional}: quais benefícios práticos a solução trará para usuários, organizações ou a sociedade;
+    \item \textbf{Lacuna identificada}: o que ainda não foi resolvido ou explorado suficientemente pelos trabalhos existentes.
 \end{itemize}
 
-\subsection{Hipótese ou critério de validação}
-
-Descreva a hipótese principal que se pretende confrontar ou o critério que indicará o sucesso da pesquisa. Caso não haja hipótese formal, explique o que será preciso demonstrar para considerar o objetivo atingido.
-
-Evite hipóteses vagas; formule algo plausível, mensurável e diretamente ligado aos objetivos geral e específicos.
-
-\section{Justificativa}
-
-Explicite por que resolver esse problema importa para a Computação, destacando relevância acadêmica ou profissional. Mostre como a justificativa está alinhada aos objetivos e à metodologia proposta, reforçando que o trabalho não é apenas um texto sobre tema popular.
-
-%\section{Organização do trabalho}
-
-%\textit{Erro comum apontado pelo autor: introduções longas e históricas que não deixam claro qual problema será resolvido.}
+Mostre que o trabalho não é apenas um texto sobre um tema popular, mas sim uma proposta que visa preencher uma lacuna real e contribuir de forma significativa para a área.
 
 % ---------------------------------------------------------------
-% REVISÃO BIBLIOGRÁFICA
-% ---------------------------------------------------------------
-\chapter{Revisão Bibliográfica / Trabalhos Relacionados}
+\section{Objetivo}
+\label{sec:objetivo}
+
+Os objetivos definem o que o trabalho pretende alcançar. Devem ser claros, mensuráveis e diretamente relacionados ao problema identificado.
+
+\subsection{Objetivo principal}
+
+O objetivo principal deve ser \textbf{único} e sintetizar o propósito central do trabalho em uma frase direta. Ele deve responder à pergunta: \textit{o que este trabalho pretende resolver ou alcançar?}
+
+Exemplo: \textit{Desenvolver um sistema web para gerenciamento de tarefas acadêmicas que permita aos estudantes organizar suas atividades de forma colaborativa.}
+
+\textbf{Dica}: utilize verbos no infinitivo como \textit{desenvolver}, \textit{analisar}, \textit{propor}, \textit{avaliar}, \textit{implementar}, \textit{comparar}, entre outros. Evite verbos vagos como \textit{estudar} ou \textit{entender}.
+
+\subsection{Objetivos secundários}
+
+Os objetivos secundários são desdobramentos do objetivo principal. Eles descrevem as etapas ou ações necessárias para atingir o objetivo principal. Devem ser mensuráveis e verificáveis.
+
+\begin{enumerate}
+    \item Realizar levantamento bibliográfico sobre [tema específico];
+    \item Identificar e analisar os requisitos do sistema/solução proposta;
+    \item Projetar a arquitetura da solução com base nos requisitos levantados;
+    \item Implementar um protótipo funcional da solução proposta;
+    \item Validar a solução por meio de [testes, métricas, estudo de caso, etc.].
+\end{enumerate}
+
+\textbf{Atenção}: cada objetivo secundário deve contribuir diretamente para o alcance do objetivo principal. Evite listar objetivos que não tenham relação clara com o problema.
+
+% ===============================================================
+% CAPÍTULO 2 - REVISÃO BIBLIOGRÁFICA
+% ===============================================================
+\chapter{Revisão Bibliográfica}
 \label{cap:revisao}
 
-Organize este capítulo por conceitos, técnicas ou dimensões do problema, não simplesmente por autor. Use subtítulos para dividir as grandes áreas e construa uma linha de argumentação que sustente a lacuna abordada.
+A revisão bibliográfica tem como finalidade apresentar o embasamento teórico do trabalho, demonstrando o conhecimento do autor sobre o tema e identificando o estado da arte. Este capítulo deve ser organizado por conceitos e temas, construindo uma linha de argumentação que sustente a proposta do trabalho.
 
-\section{Fundamentos teóricos necessários}
+% ---------------------------------------------------------------
+\section{Referencial teórico}
+\label{sec:referencial}
 
-Explique os principais conceitos e teorias que ajudam a compreender o problema. Em TCC1, essa base teórica mostra que o problema foi mapeado e que há diretrizes para a metodologia futura.
+Apresente os principais conceitos, teorias e definições que fundamentam o trabalho. O referencial teórico deve fornecer ao leitor a base necessária para compreender o problema e a solução proposta.
 
-Considere quadros ou tabelas resumindo definições quando fizer sentido.
+Organize esta seção por temas ou conceitos, não por autor. Cada subseção deve abordar um conceito relevante, explicando-o e relacionando-o ao contexto do trabalho.
 
-Ao citar diretamente uma obra clássica, use o comando `\citeonline`, por exemplo: \citeonline{Ihaka1996} evidencia como a visualização e manipulação de dados permite demonstrar achados. Para citações indiretas, faça como em `\cite{Field2012}` e integre a informação ao seu texto.
+Por exemplo: se o trabalho envolve desenvolvimento web, aborde conceitos como arquitetura cliente-servidor, APIs REST, padrões de projeto, etc. Se envolve inteligência artificial, explique os algoritmos e técnicas que serão utilizados.
 
-\section{Técnicas, métodos ou abordagens existentes}
+Utilize citações para fundamentar cada conceito apresentado. Segundo \citeonline{Wazlawick2020}, o referencial teórico deve demonstrar que o autor domina os fundamentos necessários para conduzir a pesquisa.
 
-Apresente métodos e abordagens aplicados em contextos similares, destacando onde eles não atendem completamente ao problema formulado.
+% ---------------------------------------------------------------
+\section{Metodologia da pesquisa bibliográfica}
+\label{sec:metodologia_pesquisa}
 
-Uma tabela comparativa ajuda a ilustrar limitações:
+Descreva como a pesquisa bibliográfica foi conduzida, incluindo:
+
+\begin{itemize}
+    \item \textbf{Bases de dados consultadas}: Google Scholar, IEEE Xplore, ACM Digital Library, SciELO, Periódicos CAPES, entre outras;
+    \item \textbf{Palavras-chave utilizadas}: liste os termos de busca em português e inglês;
+    \item \textbf{Critérios de inclusão e exclusão}: quais critérios foram usados para selecionar ou descartar trabalhos (período, idioma, relevância, tipo de publicação);
+    \item \textbf{Período de abrangência}: intervalo de anos das publicações consultadas.
+\end{itemize}
+
+Exemplo de descrição:
+
+\textit{A pesquisa bibliográfica foi realizada nas bases Google Scholar, IEEE Xplore e ACM Digital Library, utilizando as palavras-chave ``machine learning'', ``classificação de texto'' e ``processamento de linguagem natural''. Foram selecionados artigos publicados entre 2018 e 2025, em português e inglês, que abordassem diretamente técnicas de classificação automática de documentos.}
+
+% ---------------------------------------------------------------
+\section{Fundamentos}
+\label{sec:fundamentos}
+
+Aprofunde os conceitos técnicos que serão utilizados na solução proposta. Diferentemente do referencial teórico (que apresenta conceitos gerais), os fundamentos devem detalhar as tecnologias, algoritmos, frameworks ou metodologias específicas que serão empregados no desenvolvimento.
+
+Por exemplo:
+\begin{itemize}
+    \item Se o trabalho utiliza aprendizado de máquina, explique os algoritmos escolhidos (árvores de decisão, redes neurais, SVM, etc.);
+    \item Se o trabalho envolve desenvolvimento de software, descreva as tecnologias (linguagens, frameworks, bancos de dados);
+    \item Se envolve análise de dados, explique as métricas e técnicas estatísticas que serão aplicadas.
+\end{itemize}
+
+Utilize figuras, diagramas e tabelas para ilustrar conceitos quando apropriado.
+
+% ---------------------------------------------------------------
+\section{Trabalhos relacionados}
+\label{sec:trabalhos_relacionados}
+
+Apresente até \textbf{3 trabalhos} que \textbf{compartilhem o mesmo foco de resolução de problema} que o seu. O critério principal de seleção é: os trabalhos escolhidos devem ter tentado resolver o \textbf{mesmo problema} (ou um problema muito próximo) ao que você está propondo resolver. Não basta que o trabalho aborde o mesmo tema ou utilize a mesma tecnologia --- ele deve ter enfrentado o mesmo desafio prático ou teórico.
+
+\textbf{Por que esse critério é importante?} Ao selecionar trabalhos que atacam o mesmo problema, você demonstra que:
+\begin{itemize}
+    \item O problema é relevante e já foi reconhecido por outros pesquisadores;
+    \item Existem soluções anteriores, mas com limitações que o seu trabalho pretende superar;
+    \item Seu trabalho não é uma repetição, mas um avanço em relação ao que já foi feito.
+\end{itemize}
+
+Para cada trabalho relacionado, descreva:
+\begin{enumerate}
+    \item \textbf{Qual problema} o trabalho tentou resolver (e por que é o mesmo problema que o seu);
+    \item A metodologia ou abordagem utilizada para resolvê-lo;
+    \item Os principais resultados obtidos;
+    \item As limitações identificadas na solução proposta;
+    \item Como o \textbf{seu trabalho se diferencia} ou avança em relação a ele.
+\end{enumerate}
+
+\subsection{Trabalho 1: [Título do trabalho]}
+
+\citeonline{Silva2022} abordou o problema de [descrever o problema --- deve ser o mesmo ou muito similar ao seu]. Para resolvê-lo, os autores propuseram [descrever a solução]. A metodologia utilizada foi [descrever]. Os resultados mostraram que [descrever]. No entanto, a solução apresenta limitações como [descrever as lacunas que permanecem]. O presente trabalho diferencia-se por [explicar como sua proposta avança na resolução do mesmo problema].
+
+\subsection{Trabalho 2: [Título do trabalho]}
+
+[Descrever o segundo trabalho seguindo a mesma estrutura acima, sempre evidenciando que o problema abordado é o mesmo ou muito próximo ao seu.]
+
+\subsection{Trabalho 3: [Título do trabalho]}
+
+[Descrever o terceiro trabalho seguindo a mesma estrutura acima, sempre evidenciando que o problema abordado é o mesmo ou muito próximo ao seu.]
+
+\vspace{0.5cm}
+
+Uma tabela comparativa ajuda a sintetizar as diferenças entre os trabalhos:
+
 \begin{table}[htb]
     \centering
-    \caption{Comparação de abordagens relacionadas}
-    \begin{tabular}{lcc}
-        \toprule
-        Abordagem & Aplicação & Limitação identificada \\
-        \midrule
-        Técnica A & domínio X & falta de validação em escala real \\
-        Técnica B & domínio Y & alta complexidade de implantação \\
-        \bottomrule
-    \end{tabular}
-    \legend{Exemplo para registrar limitações observadas.}
-\end{table}
-
-\section{Trabalhos correlatos e limitações identificadas}
-
-Liste pesquisas que se aproximam do foco proposto e identifique lacunas que justificam o novo trabalho. Esse diagnóstico reforça o diferencial da proposta.
-
-Inclua notas curtas sobre o que seu TCC1 pretende resolver em comparação com cada trabalho citado.
-
-Inclua notas curtas sobre o que seu TCC1 pretende resolver em comparação com cada trabalho citado.
-
-\textit{Cuidado com a “síndrome da intersecção esquecida”: revisar a técnica e a área, mas ignorar outros trabalhos que já aplicaram aquela técnica naquela área.}
-
-% ---------------------------------------------------------------
-% METODOLOGIA PROPOSTA
-% ---------------------------------------------------------------
-\chapter{Metodologia proposta}
-\label{cap:metodologia}
-
-Como TCC1, este capítulo deve deixar claro como a pesquisa será conduzida no futuro, mostrando que existe um plano consistente para verificar o problema.
-
-\section{Tipo de pesquisa e hipótese de trabalho}
-
-Indique se a pesquisa será exploratória, empírica, formal ou outro tipo, e apresente a hipótese ou suposições que serão avaliadas nos momentos subsequentes.
-
-Caso ainda não exista hipótese formal, descreva a expectativa de resultado (critério de sucesso) e quais evidências serão necessárias.
-
-\section{Método proposto ou abordagem adotada}
-
-Descreva o fluxo metodológico previsto, incluindo etapas, frameworks ou diagramas que guiarão as atividades do TCC2.
-
-Transforme o método em etapas numeradas (ex.: 1. Revisão aprofundada, 2. Modelagem da proposta, 3. Planejamento de experimentos) para facilitar o acompanhamento.
-
-\section{Ferramentas, tecnologias e ambientes previstos}
-
-Liste as ferramentas, linguagens e ambientes que se pretende usar, justificando por que elas são adequadas para validar a proposta.
-
-Inclua observações sobre necessidade de infraestrutura, dados sensíveis ou licenças.
-
-\section{Procedimentos experimentais e métricas de avaliação esperadas}
-
-Explique como os experimentos serão desenhados, quais variáveis serão observadas e quais métricas permitirão responder ao problema e aos objetivos. Mesmo no TCC1, essa descrição mostra que a validação já foi pensada.
-
-Use tabelas ou listas para vincular cada experimento a uma métrica (ex.: experimento de comparação -> acurácia, experimento de carga -> tempo médio).
-
-\textit{Propor algo não é método suficiente; mostre como será possível verificar se a proposta atende ao problema e aos objetivos.}
-
-% ---------------------------------------------------------------
-% CRONOGRAMA E PLANEJAMENTO ESPERADO
-% ---------------------------------------------------------------
-\chapter{Cronograma e planejamento esperado}
-\label{cap:cronograma}
-
-Como o TCC1 ainda se concentra em planejar a pesquisa, este capítulo apresenta o cronograma de atividades previsto e o planejamento de entregas para o próximo período, mostrando que o método já está sendo coordenado.
-
-\begin{table}[htb]
-    \centering
-    \caption{Cronograma de atividades do TCC1}
-    \label{tab:cronograma}
+    \caption{Comparação entre trabalhos relacionados}
+    \label{tab:trabalhos_relacionados}
     \begin{tabular}{l|c|c|c|c}
         \toprule
-        \textbf{Atividade} & \textbf{Semana 1} & \textbf{Semana 2} & \textbf{Semana 3} & \textbf{Semana 4} \\
+        \textbf{Critério} & \textbf{Trabalho 1} & \textbf{Trabalho 2} & \textbf{Trabalho 3} & \textbf{Este trabalho} \\
         \midrule
-        Revisão bibliográfica inicial & X & X & & \\
+        Objetivo           & [resumo]   & [resumo]   & [resumo]   & [resumo] \\
         \midrule
-        Refinamento da pergunta de pesquisa & & X & X & \\
+        Tecnologia         & [tecn.]    & [tecn.]    & [tecn.]    & [tecn.] \\
         \midrule
-        Proposição metodológica detalhada & & & X & X \\
+        Validação          & [método]   & [método]   & [método]   & [método] \\
         \midrule
-        Definição de ferramentas e ambientes & & & X & \\
-        \midrule
-        Elaboração do relatório parcial (TCC1) & & & & X \\
+        Limitação          & [limit.]   & [limit.]   & [limit.]   & --- \\
         \bottomrule
     \end{tabular}
     \legend{Fonte: Elaborado pelo autor (2025)}
 \end{table}
 
-A tabela acima é um exemplo; ajuste as semanas, atividades e marcos conforme o calendário real da sua turma. Utilize “X” ou ✓ para indicar entregas previstas e acrescente colunas caso o semestre tenha mais semanas.
+% ===============================================================
+% CAPÍTULO 3 - DESENVOLVIMENTO
+% ===============================================================
+\chapter{Desenvolvimento}
+\label{cap:desenvolvimento}
 
-\section{Planejamento esperado}
+Neste capítulo, apresenta-se a solução proposta para o problema identificado, bem como o cronograma de trabalho previsto para o desenvolvimento completo do projeto no TCC2.
+
+% ---------------------------------------------------------------
+\section{Solução proposta}
+\label{sec:solucao}
+
+Descreva detalhadamente a solução que será desenvolvida para resolver o problema apresentado na introdução. A descrição deve incluir:
 
 \begin{itemize}
-    \item Atualizar o referencial conforme novas leituras relevantes surgirem;
-    \item Ajustar a metodologia proposta com feedback do orientador;
-    \item Registrar decisões de ferramentas, dados e métricas que guiarão o TCC2;
-    \item Preparar a entrega do relatório parcial com justificativas e próximos passos;
-    \item Validar o cronograma com o calendário acadêmico do semestre.
+    \item \textbf{Visão geral da solução}: o que será desenvolvido (sistema, aplicativo, modelo, ferramenta, etc.);
+    \item \textbf{Arquitetura}: como os componentes da solução se organizam e interagem;
+    \item \textbf{Tecnologias e ferramentas}: quais linguagens, frameworks, bibliotecas, bancos de dados e ambientes serão utilizados, e por que foram escolhidos;
+    \item \textbf{Funcionalidades principais}: o que a solução fará para atender aos objetivos;
+    \item \textbf{Metodologia de desenvolvimento}: qual abordagem será utilizada (ágil, cascata, prototipação, etc.);
+    \item \textbf{Critérios de validação}: como será medido o sucesso da solução (métricas, testes, avaliação com usuários, etc.).
 \end{itemize}
 
-\textit{No lugar da conclusão, o TCC1 deve explicitar como o TCC2 será conduzido.}
+Utilize diagramas, fluxogramas ou mockups para ilustrar a solução. Exemplo de descrição de arquitetura:
 
-Use este capítulo também como referência para atualizações futuras: revise o cronograma a cada reunião com o orientador e anote alterações nas atividades/marcos.
+\textit{A solução proposta consiste em uma aplicação web composta por três camadas: front-end desenvolvido em React.js, back-end em Node.js com Express, e banco de dados PostgreSQL. A comunicação entre front-end e back-end será feita por meio de uma API REST.}
+
+% ---------------------------------------------------------------
+\section{Cronograma de trabalho}
+\label{sec:cronograma}
+
+O cronograma a seguir apresenta, no formato de diagrama de Gantt, as atividades previstas para o desenvolvimento do TCC2, distribuídas ao longo das semanas do semestre.
+
+\begin{figure}[htb]
+    \centering
+    \caption{Cronograma de atividades -- Diagrama de Gantt}
+    \label{fig:gantt}
+    \begin{ganttchart}[
+        hgrid,
+        vgrid,
+        x unit=0.72cm,
+        y unit title=0.6cm,
+        y unit chart=0.7cm,
+        title height=1,
+        bar height=0.5,
+        bar label font=\scriptsize,
+        title label font=\small,
+        milestone label font=\scriptsize\itshape,
+        group label font=\scriptsize\bfseries,
+        bar/.append style={fill=blue!40},
+        group/.append style={draw=black, fill=blue!70},
+        milestone/.append style={fill=red!70},
+    ]{1}{16}
+        % Título: semanas de 1 a 16
+        \gantttitle{Semanas}{16} \\
+        \gantttitlelist{1,...,16}{1} \\
+
+        % Grupo 1: Revisão e Planejamento
+        \ganttgroup{Fase 1: Planejamento}{1}{4} \\
+        \ganttbar{Revisão bibliográfica}{1}{3} \\
+        \ganttbar{Definição de requisitos}{2}{4} \\
+        \ganttbar{Projeto da arquitetura}{3}{4} \\
+        \ganttmilestone{Entrega do projeto}{4} \\
+
+        % Grupo 2: Desenvolvimento
+        \ganttgroup{Fase 2: Desenvolvimento}{5}{11} \\
+        \ganttbar{Implementação do módulo 1}{5}{7} \\
+        \ganttbar{Implementação do módulo 2}{7}{9} \\
+        \ganttbar{Integração dos módulos}{9}{11} \\
+        \ganttmilestone{Protótipo funcional}{11} \\
+
+        % Grupo 3: Testes e Finalização
+        \ganttgroup{Fase 3: Validação}{12}{16} \\
+        \ganttbar{Testes e validação}{12}{14} \\
+        \ganttbar{Ajustes e correções}{14}{15} \\
+        \ganttbar{Redação final do TCC2}{13}{16} \\
+        \ganttmilestone{Entrega final}{16}
+
+        % Ligações entre atividades
+        \ganttlink{elem2}{elem3}
+        \ganttlink{elem3}{elem4}
+        \ganttlink{elem4}{elem5}
+        \ganttlink{elem7}{elem8}
+        \ganttlink{elem8}{elem9}
+        \ganttlink{elem9}{elem10}
+        \ganttlink{elem12}{elem13}
+    \end{ganttchart}
+    \legend{Fonte: Elaborado pelo autor (2025)}
+\end{figure}
+
+\textbf{Instruções para personalização do cronograma}:
+\begin{itemize}
+    \item Ajuste o número de semanas conforme o calendário acadêmico do semestre;
+    \item Modifique as atividades de acordo com as etapas do seu projeto;
+    \item Os marcos (\textit{milestones}) indicam entregas importantes --- adapte-os às datas de avaliação;
+    \item As setas entre atividades indicam dependências --- uma atividade só inicia após a conclusão da anterior;
+    \item Utilize o diagrama como ferramenta de acompanhamento: atualize-o a cada reunião com o orientador.
+\end{itemize}
 
 % ---------------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
 % ---------------------------------------------------------------
 \postextual
 
-% ---------------------------------------------------------------
-% REFERÊNCIAS
+% ===============================================================
+% CAPÍTULO 4 - REFERÊNCIAS BIBLIOGRÁFICAS
+% ===============================================================
+% As referências bibliográficas são geradas automaticamente a partir
+% do arquivo bibliografia.bib, seguindo o padrão ABNT (NBR 6023).
+%
+% COMO CITAR no texto:
+%   \cite{chave}         -> (SOBRENOME, ano) — citação indireta
+%   \citeonline{chave}   -> Sobrenome (ano) — citação direta no texto
+%
+% TIPOS DE REFERÊNCIA no arquivo .bib:
+%   @book        -> Livros
+%   @article     -> Artigos de periódicos
+%   @inproceedings -> Artigos em anais de eventos
+%   @mastersthesis -> Dissertações de mestrado
+%   @phdthesis   -> Teses de doutorado
+%   @misc        -> Sites, vídeos e outros materiais
+%   @manual      -> Documentação técnica
+%
+% Veja o arquivo bibliografia.bib para exemplos de cada tipo.
 % ---------------------------------------------------------------
 \bibliography{bibliografia}
 

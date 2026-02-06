@@ -32,3 +32,6 @@ _minted*
 .idea/
 .vscode/
 *.brf
+
+# Pasta de arquivos locais (PDFs, livros, materiais de apoio)
+arquivos/
