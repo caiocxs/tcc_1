@@ -63,11 +63,11 @@
 % ---------------------------------------------------------------
 % INFORMAÇÕES DO DOCUMENTO
 % ---------------------------------------------------------------
-\titulo{Título do Trabalho de Conclusão de Curso}
-\autor{Nome Completo do Aluno}
+\titulo{Análise Estática Independente de Linguagem: Um Framework Genérico Orientado a Gramáticas Formais e Casamento de Padrões}
+\autor{Caio Xavier da Silva}
 \local{São Paulo}
-\data{2025}
-\orientador{Prof. Nome do Orientador}
+\data{2026}
+\orientador{Celso Vital Crivelaro}
 % \coorientador{Prof. Nome do Coorientador} % Descomente se houver coorientador
 
 \instituicao{%
@@ -75,12 +75,12 @@
   \par
   Unidade Santo Amaro
   \par
-  Curso de [Nome do Curso]
+  Bacharelado em Ciência da Computação
 }
 
 \tipotrabalho{Trabalho de Conclusão de Curso I}
 
-\preambulo{Proposta de Trabalho de Conclusão de Curso apresentado ao SENAC Santo Amaro como requisito parcial para aprovação na disciplina de TCC1 do curso de [Nome do Curso].}
+\preambulo{Proposta de Trabalho de Conclusão de Curso apresentado ao SENAC Santo Amaro como requisito parcial para aprovação na disciplina de TCC1 do Bacharelado em Ciência da Computação.}
 
 % ---------------------------------------------------------------
 % COMPILA O ÍNDICE
@@ -126,122 +126,63 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 \end{resumo}
 
 % ---------------------------------------------------------------
-% LISTA DE ILUSTRAÇÕES
-% ---------------------------------------------------------------
-% \pdfbookmark[0]{\listfigurename}{lof}
-% \listoffigures*
-% \cleardoublepage
-
-% ---------------------------------------------------------------
-% LISTA DE TABELAS
-% ---------------------------------------------------------------
-% \pdfbookmark[0]{\listtablename}{lot}
-% \listoftables*
-% \cleardoublepage
-
-% ---------------------------------------------------------------
 % SUMÁRIO
 % ---------------------------------------------------------------
 \pdfbookmark[0]{\contentsname}{toc}
 \tableofcontents*
 \cleardoublepage
-
-% ---------------------------------------------------------------
-% ELEMENTOS TEXTUAIS
-% ---------------------------------------------------------------
 \textual
-
 % ===============================================================
 % CAPÍTULO 1 - INTRODUÇÃO
 % ===============================================================
 \chapter{Introdução}
 \label{cap:introducao}
 
-A introdução deve apresentar o tema do trabalho de forma clara e objetiva, situando o leitor no contexto da pesquisa. Neste capítulo, são apresentados o contexto no qual o problema se insere, a justificativa para a realização do estudo e os objetivos que norteiam o desenvolvimento do trabalho.
-
-% ---------------------------------------------------------------
 \section{Contexto}
 \label{sec:contexto}
 
-Apresente o cenário que originou o problema, ressaltando fatos, indicadores e lacunas identificadas na área de estudo. O contexto deve situar o leitor sobre o estado atual do tema, mostrando a relevância do assunto para a Computação e para a sociedade.
-
-Descreva o ambiente ou domínio em que o problema ocorre, utilizando dados e referências que comprovem a existência do problema. Explique quem são os principais afetados e quais são as consequências de não resolvê-lo.
-
-\vspace{0.3cm}
-\noindent\fbox{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule}{%
-\textbf{Orientação sobre citações (ABNT NBR 10520:2023)}
-
-\vspace{0.2cm}
-O aluno deve \textbf{priorizar citações indiretas} (paráfrases), nas quais a ideia do autor é reescrita com as próprias palavras. Citações diretas (transcrições literais) \textbf{não são recomendadas}, exceto quando o texto original for insubstituível --- por exemplo, definições consagradas, leis, normas técnicas ou trechos cuja reformulação alteraria o sentido.
-
-\vspace{0.2cm}
-\textbf{Citação indireta} (recomendada) --- o autor interpreta e reescreve a ideia:
-
-\vspace{0.1cm}
-\textit{Exemplo 1 --- sistema autor-data entre parênteses:}\\
-A definição clara do problema é considerada um fator determinante para o sucesso de qualquer pesquisa na área de Computação \cite{Wazlawick2020}.
-
-\vspace{0.1cm}
-\textit{Exemplo 2 --- autor como parte do texto:}\\
-Para \citeonline{Pressman2016}, a escolha de uma metodologia adequada impacta diretamente na qualidade dos resultados obtidos em projetos de software.
-
-\vspace{0.2cm}
-\textbf{Citação direta curta} (até 3 linhas, apenas quando indispensável) --- entre aspas, com indicação de página:
-
-\vspace{0.1cm}
-Segundo \citeonline[p.~42]{Wazlawick2020}, ``a formulação do problema deve ser expressa de forma clara, objetiva e delimitada, evitando ambiguidades que possam comprometer o escopo da pesquisa''.
-
-\vspace{0.2cm}
-\textbf{Citação direta longa} (mais de 3 linhas, apenas quando indispensável) --- recuo de 4\,cm, fonte menor, sem aspas:
-
-\begin{citacao}
-A revisão bibliográfica não consiste em simplesmente listar os trabalhos encontrados, mas em analisá-los criticamente, identificando convergências, divergências e lacunas que justifiquem a realização de uma nova pesquisa \cite[p.~87]{Wazlawick2020}.
-\end{citacao}
-
-\textbf{Resumo}: use citações indiretas como regra. Reserve a citação direta para casos excepcionais em que a transcrição literal seja realmente necessária.
-}}
-
-% ---------------------------------------------------------------
-\section{Justificativa}
-\label{sec:justificativa}
-
-Explicite por que resolver esse problema é importante. A justificativa deve abordar:
-
+Ferramentas de análise estática baseadas em regras, segundo \citeonline{hou2025generation}, são intensamente utilizadas, utilizadas em desenvolvimento de \textit{software} e garantia de código. Por essa abordagem não necessitar de compilação e execução do respectivo código é amplamente considerado um método econômico e rápido para identificação de problemas em estágios iniciais.
+A partir de \citeonline{jiang2025factaligned}, as ferramentas de análise estática emergiram como componentes indispensáveis nos fluxos de trabalho, fornecendo mecanismos automatizados para detecção de defeitos de código, vulnerabilidades de segurança e violações de padrões. Ao ocorrer uma detecção de tais problemas durante o ciclo de vida de desenvolvimento do sistema, essas ferramentas reduzem significativamente o custo e complexidade de depuração e manutenção.
+\par
+Apesar de sua praticidade, o efeito dessas técnicas de análise estática possui diversas limitações:
 \begin{itemize}
-    \item \textbf{Relevância acadêmica}: como este trabalho contribui para o avanço do conhecimento na área;
-    \item \textbf{Relevância prática/profissional}: quais benefícios práticos a solução trará para usuários, organizações ou a sociedade;
-    \item \textbf{Lacuna identificada}: o que ainda não foi resolvido ou explorado suficientemente pelos trabalhos existentes.
+    \item Diversos padrões de \textit{bugs} e gerenciar enormes bases de código \cite{yang2025knighter}. 
+    \item Considerável esforço humano para geração de regras \cite{hou2025generation}.
+    \item Custos adicionais envolvidos no desenvolvimento de regras para mais de uma linguagem \cite{hou2025generation}.
+    \item Limitada para padrões de \textit{bugs} predefinidos \cite{jiang2025factaligned}.
+    \item Alarmes falsos \cite{jiang2025factaligned}.
 \end{itemize}
+\par
+Embora exista outras ferramentas de análise estática que vão além de regras pré-definidas que através de interfaces permitem que desenvolvedores incluam suas próprias regras personalizadas, como SemGrep \cite{jiang2025factaligned}. \citeonline{hou2025generation} menciona como é impossível para um desenvolvedor que não é especialista na área desenvolver regras personalizadas eficientes mesmo com um treinamento de curto prazo, assim como cita uma pesquisa que revela que menos de 5\% das regras de análise estática são regras personalizadas por usuários.
+\par
+Apesar de sua utilidade prática, as regras de detecção estática são inerentemente imperfeitas \cite{jiang2025factaligned}. Quando é definido o conjunto de regras (\textit{rule set}), os desenvolvedores projetam focando em semânticas comuns de exemplos conhecidos de \textit{bugs}, a partir dessas observações são abstraídas em regras generalizadas para capturar padrões semelhantes de possíveis vulnerabilidades ou defeitos em códigos não vistos \cite{jiang2025factaligned}. Porém, segundo \citeonline{yang2025knighter}, analisadores estáticos tradicionais dependem fundamentalmente de verificações pré-definidas, além dessa dependência exigir ampla experiência de domínio e um esforço intenso para seu desenvolvimento e manutenção, \citeonline{jiang2025factaligned} aponta que é inviável prever todas as possíveis variações e casos extremos (\textit{corner cases}). Consequentemente, ferramentas de análise estática tradicional gerarão uma abundância de falsos positivos ou negativos em aplicações do mundo real \cite{jiang2025factaligned}, assim como prejudica sua escalabilidade para um aspecto mais amplo de problemas \cite{yang2025knighter}.
+\par
+Nos últimos anos, muitas técnicas foram desenvolvidas para minimizar alarmes falsos em analisadores estáticos \cite{jiang2025factaligned}. Partindo de métodos que utilizam \textit{fuzzing} em fragmentos de código para podar falsos positivos como \citeonline{jiang2025factaligned} menciona, mais recentemente, Modelos de Linguagem de Grande Escala (LLMs) e sua ampla aplicação mudou profundamente o domínio de análise estática, a maioria dessas técnicas empregando LLMs para compreender o código-fonte diretamente ou os dados das próprias ferramentas de análise estática, para determinar a presença de \textit{bugs}, como sua localização e tipo \cite{hou2025generation}. \citeonline{yang2025knighter} justifica, em partes porque LLMs podem aprender diretamente de históricos de \textit{commits} de correção (\textit{patch commits}), essenciais para obter o contexto de \textit{bugs} associados ao sistema. A capacidade de analisar vários conteúdos sugere que LLMs são capazes de adaptar a novos tipos de falhas sem a necessidade de criação explícita de regras \cite{yang2025knighter}. Contudo, as estratégias de pós-processamento dependem da inferência contínua das LLMs durante a inspeção de código \cite{hou2025generation}, além de não abordar o problema de falsos positivos \cite{jiang2025factaligned}. As janelas de contexto limitadas tornam o envio (\textit{upload}) de todo código-fonte relevante de uma só vez, além de repetições após cada alteração, que traria custos computacionais absurdos, causando a produção de saídas plausíveis mas incorretas, especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
+\par
+\citeonline{yang2025knighter} apresentou o KNighter, sintetizando verificadores estáticos (\textit{checkers}) usando LLMs, ao invés de aplicar diretamente LLMs ao código-fonte, sendo um método direcionado à projetos C/C++ utilizando um \textit{framework Clang Static Analysis}, e prova que esse método de verificador pode analisar código eficientemente a um custo reduzido. Porém, \citeonline{hou2025generation} aponta, este método é orientado a uma linguagem de programação específica, introduzindo a metodologia de \textit{prompting} para abordagem de diferentes linguagens, utilizando poucos exemplos (\textit{few-shot learning}) como aprendizado. 
+\par
+Portanto, este cenário apresenta a demanda de estudos direcionados à analisadores agnósticos à linguagens (\textit{language-agnostic}), sem a necessidade de esforço humano para tais adaptações.
 
-Mostre que o trabalho não é apenas um texto sobre um tema popular, mas sim uma proposta que visa preencher uma lacuna real e contribuir de forma significativa para a área.
 
-% ---------------------------------------------------------------
 \section{Objetivo}
 \label{sec:objetivo}
 
-Os objetivos definem o que o trabalho pretende alcançar. Devem ser claros, mensuráveis e diretamente relacionados ao problema identificado.
+Os objetivos desta pesquisa estruturam-se em duas frentes: o objetivo geral, focado em solucionar o problema central do estudo, e os objetivos específicos, que descrevem as etapas práticas e teóricas indispensáveis para a realização desse propósito maior.
 
 \subsection{Objetivo principal}
 
-O objetivo principal deve ser \textbf{único} e sintetizar o propósito central do trabalho em uma frase direta. Ele deve responder à pergunta: \textit{o que este trabalho pretende resolver ou alcançar?}
-
-Exemplo: \textit{Desenvolver um sistema web para gerenciamento de tarefas acadêmicas que permita aos estudantes organizar suas atividades de forma colaborativa.}
-
-\textbf{Dica}: utilize verbos no infinitivo como \textit{desenvolver}, \textit{analisar}, \textit{propor}, \textit{avaliar}, \textit{implementar}, \textit{comparar}, entre outros. Evite verbos vagos como \textit{estudar} ou \textit{entender}.
+O objetivo principal do trabalho é desenvolver um agente LLM, que a partir de poucos exemplos (\textit{few-shot learning}) realiza associações com linguagens e abstrair sua gramática, utilizando para definir regras mais utilizadas para uma análise estática eficiente.
 
 \subsection{Objetivos secundários}
 
-Os objetivos secundários são desdobramentos do objetivo principal. Eles descrevem as etapas ou ações necessárias para atingir o objetivo principal. Devem ser mensuráveis e verificáveis.
+Sobre os objetivos secundários, temos:
 
 \begin{enumerate}
-    \item Realizar levantamento bibliográfico sobre [tema específico];
-    \item Identificar e analisar os requisitos do sistema/solução proposta;
-    \item Projetar a arquitetura da solução com base nos requisitos levantados;
-    \item Implementar um protótipo funcional da solução proposta;
-    \item Validar a solução por meio de [testes, métricas, estudo de caso, etc.].
+    \item Implementar um agente LLM capaz de retirar a gramática a partir de pequenos exemplos de códigos, utilizando \textit{few-shot learning} e associação com linguagens de gramática \textit{open-source}.
+    \item Implementar um motor principal de \textit{linter}, capaz de receber a gramática gerada, construir a AST do código-fonte e aplicar regras de verificação.
+    \item Validar a eficácia da ferramenta, analisando pelo menos duas linguagens distintas.
+    \item Comparar a eficácia da gramática gerada comparada com a gramática original da linguagem.
 \end{enumerate}
-
-\textbf{Atenção}: cada objetivo secundário deve contribuir diretamente para o alcance do objetivo principal. Evite listar objetivos que não tenham relação clara com o problema.
 
 % ===============================================================
 % CAPÍTULO 2 - REVISÃO BIBLIOGRÁFICA
@@ -249,19 +190,73 @@ Os objetivos secundários são desdobramentos do objetivo principal. Eles descre
 \chapter{Revisão Bibliográfica}
 \label{cap:revisao}
 
-A revisão bibliográfica tem como finalidade apresentar o embasamento teórico do trabalho, demonstrando o conhecimento do autor sobre o tema e identificando o estado da arte. Este capítulo deve ser organizado por conceitos e temas, construindo uma linha de argumentação que sustente a proposta do trabalho.
+\section{Inteligência Artificial}
+\label{sec:inteligenciaartificial}
+\par
+A Inteligência Artificial (IA) possui diversas versões segundo pesquisadores, sendo dividido sua definição como a fidelidade de uma performance humana, ou uma definição formal de raciocinalidade. A partir de ambas dimensões, temos quatro possíveis combinações, sendo respectivamente: Agir de forma humana, Pensamento de forma humana, Pensamento racional e Agir racionalmente \cite{russell2020artificial}.
+\par
+Agir de forma humana, proposto por Alan Turing (1950), tendo o objetivo inicial de descobrir se era possível um computador gerar respostas indiferenciáveis de um humano. Sendo necessário possuir processamento de nossa linguagem, memória do conhecimento, raciocínio e aprendizado se adaptar e identificar padrões \cite{russell2020artificial}.
+\par
+Pensamento de forma humana, sendo um modelo cognitivo, tal que a partir de uma teoria de como é um raciocínio humano, aplica à um programa computacional. Fazendo parte da área da Ciência Cognitiva, que junta Inteligência Artificial com técnicas experimentais da psicologia para construir teorias precisas e praticáveis sobre a mente humana \cite{russell2020artificial}.
+\par
+Pensamento racional, utiliza a filosofia de leis de pensamento, onde a lógica exige um conhecimento absoluto sobre o mundo, uma condição que, na realidade, raramente é alcançada. Isso nos permite a construção de um modelo capaz de pensamentos racionais, que a partir de informações cruas para um entendimento de como funciona o mundo \cite{russell2020artificial}.
+\par
+Agir racionalmente, é definido como um agente racional, agente sendo aquele que realiza uma tarefa, como um programa de computador, porém ao ser racional, permite que ele opere autonomamente, entender seu ambiente e se adaptar à diferentes circunstâncias para realizar objetivos. Um agente racional é aquele que atua para realizar o objetivo da melhor forma, ou quando existe incerteza, a melhor forma possível \cite{russell2020artificial}.
 
-% ---------------------------------------------------------------
-\section{Referencial teórico}
-\label{sec:referencial}
+\subsection{Linguagem Natural}
+\label{subsec:linguagemnatural}
+\par
+Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). Também conhecidas como gramáticas de estrutura de frase, as GLCs baseiam-se em um formalismo que é estritamente equivalente à Forma de Backus-Naur (BNF), um padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
+\par
+Uma Gramática Livre de Contexto consiste em um conjunto de regras ou produções, tal que cada um expressa a forma em que os símbolos da linguagem podem ser ordenados e agrupados, e um léxico de palavras e símbolos. Uma GLC como essa, define o que chamamos de linguagem formal. Em uma linguagem formal, existe uma divisão estrita: as sentenças (cadeias de palavras) que podem ser derivadas pelas regras da gramática, enquanto as que não podem ser derivadas são agramaticais \cite{jurafsky2026speech}.
+\par
+Contudo, essa linha rígida entre o que "pertence" ou "não pertence" à linguagem caracteriza apenas gramáticas formais, servindo como um modelo muito simplificado de como as linguagens naturais realmente funcionam. Ao contrário das linguagens de programação, determinar se uma dada sentença é válida ou faz sentido em uma linguagem natural depende inerentemente do contexto. Na linguística computacional, o uso dessas linguagens formais para tentar modelar a complexidade das linguagens naturais é chamada de gramática generativa, desde que a linguagem passa a ser definida pelo conjunto de possíveis sentenças "geradas" pela sua gramática \cite{jurafsky2026speech}.
 
-Apresente os principais conceitos, teorias e definições que fundamentam o trabalho. O referencial teórico deve fornecer ao leitor a base necessária para compreender o problema e a solução proposta.
+\subsection{Modelos de Linguagens de Larga Escala (LLM)}
+\label{subsec:llm}
+\par
+Os Modelos de Linguagens de Larga Escala (LLMs), em sua maioria, baseiam-se na arquitetura \textit{Transformer}, originalmente projetada para tarefas sequenciais, como tradução automática. A arquitetura consiste em dois principais componentes: o Codificador (\textit{Encoder}), qual converte uma entrada de \textit{tokens} para uma sequência de vetores representativos (frequentemente chamada de estado oculto ou contexto), e Decodificador (\textit{Decoder}), que utiliza o contexto gerado pelo codificador para gerar iterativamente uma sequência de \textit{tokens} de saída, um \textit{token} por vez \cite{tunstall2022natural}.
+\par
+Com o passar dos anos, esses blocos funcionais foram adaptados para atuar como modelos independentes. Embora existam centenas de variações de \textit{Transformers}, a maioria se encaixa em um desses três tipos:
+\par
+Apenas Codificador (\textit{Encoder-only}): Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficiente para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação computada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto á direita (depois do \textit{token}), esse mecanismo geralmente denominado como atenção bidirecional \cite{tunstall2022natural}.
+\par
+Apenas Decodificador (\textit{Decoder-only}): Dada uma entrada de texto (por exemplo "No almoço, eu comi um..."), esses modelos autocompletam a sequência prevendo iterativamente a palavra subsequente mais provável. A família de modelos GPT pertence a essa classe. Nesse caso, a representação computada para um \textit{token} recebido depende exclusivamente do contexto à sua esquerda, esse comportamento é conhecido como atenção causal ou autorregressiva \cite{tunstall2022natural}.
+\par
+Codificador-Decodificador (\textit{Encoder-decoder}): Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra, esses modelos são projetados para tradução automática e tarefas de sumarização \cite{tunstall2022natural}. 
 
-Organize esta seção por temas ou conceitos, não por autor. Cada subseção deve abordar um conceito relevante, explicando-o e relacionando-o ao contexto do trabalho.
+\subsection{Aprendizado de regras baseado em LLMs}
+\label{subsec:aprendizadoregras}
+\par
+Modelos de Linguagens de Larga Escala (LLMs) as vezes requerem adaptações, como projetos com \textit{APIs} não documentadas ou ferramentas especializadas, essa adaptação, na maioria dos casos, temos opções para estas adaptações como ajustar pesos do modelo (\textit{fine-tuning}) ou utilizar recuperação de exemplos (\textit{few-shot prompting}), sendo abordagens eficazes, porém não possuem suporte para abstrações, reutilização e interpretabilidade de caso a caso \cite{gao2026rimrule}. 
+\par
+No lugar dessas opções, essa abordagem utiliza LLM para induzir e refinar regras lógicas, tais que podem assumir formatos de linguagem natural, lógica de primeira ordem (\textit{FOL}) ou sintaxes específicas, as metodologias a partir dessa abordagem são:
+\par
+\textbf{Geração de Regras a partir de Experiência e Falhas}, cria-se e ajusta-se regras de acordo com falhas no raciocínio ou exemplos de código para se adaptar ao problema. 
+\par
+\begin{itemize}
+    \item Em \citeonline{gao2026rimrule}, seu treinamento atua coletando "rastros de falha", a partir do código criado e executado, quando resulta em erros ou resultado incorreto, é utilizado como experiência para gerar regras, utilizando o formato "se-então" para esse erro, corrigindo o raciocínio.
+    \item No sistema de \citeonline{fan2025ruler} é utilizado a construção de regras baseado em emparelhamento de código traduzido, tal que o aprendizado é realizado baseado em uma estratégia de remoção. Nessa estratégia, a chave é remover um comando específico do programa original e encontrar sua equivalente que desaparece na tradução correta gerada pela LLM.
+\end{itemize}
 
-Por exemplo: se o trabalho envolve desenvolvimento web, aborde conceitos como arquitetura cliente-servidor, APIs REST, padrões de projeto, etc. Se envolve inteligência artificial, explique os algoritmos e técnicas que serão utilizados.
+\par
+\textbf{Consolidação e otimização via MDL} (\textit{Minimum Description Length}), a geração de regras via LLM costuma produzir um conjunto extenso ou redundante, sendo necessário uma consolidação para filtragem dessas regras. Em \citeonline{gao2026rimrule}, é utilizado dois métodos: uma heurística via \textit{prompt} para mesclar regras redundantes via LLM, isso consolida objetivamente as regras mas sacrifica complexidade de regras, e o princípio MDL (\textit{Minimum Description Length}), que busca o equilíbrio matemático entre a complexidade de uma regra e sua eficácia.
 
-Utilize citações para fundamentar cada conceito apresentado. Segundo \citeonline{Wazlawick2020}, o referencial teórico deve demonstrar que o autor domina os fundamentos necessários para conduzir a pesquisa.
+\begin{itemize}
+    \item Seu objetivo, nessa configuração, é selecionar um conjunto compacto de regras que corrigem o máximo de erros sem complexidades desnecessárias \cite{gao2026rimrule}.
+    \item O sistema também realiza consolidações gulosas, qual a partir do conjunto total inicial, é podado regras redundantes e generaliza regras específicas até que a biblioteca de regras se torne o mais enxuta e eficaz possível \cite{gao2026rimrule}.
+\end{itemize}
+
+\par
+\textbf{Composição Probabilística Global e Calibração}, apesar de LLMs serem excelentes na descoberta semântica de regras, eles falham em agregar múltiplas regras conflitantes ou utilizar pesos probabilísticos durante a inferência baseada puramente em \textit{prompts}. Em \citeonline{yang2025rlie} é feito a combinação da expressividade de LLMs com composições calibradas de modelos probabilísticos.
+
+\begin{itemize}
+    \item Para essa sinergia, o \textit{framework} primeiro utiliza \textit{prompts} para gerar um conjunto de regras candidatas, a LLM é utilizada para analisar o quão específico é o conjunto, além dessa avaliação, as regras são avaliadas por Regressão Logística, um modelo estatístico clássico, calculando o peso probabilístico para cada regra. A partir disso, \citeonline{yang2025rlie} utiliza refinamento iterativo, exercitando o conjunto utilizando "exemplos difíceis" (\textit{hard-examples}), sendo os casos onde obtiveram erros, e os devolve para a avaliação da LLM. Por fim, é comparado este sistema híbrido (LLM e Regressão Logística) com a abordagem tradicional de obter as regras a partir de um único \textit{prompt} para a LLM.
+\end{itemize}
+
+\par
+Não finalizado.
+
 
 % ---------------------------------------------------------------
 \section{Metodologia da pesquisa bibliográfica}
