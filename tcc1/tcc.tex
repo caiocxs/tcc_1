@@ -139,42 +139,75 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 \label{cap:introducao}
 
 \par
-Ferramentas de análise estática baseadas em regras são intensamente utilizadas, utilizadas em desenvolvimento de \textit{software} e garantia de código \cite{hou2025generation}.
-Por essa abordagem não necessitar de compilação e execução do respectivo código é amplamente considerado um método econômico e rápido para identificação de problemas em estágios iniciais.
-Segundo \citeonline{jiang2025factaligned}, as ferramentas de análise estática emergiram como componentes indispensáveis nos fluxos de trabalho, fornecendo mecanismos automatizados para detecção de defeitos de código, vulnerabilidades de segurança e violações de padrões.
+Ferramentas de análise estática baseadas em regras são intensamente empregadas no desenvolvimento de \textit{software} e garantia de código \cite{hou2025generation}.
+Por essa abordagem não necessitar de compilação e execução prévia do sistema, ela é considerada um método rápido e econômico para a identificação de problemas em seus estágios iniciais.
+Segundo \citeonline{jiang2025factaligned}, as ferramentas emergiram como componentes indispensáveis nos fluxos de trabalho modernos, fornecendo mecanismos automatizados para detecção de defeitos, vulnerabilidades de segurança e violações de padrões de codificação.
 \par
-Cada vez mais, Reparo de Programa Automatizado, em inglês \textit{Automated Program Repair} (APR), domina na área de análise estática e análise dinâmica, apesar de sua dificuldade pela função de correção de bugs \cite{tang2021grammar}.
-A partir de \citeonline{hou2025generation} e \citeonline{tang2021grammar}, os métodos tradicionais de análise estática possuem graves limitações, pelo seu limitante foco em um conjunto específico de regras e suas correções, comprometendo sua extensibilidade.
+Análise estática possui diversas vertentes.
+Um dos problemas principais dos métodos tradicionais é a diverdidade de abordagens necessárias ao lidar com diferentes linguagens.
+Uma das estruturas mais conhecidas é a Árvore de Sintaxe Abstrata, em inglês \textit{Abstract Syntax Tree} (AST), uma representação intermediária que modela a estrutura hierárquica do código-fonte.
+ASTs fornecem uma representação de programa geralmente utilizada para análises insensíveis ao fluxo (\textit{flow-insensitive}), onde a ordem sequencial das instruções não é estritamente necessária \cite{moller2024spa}.
+\par 
+Complementar a isso, utilizam-se os grafos de fluxo de controle, em inglês \textit{Control Flow Graphs} (CFG).
+Enquanto a AST foca na sintaxe, o CFG é contruído para modelar os possíveis caminhos de execução do programa, sendo essencial para análises sensíveis ao fluxo (\textit{flow-sensitive}).
+CFGs são muitas vezes utilizados para a análise clássica de fluxo de dados, de modo que para cada nó do grafo, se atribui uma restrição que relaciona o valor do nó com seus vizinhos, sejam eles predecessores ou sucessores, para propagar informações ao longo desses nós até atingir um ponto fixo de saída, que a partir destes resultados matemáticos é possível chegar em uma conclusão sobre o programa \cite{moller2024spa}.
 \par
-Algumas das limitações da análise estática tradicional são:
-\begin{itemize}
-    \item Diversos padrões de \textit{bugs} e gerenciar enormes bases de código \cite{yang2025knighter}. 
-    \item Considerável esforço humano para geração de regras \cite{hou2025generation}.
-    \item Custos adicionais envolvidos no desenvolvimento de regras para mais de uma linguagem \cite{hou2025generation}.
-    \item Limitada para padrões de \textit{bugs} predefinidos \cite{jiang2025factaligned}.
-    \item Alarmes falsos \cite{jiang2025factaligned}.
-\end{itemize}
+Uma vez que as vulnerabilidades são detectadas, o próximo desafio no ciclo de desenvolvimento é a sua correção.
+Como uma evolução natural à simples detecção de falhas, o campo de Reparo de Programa Automatizado, em inglês \textit{Automated Program Repair} (APR), tem ganhado destaque na engenharia de \textit{software}.
+Enquanto a análise estática tradicional se limita a apontar as violações, o APR propõe-se a dar um passo além: gerar automaticamente soluções e aplicar correções de código (\textit{patches}) sem intervenção humana, visando reduzir os custos de depuração \cite{tang2021grammar}.
 \par
-Embora exista outras ferramentas de análise estática que vão além de regras pré-definidas que através de interfaces permitem que desenvolvedores incluam suas próprias regras personalizadas, como SemGrep \cite{jiang2025factaligned}, \citeonline{hou2025generation} menciona como é impossível para um desenvolvedor que não é especialista na área desenvolver regras personalizadas eficientes mesmo com um treinamento de curto prazo, assim como cita uma pesquisa que revela que menos de 5\% das regras de análise estática são regras personalizadas por usuários.
+Contudo, apesar de sua utilidade, tanto as ferramentas clássicas de detecção quanto os métodos tradicionais de correção enfrentam graves desafios estruturais.
+Conforme apontado por \citeonline{hou2025generation} e \citeonline{tang2021grammar}, a eficácia destas abordagens é frequentemente limitada por sua dependência de lógica rígida, o que compromete severamente a sua extensibilidade. 
+A Tabela \ref{tab:limitacoes_analise_trad} sintetiza as principais limitações destas abordagens clássicas apontadas na literatura.
+
 \par
-As regras de detecção estática são inerentemente imperfeitas \cite{jiang2025factaligned}.
-Quando é definido o conjunto de regras (\textit{rule set}), os desenvolvedores projetam focando em semânticas comuns de exemplos conhecidos de \textit{bugs}, a partir dessas observações são abstraídas em regras generalizadas para capturar padrões semelhantes de possíveis vulnerabilidades ou defeitos em códigos não vistos \cite{jiang2025factaligned}.
-Porém, \citeonline{yang2025knighter} explica que, analisadores estáticos tradicionais dependem fundamentalmente de verificações pré-definidas, além dessa dependência exigir ampla experiência de domínio e um esforço intenso para seu desenvolvimento e manutenção.\citeonline{jiang2025factaligned} aponta que é inviável prever todas as possíveis variações e casos extremos (\textit{corner cases}).
+Embora existam outras ferramentas de análise estática que vão além de regras pré-definidas permitindo, através de interfaces amigáveis, que desenvolvedores incluam suas próprias regras personalizadas, como SemGrep, \citeonline{hou2025generation} ressalta como é impossível para um desenvolvedor não especialista desenvolver regras personalizadas eficientes, mesmo com um treinamento de curto prazo.
+Essa dificuldade é confirmada por pesquisas que revelam que menos de 5\% das regras de análise estática utilizadas na indústria são criadas por usuários comuns \cite{hou2025generation}.
 \par
-Consequentemente, ferramentas de análise estática tradicional gerarão uma abundância de falsos positivos ou negativos em aplicações do mundo real \cite{jiang2025factaligned}, assim como prejudica sua escalabilidade para um aspecto mais amplo de problemas \cite{yang2025knighter}.
+Além do esforço de criação, as regras de detecção estática são inerentemente imperfeitas \cite{jiang2025factaligned}.
+Quando é definido o conjunto de regras (\textit{ruleset}), os projetistas focam em semânticas comuns de exemplos conhecidos de \textit{bugs}. 
+Essas observações são abstraídas em modelos generalizados para tentar capturar vulnerabilidades semelhantes em códigos não vistos \cite{jiang2025factaligned}.
+Porém, \citeonline{yang2025knighter} explica que essa dependência contínua de verificações restritas exige ampla experiência de domínio e um esforço contínuo para manutenção.
+Como aponta \citeonline{jiang2025factaligned}, a riqueza gramatical da programação torna inviável prever todas as possíveis variações e \textit{corner cases}.
+\par
+Como resultado direto, estas ferramentas de análise estática tradicionais frequentemente geram uma abundância de falsos positivos ou falsos negativos no mundo real, além de terem sua escalabilidade severamente prejudicada diante de um aspecto mais amplo de problemas \cite{jiang2025factaligned, yang2025knighter}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Limitações da análise estática tradicional}
+    \label{tab:limitacoes_analise_trad}
+    \begin{tabular}{p{4cm}|p{11cm}}
+        \toprule
+        \textbf{Limitação} & \textbf{Descrição} \\
+        \midrule
+        Escalabilidade e Diversidade de \textit{Bugs} & 
+        A dependência de verificações pré-definidas ou modelagens formais restringe as ferramentas a um subconjunto limitado de padrões de \textit{bugs}. Isso prejudica a escalabilidade e a capacidade de detectar vulnerabilidades imprevistas ou casos extremos (\textit{corner-cases}) \cite{yang2025knighter}. \\
+        \midrule
+        Esforço Humano & 
+        A criação de regras personalizadas exige um alto nível de especialização técnica. A complexidade sintática torna a tarefa inacessível para desenvolvedores comuns, sendo inviável mesmo com treinamento de curto prazo para realizar uma regra eficiente \cite{hou2025generation}. \\
+        \midrule
+        Falta de Extensibilidade Multilinguagem &
+        A maioria das regras é desenvolvida com lógica rigidamente codificada (\textit{hard-coded}) para uma linguagem de programação específica. A necessidade de contruir e manter \textit{parsers} específicos para cada nova linguagem exige alta especialização técnica, o que inviabiliza a portabilidade e gera altos custos na adaptação de analisadores para ecossistemas poliglotas \cite{hou2025generation}. \\
+        \midrule
+        Falsos Positivos & 
+        Devido à complexidade dos sistemas de \textit{software} e à riqueza de gramáticas de programação, é inviável que regras manuais prevejam todas as variações estruturais. Essa generalização falha resulta em uma abundância de alarmes imprecisos no mundo real \cite{jiang2025factaligned}. \\
+        \bottomrule
+    \end{tabular}
+    \legend{Fonte: Elaborado pelo autor (2026)}
+\end{table}
 
 \section{Contexto}
 \label{sec:contexto}
 
 \par
 Nos últimos anos, muitas técnicas foram desenvolvidas para minimizar alarmes falsos em analisadores estáticos \cite{jiang2025factaligned}.
-Recentemente, Modelos de Linguagem de Grande Escala (LLMs) e sua ampla aplicação mudou profundamente o domínio de análise estática, a maioria dessas técnicas empregando LLMs para compreender o código-fonte diretamente ou os dados das próprias ferramentas de análise estática, para determinar a presença de \textit{bugs}, como sua localização e tipo \cite{hou2025generation}.
+Recentemente, Modelos de Linguagem de Grande Porte (LLMs) e sua ampla aplicação mudou profundamente o domínio de análise estática, a maioria dessas técnicas empregando LLMs para compreender o código-fonte diretamente ou os dados das próprias ferramentas de análise estática, para determinar a presença de \textit{bugs}, como sua localização e tipo \cite{hou2025generation}.
 \par
 LLMs podem aprender diretamente de históricos de \textit{commits} de correção (\textit{patch commits}), essenciais para obter o contexto de \textit{bugs} associados ao sistema, a partir que são treinadas em projetos enormes \textit{open-source} com diversas correções de \textit{bugs} \cite{tang2021grammar}. 
 A capacidade de analisar vários conteúdos sugere que LLMs são capazes de adaptar a novos tipos de falhas sem a necessidade de criação explícita de regras \cite{yang2025knighter}. 
 \par
-Contudo, as estratégias de pós-processamento dependem da inferência contínua das LLMs durante a inspeção de código \cite{hou2025generation}, além de não abordar o problema de falsos positivos \cite{jiang2025factaligned}. 
-As janelas de contexto limitadas tornam o envio (\textit{upload}) de todo código-fonte relevante de uma só vez, além de repetições após cada alteração, que traria custos computacionais absurdos, causando a produção de saídas plausíveis mas incorretas, especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
+Contudo, as estratégias de pós-processamento dependem da inferência contínua das LLMs durante a inspeção de código \cite{hou2025generation}. 
+As janelas de contexto, apesar que atualmente essas janelas estejam na casa de milhões de \textit{tokens}, ainda são limitadas, com a latência de envio (\textit{upload}) de todo código-fonte relevante de uma só vez, além de repetições após cada alteração e sua degradação de atenção no meio do contexto depois de inúmeras alterações (\textit{lost in the middle}), traria custos computacionais e financeiros absurdos, causando a produção de saídas plausíveis mas incorretas, especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
 
 \section{Justificativa}
 \label{sec:justificativa}
@@ -211,7 +244,7 @@ Sobre os objetivos secundários, temos:
 \begin{enumerate}
     \item Implementar um agente LLM capaz de retirar a gramática a partir de pequenos exemplos de códigos, utilizando \textit{few-shot learning} e associação com linguagens de gramática \textit{open-source}.
     \item Implementar um motor principal de \textit{linter}, capaz de receber a gramática gerada, construir a AST do código-fonte e aplicar regras de verificação.
-    \item Validar a eficácia da ferramenta, analisando pelo menos duas linguagens distintas.
+    \item Validar a eficácia da ferramenta, analisando pelo menos cinco linguagens distintas.
     \item Comparar a eficácia da gramática gerada comparada com a gramática original da linguagem, com o objetivo de pelo menos 80\% de acurácia.
 \end{enumerate}
 
