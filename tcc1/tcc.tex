@@ -63,7 +63,7 @@
 % ---------------------------------------------------------------
 % INFORMAÇÕES DO DOCUMENTO
 % ---------------------------------------------------------------
-\titulo{Análise Estática Independente de Linguagem: Um Framework Genérico Orientado à Indução de Gramática}
+\titulo{Análise Estática Independente de Linguagem: Um Framework GenéricoOrientado à Geração de Padrões Sintáticos}
 \autor{Caio Xavier da Silva}
 \local{São Paulo}
 \data{2026}
@@ -93,7 +93,7 @@
 \begin{document}
 
 % Seleciona o idioma do documento
-\selectlanguage{brazil}
+\selectlanguage{brazilian}
 
 % Retira espaço extra obsoleto entre as frases
 \frenchspacing
@@ -144,13 +144,38 @@ Por essa abordagem não necessitar de compilação e execução prévia do siste
 Segundo \citeonline{jiang2025factaligned}, as ferramentas emergiram como componentes indispensáveis nos fluxos de trabalho modernos, fornecendo mecanismos automatizados para detecção de defeitos, vulnerabilidades de segurança e violações de padrões de codificação.
 \par
 Análise estática possui diversas vertentes.
-Um dos problemas principais dos métodos tradicionais é a diverdidade de abordagens necessárias ao lidar com diferentes linguagens.
+Um dos problemas principais dos métodos tradicionais é a diversidade de abordagens necessárias ao lidar com diferentes linguagens.
 Uma das estruturas mais conhecidas é a Árvore de Sintaxe Abstrata, em inglês \textit{Abstract Syntax Tree} (AST), uma representação intermediária que modela a estrutura hierárquica do código-fonte.
 ASTs fornecem uma representação de programa geralmente utilizada para análises insensíveis ao fluxo (\textit{flow-insensitive}), onde a ordem sequencial das instruções não é estritamente necessária \cite{moller2024spa}.
 \par 
 Complementar a isso, utilizam-se os grafos de fluxo de controle, em inglês \textit{Control Flow Graphs} (CFG).
-Enquanto a AST foca na sintaxe, o CFG é contruído para modelar os possíveis caminhos de execução do programa, sendo essencial para análises sensíveis ao fluxo (\textit{flow-sensitive}).
+Enquanto a AST foca na sintaxe, o CFG é construído para modelar os possíveis caminhos de execução do programa, sendo essencial para análises sensíveis ao fluxo (\textit{flow-sensitive}).
 CFGs são muitas vezes utilizados para a análise clássica de fluxo de dados, de modo que para cada nó do grafo, se atribui uma restrição que relaciona o valor do nó com seus vizinhos, sejam eles predecessores ou sucessores, para propagar informações ao longo desses nós até atingir um ponto fixo de saída, que a partir destes resultados matemáticos é possível chegar em uma conclusão sobre o programa \cite{moller2024spa}.
+
+\begin{table}[htb]
+    \centering
+    \caption{Limitações da análise estática tradicional}
+    \label{tab:limitacoes_analise_trad}
+    \begin{tabular}{p{3.5cm}|p{11.5cm}}
+        \toprule
+        \textbf{Limitação} & \textbf{Descrição} \\
+        \midrule
+        Escalabilidade e Diversidade de \textit{Bugs} & 
+        A dependência de verificações pré-definidas ou modelagens formais restringe as ferramentas a um subconjunto limitado de padrões de \textit{bugs}. Isso prejudica a escalabilidade e a capacidade de detectar vulnerabilidades imprevistas ou casos extremos (\textit{corner-cases}) \cite{yang2025knighter}. \\
+        \midrule
+        Esforço Humano & 
+        A criação de regras personalizadas exige um alto nível de especialização técnica. A complexidade sintática torna a tarefa inacessível para desenvolvedores comuns, sendo inviável mesmo com treinamento de curto prazo para realizar uma regra eficiente \cite{hou2025generation}. \\
+        \midrule
+        Falta de Extensibilidade Multilinguagem &
+        A maioria das regras é desenvolvida com lógica rigidamente codificada (\textit{hard-coded}) para uma linguagem de programação específica. A necessidade de contruir e manter \textit{parsers} específicos para cada nova linguagem exige alta especialização técnica, o que inviabiliza a portabilidade e gera altos custos na adaptação de analisadores para ecossistemas poliglotas \cite{hou2025generation}. \\
+        \midrule
+        Falsos Positivos & 
+        Devido à complexidade dos sistemas de \textit{software} e à riqueza de gramáticas de programação, é inviável que regras manuais prevejam todas as variações estruturais. Essa generalização falha resulta em uma abundância de alarmes imprecisos no mundo real \cite{jiang2025factaligned}. \\
+        \bottomrule
+    \end{tabular}
+    \legend{Fonte: Elaborado pelo autor (2026)}
+\end{table}
+
 \par
 Uma vez que as vulnerabilidades são detectadas, o próximo desafio no ciclo de desenvolvimento é a sua correção.
 Como uma evolução natural à simples detecção de falhas, o campo de Reparo de Programa Automatizado, em inglês \textit{Automated Program Repair} (APR), tem ganhado destaque na engenharia de \textit{software}.
@@ -172,61 +197,67 @@ Como aponta \citeonline{jiang2025factaligned}, a riqueza gramatical da programa�
 \par
 Como resultado direto, estas ferramentas de análise estática tradicionais frequentemente geram uma abundância de falsos positivos ou falsos negativos no mundo real, além de terem sua escalabilidade severamente prejudicada diante de um aspecto mais amplo de problemas \cite{jiang2025factaligned, yang2025knighter}.
 
-\begin{table}[htb]
-    \centering
-    \caption{Limitações da análise estática tradicional}
-    \label{tab:limitacoes_analise_trad}
-    \begin{tabular}{p{4cm}|p{11cm}}
-        \toprule
-        \textbf{Limitação} & \textbf{Descrição} \\
-        \midrule
-        Escalabilidade e Diversidade de \textit{Bugs} & 
-        A dependência de verificações pré-definidas ou modelagens formais restringe as ferramentas a um subconjunto limitado de padrões de \textit{bugs}. Isso prejudica a escalabilidade e a capacidade de detectar vulnerabilidades imprevistas ou casos extremos (\textit{corner-cases}) \cite{yang2025knighter}. \\
-        \midrule
-        Esforço Humano & 
-        A criação de regras personalizadas exige um alto nível de especialização técnica. A complexidade sintática torna a tarefa inacessível para desenvolvedores comuns, sendo inviável mesmo com treinamento de curto prazo para realizar uma regra eficiente \cite{hou2025generation}. \\
-        \midrule
-        Falta de Extensibilidade Multilinguagem &
-        A maioria das regras é desenvolvida com lógica rigidamente codificada (\textit{hard-coded}) para uma linguagem de programação específica. A necessidade de contruir e manter \textit{parsers} específicos para cada nova linguagem exige alta especialização técnica, o que inviabiliza a portabilidade e gera altos custos na adaptação de analisadores para ecossistemas poliglotas \cite{hou2025generation}. \\
-        \midrule
-        Falsos Positivos & 
-        Devido à complexidade dos sistemas de \textit{software} e à riqueza de gramáticas de programação, é inviável que regras manuais prevejam todas as variações estruturais. Essa generalização falha resulta em uma abundância de alarmes imprecisos no mundo real \cite{jiang2025factaligned}. \\
-        \bottomrule
-    \end{tabular}
-    \legend{Fonte: Elaborado pelo autor (2026)}
-\end{table}
-
 \section{Contexto}
 \label{sec:contexto}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.55\textwidth]{Images/problemas em larga escala.png}
+    \caption{Motivação para \textit{checkers} feitos por llms.}
+    {\small Fonte: Elaborado pelo autor (2026)}
+    \label{fig:motivacaocheckers}
+\end{figure}
 
 \par
 Nos últimos anos, muitas técnicas foram desenvolvidas para minimizar alarmes falsos em analisadores estáticos \cite{jiang2025factaligned}.
 Recentemente, Modelos de Linguagem de Grande Porte (LLMs) e sua ampla aplicação mudou profundamente o domínio de análise estática, a maioria dessas técnicas empregando LLMs para compreender o código-fonte diretamente ou os dados das próprias ferramentas de análise estática, para determinar a presença de \textit{bugs}, como sua localização e tipo \cite{hou2025generation}.
 \par
 LLMs podem aprender diretamente de históricos de \textit{commits} de correção (\textit{patch commits}), essenciais para obter o contexto de \textit{bugs} associados ao sistema, a partir que são treinadas em projetos enormes \textit{open-source} com diversas correções de \textit{bugs} \cite{tang2021grammar}. 
-A capacidade de analisar vários conteúdos sugere que LLMs são capazes de adaptar a novos tipos de falhas sem a necessidade de criação explícita de regras \cite{yang2025knighter}. 
+A capacidade de analisar vários conteúdos sugere que LLMs são capazes de adaptar a novos tipos de falhas sem a necessidade de criação explícita de regras \cite{yang2025knighter}.
 \par
 Contudo, as estratégias de pós-processamento dependem da inferência contínua das LLMs durante a inspeção de código \cite{hou2025generation}. 
-As janelas de contexto, apesar que atualmente essas janelas estejam na casa de milhões de \textit{tokens}, ainda são limitadas, com a latência de envio (\textit{upload}) de todo código-fonte relevante de uma só vez, além de repetições após cada alteração e sua degradação de atenção no meio do contexto depois de inúmeras alterações (\textit{lost in the middle}), traria custos computacionais e financeiros absurdos, causando a produção de saídas plausíveis mas incorretas, especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
+Embora as janelas de contexto atuais alcançem marca de milhões de \textit{tokens}, elas ainda impõem limites práticos. O envio (\textit{upload}) de todo código-fonte relevante de uma só vez, somado às repetições necessárias após cada alteração, gera custos computacionais proibitivos e favorece a produção de saídas plausíveis mas incorretas, especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
+\par
+A figura \ref{fig:motivacaocheckers} introduz motivações para a necessidade de métodos mais eficientes e, principalmente, especializados, tal que em projetos grandes, a análise estática possui dois desafios: criar regras para diversos padrões de bugs e gerenciamento de bases de códigos imensas \cite{yang2025knighter}.
+O método de análise estática tradicional possui falhas para tratamento de diversos \textit{bugs}, além de trabalho braçal, e análises diretas via LLM possui limites de contexto e custos.
+\par
+Considerando esses dados, o analisador estático ideal deveria: Detectar uma diversidade de falhas, incluindo \texit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
+Porém, dos métodos existentes, geralmente sacrificam um desses objetivos \cite{yang2025knighter}.
+\par
+O método apresentado por \citeonline{yang2025knighter}, KNighter, é um analisador estático sintetizado utilizando LLMs, que ao invés de métodos diretos de utilização de LLMs, é realizado um treinamento de padrões de \textit{bugs} a partir de histórico de \textit{patches} que a partir disso é dedicado para um \textit{checker} especializado.
+A partir desse paradigma, \citeonline{yang2025knighter} sobrepassa os problemas de limites de contextos e custos absurdos de analisar bases de códigos de milhões de linhas com diversos bugs.
 
 \section{Justificativa}
 \label{sec:justificativa}
+
 \par
-Mesmo com a existência de \textit{framework} como KNighter, sintetizando verificadores estáticos (\textit{checkers}) usando LLMs, ao invés de aplicar diretamente LLMs ao código-fonte \cite{yang2025knighter}. 
-É um método direcionado à projetos C/C++ utilizando um \textit{framework Clang Static Analysis}, e prova que esse método de verificador pode analisar código eficientemente a um custo reduzido \cite{yang2025knighter}. 
-Porém, \citeonline{hou2025generation} aponta, este método é orientado a uma linguagem de programação específica, introduzindo a metodologia de \textit{prompting} para abordagem de diferentes linguagens, utilizando poucos exemplos (\textit{few-shot learning}) como aprendizado. 
+Apesar das conquistas e avanços que \citeonline{yang2025knighter} realizou, \citeonline{hou2025generation} mencionam uma barreira fundamental relacionada à diversidade de linguagens.
+Até onde sabemos, o KNIghter é um método direcionado à projetos C/C++ utilizando um \textit{framework Clang Static Analysis}.
+A sua expansão para outros ecossistemas exigiria extensos ajustes nesse paradigma \cite{hou2025generation}.
 \par
-Ao invés de utilizar um método direto utilizando LLMs, \citeonline{tang2021grammar} e \citeonline{hou2025generation} apresentam métodos diferentes.
-Ambos utilizam \textit{frameworks} baseado em regras, tal que permite extensibilidade através de regras específicas.
-Com esse método, não tem a necessidade de um \textit{checker} específico para realização de diversas árvores de sintaxe abstrata, do inglês \textit{Abstract Syntax Tree} (AST), ou análise de fluxo de programa \cite{hou2025generation}.
+A partir dessa limitação, \citeonline{hou2025generation} introduziu a metodologia de \textit{prompting} para abordagem de diferentes linguagens, utilizando poucos exemplos (\textit{few-shot learning}) como aprendizado.
+Os autores citam a ferramenta \textit{Semgrep}, uma ferramenta utilizada para montagem de regras personalizadas para análise estática, como na Figura \ref{fig:semgrep}, tal que a utilizam para o \textit{ruleset} que geram via LLMs.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.80\textwidth]{Images/Semgrep.png}
+    \caption{Exemplo de regra criada para detectar uma senha embutida no argumento da função em Python.}
+    {\small Fonte: Adaptado para português com finalidade de melhorar compreensão \cite{hou2025generation}.}
+    \label{fig:semgrep}
+\end{figure}
+
 \par
-Portanto, este cenário apresenta a falta de exploração em analisadores agnósticos à linguagens (\textit{language-agnostic}) a partir de inferência de gramática.
+A proposta sendo um \textit{framework} baseado em LLMs para regras de análise estática para lidar com as limitações de escrever regras lidando com todos os possíveis casos (\textit{corner-cases}) \cite{hou2025generation}.
+Integrando o domínio de conhecimento adquirido de LLMs durante pré-treinamento não-supervisionado, integrando com as descrições de regras otimizadas para guiar a geração delas pelas LLMs.
+\par
+Com essa metodologia, \citeonline{hou2025generation} afirma, utilizando a ferramenta \textit{SemGrep} e seu \textit{ruleset} especializado, que seu método atingiu 81,99\% de validação gramatical de suas regras pela ferramenta e 74,73\% sendo regras funcionais e válidas.
+Com estes resultados, este cenário apresenta potencial em analisadores estáticos com \textit{frameworks} dinâmicos para sistemas de forma agnósticos à linguagens (\textit{language-agnostic}).
 
 \section{Hipótese}
 \label{sec:hipotese}
 
 \par
-A hipótese deste trabalho parte de um \textit{framework} possível de inferir a gramática de pelo menos cinco linguagens de programação com pelo menos 80\% de acurácia, sendo possível realizar uma análise estática com regras definidas específicas para a respectiva linguagem.
+A hipótese deste trabalho parte de um \textit{framework} possível de inferir principais regras de análise de pelo menos cinco linguagens de programação com pelo menos 80\% de acurácia na ferramenta \textit{Semgrep}, sendo possível realizar uma análise estática com regras definidas específicas para a respectiva linguagem, corrigindo erros gramaticais e especializados.
 
 \section{Objetivo}
 \label{sec:objetivo}
@@ -235,17 +266,17 @@ Os objetivos desta pesquisa estruturam-se em duas frentes: o objetivo geral, foc
 
 \subsection{Objetivo principal}
 
-O objetivo principal do trabalho é desenvolver um \textit{framework} com um agente LLM, que a partir de poucos exemplos (\textit{few-shot learning}) realiza associações com linguagens e abstrair sua gramática, utilizando para definir regras mais utilizadas para uma análise estática eficiente.
+O objetivo principal do trabalho é desenvolver um \textit{framework} com um agente LLM, que a partir de poucos exemplos (\textit{few-shot learning}) realiza associações com linguagens, utilizando para gerar regras mais utilizadas para projetos associados à linguagem, criando um \textit{ruleset} para \textit{SemGrep} de forma automatizada.
 
 \subsection{Objetivos secundários}
 
 Sobre os objetivos secundários, temos:
 
 \begin{enumerate}
-    \item Implementar um agente LLM capaz de retirar a gramática a partir de pequenos exemplos de códigos, utilizando \textit{few-shot learning} e associação com linguagens de gramática \textit{open-source}.
-    \item Implementar um motor principal de \textit{linter}, capaz de receber a gramática gerada, construir a AST do código-fonte e aplicar regras de verificação.
-    \item Validar a eficácia da ferramenta, analisando pelo menos cinco linguagens distintas.
-    \item Comparar a eficácia da gramática gerada comparada com a gramática original da linguagem, com o objetivo de pelo menos 80\% de acurácia.
+    \item Implementar um sistema para geração de regras via um agente LLM capaz de identificar a linguagem a partir de pequenos exemplos de códigos, utilizando \textit{few-shot learning}.
+    \item Validar a eficácia e eficiência das regras para a ferramenta \textit{Semgrep} e seu objetivo de identificar falhas de código, analisando em pelo menos cinco linguagens distintas.
+    \item Com o treinamento \textit{few-shot}, inferir a gramática para observações mais específicas.
+    \item Validar as regras geradas no Semgrep frente a um conjunto de testes, visando alcançar 80\% de precisão na detecção de vulnerabilidades quando comparado às regras nativas da ferramenta.
 \end{enumerate}
 
 % ===============================================================
@@ -377,8 +408,6 @@ Para cada trabalho relacionado, descreva:
 \end{enumerate}
 
 \subsection{Trabalho 1: [Título do trabalho]}
-
-\citeonline{Silva2022} abordou o problema de [descrever o problema --- deve ser o mesmo ou muito similar ao seu]. Para resolvê-lo, os autores propuseram [descrever a solução]. A metodologia utilizada foi [descrever]. Os resultados mostraram que [descrever]. No entanto, a solução apresenta limitações como [descrever as lacunas que permanecem]. O presente trabalho diferencia-se por [explicar como sua proposta avança na resolução do mesmo problema].
 
 \subsection{Trabalho 2: [Título do trabalho]}
 
@@ -537,7 +566,7 @@ O cronograma a seguir apresenta, no formato de diagrama de Gantt, as atividades 
 %
 % Veja o arquivo bibliografia.bib para exemplos de cada tipo.
 % ---------------------------------------------------------------
-\bibliography{bibliografia}
+\bibliography{bibliografia.bib}
 
 % ---------------------------------------------------------------
 % APÊNDICES (se necessário)
