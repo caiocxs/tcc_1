@@ -63,7 +63,7 @@
 % ---------------------------------------------------------------
 % INFORMAÇÕES DO DOCUMENTO
 % ---------------------------------------------------------------
-\titulo{Análise Estática Independente de Linguagem: Um Framework GenéricoOrientado à Geração de Padrões Sintáticos}
+\titulo{Análise Estática Independente de Linguagem: Um Framework Genérico Orientado à Geração de Padrões Sintáticos}
 \autor{Caio Xavier da Silva}
 \local{São Paulo}
 \data{2026}
@@ -285,75 +285,6 @@ Sobre os objetivos secundários, temos:
 \chapter{Revisão Bibliográfica}
 \label{cap:revisao}
 
-\section{Inteligência Artificial}
-\label{sec:inteligenciaartificial}
-\par
-A Inteligência Artificial (IA) possui diversas versões segundo pesquisadores, sendo dividido sua definição como a fidelidade de uma performance humana, ou uma definição formal de raciocinalidade. A partir de ambas dimensões, temos quatro possíveis combinações, sendo respectivamente: Agir de forma humana, Pensamento de forma humana, Pensamento racional e Agir racionalmente \cite{russell2020artificial}.
-\par
-Agir de forma humana, proposto por Alan Turing (1950), tendo o objetivo inicial de descobrir se era possível um computador gerar respostas indiferenciáveis de um humano. Sendo necessário possuir processamento de nossa linguagem, memória do conhecimento, raciocínio e aprendizado se adaptar e identificar padrões \cite{russell2020artificial}.
-\par
-Pensamento de forma humana, sendo um modelo cognitivo, tal que a partir de uma teoria de como é um raciocínio humano, aplica à um programa computacional. Fazendo parte da área da Ciência Cognitiva, que junta Inteligência Artificial com técnicas experimentais da psicologia para construir teorias precisas e praticáveis sobre a mente humana \cite{russell2020artificial}.
-\par
-Pensamento racional, utiliza a filosofia de leis de pensamento, onde a lógica exige um conhecimento absoluto sobre o mundo, uma condição que, na realidade, raramente é alcançada. Isso nos permite a construção de um modelo capaz de pensamentos racionais, que a partir de informações cruas para um entendimento de como funciona o mundo \cite{russell2020artificial}.
-\par
-Agir racionalmente, é definido como um agente racional, agente sendo aquele que realiza uma tarefa, como um programa de computador, porém ao ser racional, permite que ele opere autonomamente, entender seu ambiente e se adaptar à diferentes circunstâncias para realizar objetivos. Um agente racional é aquele que atua para realizar o objetivo da melhor forma, ou quando existe incerteza, a melhor forma possível \cite{russell2020artificial}.
-
-\subsection{Linguagem Natural}
-\label{subsec:linguagemnatural}
-\par
-Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). Também conhecidas como gramáticas de estrutura de frase, as GLCs baseiam-se em um formalismo que é estritamente equivalente à Forma de Backus-Naur (BNF), um padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
-\par
-Uma Gramática Livre de Contexto consiste em um conjunto de regras ou produções, tal que cada um expressa a forma em que os símbolos da linguagem podem ser ordenados e agrupados, e um léxico de palavras e símbolos. Uma GLC como essa, define o que chamamos de linguagem formal. Em uma linguagem formal, existe uma divisão estrita: as sentenças (cadeias de palavras) que podem ser derivadas pelas regras da gramática, enquanto as que não podem ser derivadas são agramaticais \cite{jurafsky2026speech}.
-\par
-Contudo, essa linha rígida entre o que "pertence" ou "não pertence" à linguagem caracteriza apenas gramáticas formais, servindo como um modelo muito simplificado de como as linguagens naturais realmente funcionam. Ao contrário das linguagens de programação, determinar se uma dada sentença é válida ou faz sentido em uma linguagem natural depende inerentemente do contexto. Na linguística computacional, o uso dessas linguagens formais para tentar modelar a complexidade das linguagens naturais é chamada de gramática generativa, desde que a linguagem passa a ser definida pelo conjunto de possíveis sentenças "geradas" pela sua gramática \cite{jurafsky2026speech}.
-
-\subsection{Modelos de Linguagens de Larga Escala (LLM)}
-\label{subsec:llm}
-\par
-Os Modelos de Linguagens de Larga Escala (LLMs), em sua maioria, baseiam-se na arquitetura \textit{Transformer}, originalmente projetada para tarefas sequenciais, como tradução automática. A arquitetura consiste em dois principais componentes: o Codificador (\textit{Encoder}), qual converte uma entrada de \textit{tokens} para uma sequência de vetores representativos (frequentemente chamada de estado oculto ou contexto), e Decodificador (\textit{Decoder}), que utiliza o contexto gerado pelo codificador para gerar iterativamente uma sequência de \textit{tokens} de saída, um \textit{token} por vez \cite{tunstall2022natural}.
-\par
-Com o passar dos anos, esses blocos funcionais foram adaptados para atuar como modelos independentes. Embora existam centenas de variações de \textit{Transformers}, a maioria se encaixa em um desses três tipos:
-\par
-Apenas Codificador (\textit{Encoder-only}): Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficiente para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação computada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto á direita (depois do \textit{token}), esse mecanismo geralmente denominado como atenção bidirecional \cite{tunstall2022natural}.
-\par
-Apenas Decodificador (\textit{Decoder-only}): Dada uma entrada de texto (por exemplo "No almoço, eu comi um..."), esses modelos autocompletam a sequência prevendo iterativamente a palavra subsequente mais provável. A família de modelos GPT pertence a essa classe. Nesse caso, a representação computada para um \textit{token} recebido depende exclusivamente do contexto à sua esquerda, esse comportamento é conhecido como atenção causal ou autorregressiva \cite{tunstall2022natural}.
-\par
-Codificador-Decodificador (\textit{Encoder-decoder}): Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra, esses modelos são projetados para tradução automática e tarefas de sumarização \cite{tunstall2022natural}. 
-
-\subsection{Aprendizado de regras baseado em LLMs}
-\label{subsec:aprendizadoregras}
-\par
-Modelos de Linguagens de Larga Escala (LLMs) as vezes requerem adaptações, como projetos com \textit{APIs} não documentadas ou ferramentas especializadas, essa adaptação, na maioria dos casos, temos opções para estas adaptações como ajustar pesos do modelo (\textit{fine-tuning}) ou utilizar recuperação de exemplos (\textit{few-shot prompting}), sendo abordagens eficazes, porém não possuem suporte para abstrações, reutilização e interpretabilidade de caso a caso \cite{gao2026rimrule}. 
-\par
-No lugar dessas opções, essa abordagem utiliza LLM para induzir e refinar regras lógicas, tais que podem assumir formatos de linguagem natural, lógica de primeira ordem (\textit{FOL}) ou sintaxes específicas, as metodologias a partir dessa abordagem são:
-\par
-\textbf{Geração de Regras a partir de Experiência e Falhas}, cria-se e ajusta-se regras de acordo com falhas no raciocínio ou exemplos de código para se adaptar ao problema. 
-\par
-\begin{itemize}
-    \item Em \citeonline{gao2026rimrule}, seu treinamento atua coletando "rastros de falha", a partir do código criado e executado, quando resulta em erros ou resultado incorreto, é utilizado como experiência para gerar regras, utilizando o formato "se-então" para esse erro, corrigindo o raciocínio.
-    \item No sistema de \citeonline{fan2025ruler} é utilizado a construção de regras baseada em emparelhamento de código traduzido, tal que o aprendizado é realizado baseado em uma estratégia de remoção. Nessa estratégia, a chave é remover um comando específico do programa original e encontrar sua equivalente que desaparece na tradução correta gerada pela LLM.
-\end{itemize}
-
-\par
-\textbf{Consolidação e otimização via MDL} (\textit{Minimum Description Length}), a geração de regras via LLM costuma produzir um conjunto extenso ou redundante, sendo necessário uma consolidação para filtragem dessas regras. Em \citeonline{gao2026rimrule}, é utilizado dois métodos: uma heurística via \textit{prompt} para mesclar regras redundantes via LLM, isso consolida objetivamente as regras mas sacrifica complexidade de regras, e o princípio MDL, que busca o equilíbrio matemático entre a complexidade de uma regra e sua eficácia.
-
-\begin{itemize}
-    \item Seu objetivo, nessa configuração, é selecionar um conjunto compacto de regras que corrigem o máximo de erros sem complexidades desnecessárias \cite{gao2026rimrule}.
-    \item O sistema também realiza consolidações gulosas, qual a partir do conjunto total inicial, é podado regras redundantes e generaliza regras específicas até que a biblioteca de regras se torne o mais enxuta e eficaz possível \cite{gao2026rimrule}.
-\end{itemize}
-
-\par
-\textbf{Composição Probabilística Global e Calibração}, apesar de LLMs serem excelentes na descoberta semântica de regras, eles falham em agregar múltiplas regras conflitantes ou utilizar pesos probabilísticos durante a inferência baseada puramente em \textit{prompts}. Em \citeonline{yang2025rlie} é feito a combinação da expressividade de LLMs com composições calibradas de modelos probabilísticos.
-
-\begin{itemize}
-    \item Para essa sinergia, o \textit{framework} primeiro utiliza \textit{prompts} para gerar um conjunto de regras candidatas, a LLM é utilizada para analisar o quão específico é o conjunto, além dessa avaliação, as regras são avaliadas por Regressão Logística, um modelo estatístico clássico, calculando o peso probabilístico para cada regra. A partir disso, \citeonline{yang2025rlie} utiliza refinamento iterativo, exercitando o conjunto utilizando "exemplos difíceis" (\textit{hard-examples}), sendo os casos onde obtiveram erros, e os devolve para a avaliação da LLM. Por fim, é comparado este sistema híbrido (LLM e Regressão Logística) com a abordagem tradicional de obter as regras a partir de um único \textit{prompt} para a LLM.
-\end{itemize}
-
-\par
-Não finalizado.
-
-
-% ---------------------------------------------------------------
 \section{Metodologia da pesquisa bibliográfica}
 \label{sec:metodologia_pesquisa}
 
@@ -369,6 +300,70 @@ Descreva como a pesquisa bibliográfica foi conduzida, incluindo:
 Exemplo de descrição:
 
 \textit{A pesquisa bibliográfica foi realizada nas bases Google Scholar, IEEE Xplore e ACM Digital Library, utilizando as palavras-chave ``machine learning'', ``classificação de texto'' e ``processamento de linguagem natural''. Foram selecionados artigos publicados entre 2018 e 2025, em português e inglês, que abordassem diretamente técnicas de classificação automática de documentos.}
+
+% ---------------------------------------------------------------
+\section{Referencial teórico}
+\label{cap:referencial}
+
+\subsection{Inteligência Artificial}
+\label{sec:inteligenciaartificial}
+\par
+A Inteligência Artificial (IA) possui diversas versões segundo os pesquisadores, podendo ser categorizada em duas dimensões principais: a fidelidade ao desempenho humano ou a uma definição formal de racionalidade.
+A partir dessas dimensões, temos quatro possíveis combinações possíveis, sendo elas: Agir humanamente, Pensar humanamente, Pensar racionalmente e Agir racionalmente \cite{russell2020artificial}.
+\par
+O modelo 'agir de forma humana', proposto por Alan Turing (1950) através do famoso Teste de Turing, tem o objetivo de avaliar se é possível um computador gerar respostas indistinguíveis das de um humano.
+Para isso, o sistema precisa possuir capacidades de processamento de linguagem natural, representação do conhecimento, raciocínio Automatizado e aprendizado de máquina para se adaptar e identificar padrões \cite{russell2020artificial}.
+\par
+O 'pensar de forma humana' baseia-se na modelagem cognitiva.
+A partir de uma teoria sobre o funcionamento doraciocínio humano, aplica-se esse modelo a um programa computacional. 
+Essa abordagem está intrinsecamente ligada à Ciência Cognitiva, que une a Inteligência Artificial à técnicas experimentais da psicologia para construir teorias precisas e testáveis sobre a mente humana \cite{russell2020artificial}.
+\par
+O 'pensar racionalmente' fundamenta-se na tradição filosófica das 'leis de pensamento'.
+O desafio dessa abordagem é que a lógica clássica frequentemente exige um conhecimento absoluto e certo sobre o mundo, uma condição que, na realidade, raramente é alcançada. 
+Ainda assim, busca-se a construção de modelos capazes de raciocínio lógico que processem informações brutas para compreender o funcionamento do mundo \cite{russell2020artificial}.
+\par
+Por fim, o 'agir racionalmente' está centrado no conceito de agente racional.
+Um agente é qualquer entidade que percebe seu ambiente e atua sobre ele.
+Ao ser dotado de racionalidade, o agente (como um programa de computador) ganha a capacidade de operar autonomamente, perceber o ambiente e se adaptar a diferentes circunstâncias.
+Um agente racional atua de modo a alcançar o melhor resultado possível para os seus objetivos ou, em situações de incerteza, o melhor resultado esperado \cite{russell2020artificial}.
+
+\subsection{Linguagem Natural}
+\label{subsec:linguagemnatural}
+\par
+Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). 
+Também conhecidas como gramáticas de estrutura de frase (\textit{phrase-structure grammars}), as GLCs utilizam um formalismo que é equivalente à Forma de Backus-Naur (BNF), padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
+\par
+Uma GLC consiste em um conjunto de regras ou produções, onde cada uma expressa como os símbolos podem ser ordenados e agrupados, e um léxico de palavras e símbolos.
+Tal estrutura define uma linguagem formal, na qual existe uma separação estrita: sentenças que podem ser derivadas pelas regras são consideradas gramaticais, enquanto as que não podem são denomidadas agramaticais \cite{jurafsky2026speech}.
+\par
+Contudo, essa distinção rígida é uma característica das gramáticas formais e ser apenas como um modelo simplificado das linguagens naturais.
+Diferente das linguagens de programação, a validade e o sentido em linguagem natural dependem intrinsecamente do contexto.
+Na linguística computacional, o uso desses modelos para capturar tal complexidade é fundamentado na gramática generativa, visto que a linguagem passa a ser definida pelo conjunto de possíveis 'geradas' por suas regras gramaticais \cite{jurafsky2026speech}.
+
+\subsection{Modelos de Linguagens de Grande Escala}
+\label{subsec:llm}
+\par
+Os Modelos de Linguagem de Grande Escala (LLMs), em sua maioria, baseiam-se na arquitetura \textit{Transformer}, originalmente projetada para tarefas sequenciais, como a tradução automática. 
+A arquitetura consiste em dois componentes principais: o Codificador (\textit{Encoder}), o qual converte uma entrada de \textit{tokens} em uma sequência de vetores representativos (frequentemente chamada de estado oculto ou contexto), e o Decodificador (\textit{Decoder}), que utiliza o contexto gerado pelo codificador para produzir iterativamente uma sequência de \textit{tokens} de saída, um por vez \cite{tunstall2022natural}.
+\par
+Com o passar dos anos, esses blocos funcionais foram adaptados para atuar como modelos independentes. Embora existam centenas de variações de \textit{Transformers}, a maioria se encaixa em um desses três tipos:
+\par
+\textbf{Apenas Codificador (\textit{Encoder-only}):} Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficientes para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação calculada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto à direita (depois do \textit{token}); esse mecanismo é geralmente denominado atenção bidirecional \cite{tunstall2022natural}.
+\par
+\textbf{Apenas Decodificador (\textit{Decoder-only}):} Dada uma entrada de texto, esses modelos completam a sequência prevendo iterativamente a palavra subsequente mais provável.
+A família de modelos GPT pertence a essa classe. 
+Nesse caso, a representação de um \textit{token} depende exclusivamente do contexto à sua esquerda; esse comportamento é conhecido como atenção causal ou autorregressiva \cite{tunstall2022natural}.
+\par
+\textbf{Codificador-Decodificador (\textit{Encoder-decoder}):} Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra (arquiteturas \textit{sequence-to-sequence}), esses modelos são projetados para tarefas como tradução automática e sumarização de textos \cite{tunstall2022natural}. 
+
+\subsection{Análise Estática}
+\label{sec:analiseestatica}
+\par
+
+
+\par
+Não finalizado.
+
 
 % ---------------------------------------------------------------
 \section{Fundamentos}
