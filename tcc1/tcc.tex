@@ -118,7 +118,6 @@
 % ---------------------------------------------------------------
 \begin{resumo}
 Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. O objetivo deste trabalho é [descrever brevemente o objetivo principal do TCC]. A justificativa para este estudo baseia-se em [descrever brevemente a justificativa]. A revisão bibliográfica abrange [mencionar os principais tópicos]. Como solução proposta, pretende-se [descrever brevemente a solução]. Este trabalho está organizado em três capítulos que apresentam a introdução ao tema, a revisão bibliográfica que fundamenta a pesquisa, o desenvolvimento com a solução proposta e o cronograma de trabalho, seguidos das referências bibliográficas.
-
 \vspace{\onelineskip}
 
 \noindent
@@ -137,7 +136,6 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 % ===============================================================
 \chapter{Introdução}
 \label{cap:introducao}
-
 \par
 Ferramentas de análise estática baseadas em regras são intensamente empregadas no desenvolvimento de \textit{software} e garantia de código \cite{hou2025generation}.
 Por essa abordagem não necessitar de compilação e execução prévia do sistema, ela é considerada um método rápido e econômico para a identificação de problemas em seus estágios iniciais.
@@ -229,7 +227,6 @@ A partir desse paradigma, \citeonline{yang2025knighter} sobrepassa os problemas 
 
 \section{Justificativa}
 \label{sec:justificativa}
-
 \par
 Apesar das conquistas e avanços que \citeonline{yang2025knighter} realizou, \citeonline{hou2025generation} mencionam uma barreira fundamental relacionada à diversidade de linguagens.
 Até onde sabemos, o KNIghter é um método direcionado à projetos C/C++ utilizando um \textit{framework Clang Static Analysis}.
@@ -255,26 +252,25 @@ Com estes resultados, este cenário apresenta potencial em analisadores estátic
 
 \section{Hipótese}
 \label{sec:hipotese}
-
 \par
-A hipótese deste trabalho parte de um \textit{framework} possível de inferir principais regras de análise de pelo menos cinco linguagens de programação com pelo menos 80\% de acurácia na ferramenta \textit{Semgrep}, sendo possível realizar uma análise estática com regras definidas específicas para a respectiva linguagem, corrigindo erros gramaticais e especializados.
+A hipótese deste trabalho parte de um \textit{framework} possível de inferir principais regras de análise de pelo menos duas linguagens de programação com pelo menos 80\% de acurácia na ferramenta \textit{Semgrep}, sendo possível realizar uma análise estática com regras definidas específicas para a respectiva linguagem, corrigindo erros gramaticais e especializados.
 
 \section{Objetivo}
 \label{sec:objetivo}
-
+\par
 Os objetivos desta pesquisa estruturam-se em duas frentes: o objetivo geral, focado em solucionar o problema central do estudo, e os objetivos específicos, que descrevem as etapas práticas e teóricas indispensáveis para a realização desse propósito maior.
 
 \subsection{Objetivo principal}
-
+\par
 O objetivo principal do trabalho é desenvolver um \textit{framework} com um agente LLM, que a partir de poucos exemplos (\textit{few-shot learning}) realiza associações com linguagens, utilizando para gerar regras mais utilizadas para projetos associados à linguagem, criando um \textit{ruleset} para \textit{SemGrep} de forma automatizada.
 
 \subsection{Objetivos secundários}
-
+\par
 Sobre os objetivos secundários, temos:
 
 \begin{enumerate}
     \item Implementar um sistema para geração de regras via um agente LLM capaz de identificar a linguagem a partir de pequenos exemplos de códigos, utilizando \textit{few-shot learning}.
-    \item Validar a eficácia e eficiência das regras para a ferramenta \textit{Semgrep} e seu objetivo de identificar falhas de código, analisando em pelo menos cinco linguagens distintas.
+    \item Validar a eficácia e eficiência das regras para a ferramenta \textit{Semgrep} e seu objetivo de identificar falhas de código, analisando em pelo menos duas linguagens distintas.
     \item Com o treinamento \textit{few-shot}, inferir a gramática para observações mais específicas.
     \item Validar as regras geradas no Semgrep frente a um conjunto de testes, visando alcançar 80\% de precisão na detecção de vulnerabilidades quando comparado às regras nativas da ferramenta.
 \end{enumerate}
@@ -284,26 +280,48 @@ Sobre os objetivos secundários, temos:
 % ===============================================================
 \chapter{Revisão Bibliográfica}
 \label{cap:revisao}
+\par
+Este capítulo tem como finalidade estabelecer o embasamento teórico e tecnológico que sustenta a pesquisa proposta.
+Inicialmente, descreve-se a metodologia utilizada para a seleção dos trabalhos consultados. Na sequência, o referencial teórico explora os paradigmas da análise estática assistida por inteligência artificial, as limitações da análise dinâmica e os desafios inerentes à análise estática tradicional. 
+Os fundamentos técnicos são apresentados com ênfase em Modelos de Linguagem de Grande Escala (LLMs), Processamento de Linguagem Natural e os princípios de Análise Estática. 
+Por fim, conduz-se uma revisão dos trabalhos correlatos, identificando as lacunas que esta pesquisa busca preencher.
 
 \section{Metodologia da pesquisa bibliográfica}
 \label{sec:metodologia_pesquisa}
+\par
+A pesquisa bibliográfica foi conduzida de forma sistemática para identificar trabalhos científicos relevantes sobre a utilização de LLMs no suporte à análise estática. 
+As buscas foram centralizadas no motor Google Acadêmico (\textit{Google Scholar}), devido à sua ampla indexação, com foco principal em bases de dados consolidadas na área da Computação, como arXiv, IEEE Xplore e ACM Digital Library.
+\par
+Para as buscas, foram definidas palavras-chave em inglês, tais como: \textit{"linker"}, \textit{"static analysis"}, \textit{"optimization"}, \textit{"code"}, \textit{"language"}, \textit{"grammar"}, \textit{"rule generation"}, \textit{"checker"}, \textit{"symbolic rule"} e \textit{"generic linker"}. 
+Estes termos foram combinados por meio de operadores booleanos (\textit{AND}, \textit{OR}) para refinar os resultados, culminando na \textit{string} de busca apresentada na Figura \ref{fig:query}:
 
-Descreva como a pesquisa bibliográfica foi conduzida, incluindo:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Images/Query.png}
+    \caption{\textit{Query} utilizada durante a pesquisa de materiais.}
+    {\small Fonte: Elaborado pelo autor (2026)}
+    \label{fig:query}
+\end{figure}
 
-\begin{itemize}
-    \item \textbf{Bases de dados consultadas}: Google Scholar, IEEE Xplore, ACM Digital Library, SciELO, Periódicos CAPES, entre outras;
-    \item \textbf{Palavras-chave utilizadas}: liste os termos de busca em português e inglês;
-    \item \textbf{Critérios de inclusão e exclusão}: quais critérios foram usados para selecionar ou descartar trabalhos (período, idioma, relevância, tipo de publicação);
-    \item \textbf{Período de abrangência}: intervalo de anos das publicações consultadas.
-\end{itemize}
-
-Exemplo de descrição:
-
-\textit{A pesquisa bibliográfica foi realizada nas bases Google Scholar, IEEE Xplore e ACM Digital Library, utilizando as palavras-chave ``machine learning'', ``classificação de texto'' e ``processamento de linguagem natural''. Foram selecionados artigos publicados entre 2018 e 2025, em português e inglês, que abordassem diretamente técnicas de classificação automática de documentos.}
+\par
+Como critérios de inclusão, estabeleceram-se: (a) trabalhos publicados entre 2021 e 2026, de forma a capturar o estado da arte; (b) disponibilidade nos idiomas inglês ou português; e (c) relação direta com o tema, priorizando artigos que contivessem implementações ou experimentos aplicados a múltiplas linguagens de programação.
+\par
+Em contrapartida, os critérios de exclusão adotados foram: (a) trabalhos publicados antes de 2021, com exceção de referências clássicas ou seminais indispensáveis para a teoria; (b) artigos sem alinhamento direto com análise estática ou geração de regras de código; e (c) duplicidades de publicações entre as bases de dados consultadas.
+\par
+O processo de seleção ocorreu em duas etapas. 
+Na primeira fase (triagem), a aplicação da \textit{string} de busca retornou 4.770 resultados, dos quais foram selecionados 42 artigos potencialmente relevantes após a leitura prévia de títulos e resumos. 
+Na segunda fase (afunilamento), os trabalhos restantes passaram por uma leitura criteriosa da introdução e do escopo, sendo classificados em uma escala de relevância de 0 a 10 em relação aos objetivos desta pesquisa.
+\par
+Esse processo de filtragem resultou em 9 artigos classificados com notas entre 9 e 10 (alta relevância), além de 11 artigos categorizados como material de suporte, totalizando 20 trabalhos contemporâneos para compor a fundamentação teórica. 
+Adicionalmente, foram incorporados 4 trabalhos seminais anteriores a 2021, essenciais para a consolidação dos conceitos clássicos abordados neste estudo.
 
 % ---------------------------------------------------------------
 \section{Referencial teórico}
 \label{cap:referencial}
+\par
+O referencial teórico apresenta os conceitos fundamentais que sustentam o desenvolvimento deste projeto. 
+Propõe-se um contraponto analítico entre os métodos da análise estática tradicional e as novas abordagens voltadas à automatização da geração de regras. 
+A estruturação dos tópicos foi concebida para apresentar gradativamente as tecnologias envolvidas, destacando o papel das LLMs e sua relevância para a modernização das ferramentas de verificação de código na atualidade.
 
 \subsection{Inteligência Artificial}
 \label{sec:inteligenciaartificial}
