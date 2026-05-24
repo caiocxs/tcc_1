@@ -137,12 +137,12 @@ Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (
 \chapter{Introdução}
 \label{cap:introducao}
 \par
-Ferramentas de análise estática baseadas em regras são intensamente empregadas no desenvolvimento de \textit{software} e garantia de código \cite{hou2025generation}.
+Ferramentas de análise estática são amplamente empregadas no desenvolvimento de \textit{software} e garantia de código \cite{hou2025generation}.
 Por essa abordagem não necessitar de compilação e execução prévia do sistema, ela é considerada um método rápido e econômico para a identificação de problemas em seus estágios iniciais.
-Segundo \citeonline{jiang2025factaligned}, as ferramentas emergiram como componentes indispensáveis nos fluxos de trabalho modernos, fornecendo mecanismos automatizados para detecção de defeitos, vulnerabilidades de segurança e violações de padrões de codificação.
+Segundo \citeonline{jiang2025factaligned}, as ferramentas de análise estática emergiram como componentes indispensáveis nos fluxos de trabalho modernos, fornecendo mecanismos automatizados para detecção de defeitos, vulnerabilidades de segurança e violações de padrões de codificação.
 \par
-Análise estática possui diversas vertentes.
-Um dos problemas principais dos métodos tradicionais é a diversidade de abordagens necessárias ao lidar com diferentes linguagens.
+A análise estática possui diversas vertentes.
+Um dos problemas principais dos métodos tradicionais é a diversidade de abordagens necessárias ao lidar com diferentes projetos.
 Uma das estruturas mais conhecidas é a Árvore de Sintaxe Abstrata, em inglês \textit{Abstract Syntax Tree} (AST), uma representação intermediária que modela a estrutura hierárquica do código-fonte.
 ASTs fornecem uma representação de programa geralmente utilizada para análises insensíveis ao fluxo (\textit{flow-insensitive}), onde a ordem sequencial das instruções não é estritamente necessária \cite{moller2024spa}.
 \par 
@@ -202,7 +202,7 @@ Como resultado direto, estas ferramentas de análise estática tradicionais freq
     \centering
     \includegraphics[width=0.55\textwidth]{Images/problemas em larga escala.png}
     \caption{Motivação para \textit{checkers} feitos por llms.}
-    {\small Fonte: Elaborado pelo autor (2026)}
+    {\small Fonte: Adaptado pelo autor para melhor compreensão \cite{yang2025knighter}}
     \label{fig:motivacaocheckers}
 \end{figure}
 
@@ -219,7 +219,7 @@ Embora as janelas de contexto atuais alcançem marca de milhões de \textit{toke
 A figura \ref{fig:motivacaocheckers} introduz motivações para a necessidade de métodos mais eficientes e, principalmente, especializados, tal que em projetos grandes, a análise estática possui dois desafios: criar regras para diversos padrões de bugs e gerenciamento de bases de códigos imensas \cite{yang2025knighter}.
 O método de análise estática tradicional possui falhas para tratamento de diversos \textit{bugs}, além de trabalho braçal, e análises diretas via LLM possui limites de contexto e custos.
 \par
-Considerando esses dados, o analisador estático ideal deveria: Detectar uma diversidade de falhas, incluindo \texit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
+Considerando esses dados, o analisador estático ideal deveria: detectar uma diversidade de falhas, incluindo \texit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
 Porém, dos métodos existentes, geralmente sacrificam um desses objetivos \cite{yang2025knighter}.
 \par
 O método apresentado por \citeonline{yang2025knighter}, KNighter, é um analisador estático sintetizado utilizando LLMs, que ao invés de métodos diretos de utilização de LLMs, é realizado um treinamento de padrões de \textit{bugs} a partir de histórico de \textit{patches} que a partir disso é dedicado para um \textit{checker} especializado.
@@ -248,31 +248,43 @@ A proposta sendo um \textit{framework} baseado em LLMs para regras de análise e
 Integrando o domínio de conhecimento adquirido de LLMs durante pré-treinamento não-supervisionado, integrando com as descrições de regras otimizadas para guiar a geração delas pelas LLMs.
 \par
 Com essa metodologia, \citeonline{hou2025generation} afirma, utilizando a ferramenta \textit{SemGrep} e seu \textit{ruleset} especializado, que seu método atingiu 81,99\% de validação gramatical de suas regras pela ferramenta e 74,73\% sendo regras funcionais e válidas.
-Com estes resultados, este cenário apresenta potencial em analisadores estáticos com \textit{frameworks} dinâmicos para sistemas de forma agnósticos à linguagens (\textit{language-agnostic}).
+Apesar de seu \textit{framework} possuir um foco em diversidade de linguagens, \citeonline{hou2025generation} superou a quantidade de regras válidas de KNighter \cite{yang2025knighter}, de 37 regras para 41 regras, analisando tipos de \textit{bugs} como \textit{Null Pointer Dereference} (CWE-476), \textit{Memory Leak} (CWE-401), \textit{Use After Free} (CWE-416), \textit{Double Free} (CWE-415), \textit{Use of Uninitialized Variable} (CWE-457), \textit{Buffer Overflow} (CWE-120), \textit{Out-of-Bounds} (CWE-119), \textit{Integer Overflow} (CWE-190), \textit{Race Condition} (CWE-362) e \textit{API Misuse} (CWE-227), utilizando de base e foco o projeto \textit{open-source} Linux.
+\par
+Além do KNighter, foi comparado sua performance para identificação de bugs entre \textit{rulesets} oficiais de SemGrep e ferramentas de análise estática tradicionais como Smatch e CPPCheck.
+Onde entre todos os avisos e erros que as ferramentas obtiveram, nenhuma identificou defeitos tal que o método de \citeonline{hou2025generation} identificou.
+\par
+Outro trabalho que desafia esse nível de eficiência é \citeonline{li2026llmbased}. 
+Seu \textit{framework} analisa 222 vulnerabilidades conhecidas de 8 tipos de CWEs em C/C++ e Java, além de 24 projetos \textit{open-source} ativos. 
+Apesar de sua análise de identificação de falsos positivos sejam realizadas manualmente, somando 150 horas de trabalho humano, \citeonline{li2026llmbased} conseguiu concluir as causas desses falsos positivos e sua eficácia em detecção.
+\par
+Sua primeira conclusão é que métodos de análise estática baseado em LLMs exibem uma cobertura limitada de vulnerabilidades do mundo real \cite{li2026llmbased}.
+Os autores explicam que os métodos utilizados atingiram a média de \textit{recalls} de 21.09\% e 33.82\% para C/C++ e Java, indicando que é perdido uma grande porção de vulnerabilidades, geralmente causados por "inicios desalinhados" (\textit{misaligned source/sink definitions}) baseadas em análise manual \cite{li2026llmbased}.
+Porém, assim como \citeonline{hou2025generation}, \citeonline{li2026llmbased} também conclui que métodos de análise estática baseado em LLMs identificam mais vulnerabilidades únicas do que métodos tradicionais.
+\par
+Com estes resultados, este cenário apresenta potencial em analisadores estáticos com \textit{frameworks} dinâmicos para sistemas com riscos de vulnerabilidades relacionada à linguagem C/C++.
 
 \section{Hipótese}
 \label{sec:hipotese}
 \par
-A hipótese deste trabalho parte de um \textit{framework} possível de inferir principais regras de análise de pelo menos duas linguagens de programação com pelo menos 80\% de acurácia na ferramenta \textit{Semgrep}, sendo possível realizar uma análise estática com regras definidas específicas para a respectiva linguagem, corrigindo erros gramaticais e especializados.
+A hipótese deste trabalho busca comprovar que com um \textit{framework} direcionado à linguagem C/C++ baseado em LLMs para a criação de regras para a ferramenta \textit{Semgrep} é possível obter mais identificações de possíveis vulnerabilidades do que métodos tradicionais de análise estática.
 
 \section{Objetivo}
 \label{sec:objetivo}
 \par
 Os objetivos desta pesquisa estruturam-se em duas frentes: o objetivo geral, focado em solucionar o problema central do estudo, e os objetivos específicos, que descrevem as etapas práticas e teóricas indispensáveis para a realização desse propósito maior.
 
-\subsection{Objetivo principal}
+\subsection{Objetivo Geral}
 \par
-O objetivo principal do trabalho é desenvolver um \textit{framework} com um agente LLM, que a partir de poucos exemplos (\textit{few-shot learning}) realiza associações com linguagens, utilizando para gerar regras mais utilizadas para projetos associados à linguagem, criando um \textit{ruleset} para \textit{SemGrep} de forma automatizada.
+O objetivo geral do trabalho é provar nossa hipótese que a partir um \textit{framework} com um módulo de síntese de regras baseado em LLM focalizado na linguagem C/C++, que a partir de uma mesclagem de metodologias dos trabalhos de \citeonline{hou2025generation, li2026llmbased} para o treinamento do agente, será possível obter uma detecção mais detalhada, para pelo menos 5 CWEs, comparada a métodos tradicionais de análise estática.
 
-\subsection{Objetivos secundários}
+\subsection{Objetivos específicos}
 \par
-Sobre os objetivos secundários, temos:
+Sobre os objetivos específicos, temos:
 
 \begin{enumerate}
-    \item Implementar um sistema para geração de regras via um agente LLM capaz de identificar a linguagem a partir de pequenos exemplos de códigos, utilizando \textit{few-shot learning}.
-    \item Validar a eficácia e eficiência das regras para a ferramenta \textit{Semgrep} e seu objetivo de identificar falhas de código, analisando em pelo menos duas linguagens distintas.
-    \item Com o treinamento \textit{few-shot}, inferir a gramática para observações mais específicas.
-    \item Validar as regras geradas no Semgrep frente a um conjunto de testes, visando alcançar 80\% de precisão na detecção de vulnerabilidades quando comparado às regras nativas da ferramenta.
+  \item Implementar um \textit{framework} para geração de regras utilizando LLMs para a ferramenta SemGrep.
+  \item Aplicar o \textit{pipeline} de síntese proposto em um \textit{benchmark} de código-fonte C/C++ para coletar logs de detecção do SemGrep utilizando as regras geradas.
+  \item Avaliar quantitativamente a precisão e revocação e \textit{F1-Score} das regras geradas pela LLM, estabelecendo uma análise comparativa direta com os resultados de analisadores estáticos tradicionais.
 \end{enumerate}
 
 % ===============================================================
@@ -292,27 +304,28 @@ Por fim, conduz-se uma revisão dos trabalhos correlatos, identificando as lacun
 A pesquisa bibliográfica foi conduzida de forma sistemática para identificar trabalhos científicos relevantes sobre a utilização de LLMs no suporte à análise estática. 
 As buscas foram centralizadas no motor Google Acadêmico (\textit{Google Scholar}), devido à sua ampla indexação, com foco principal em bases de dados consolidadas na área da Computação, como arXiv, IEEE Xplore e ACM Digital Library.
 \par
-Para as buscas, foram definidas palavras-chave em inglês, tais como: \textit{"linker"}, \textit{"static analysis"}, \textit{"optimization"}, \textit{"code"}, \textit{"language"}, \textit{"grammar"}, \textit{"rule generation"}, \textit{"checker"}, \textit{"symbolic rule"} e \textit{"generic linker"}. 
+% "static analysis" ("LLM" OR "large language model" OR "GPT") ("C" OR "C++" OR "Linux kernel") ("pointer" OR "undefined" OR "memory" OR "value-flow") ("SemGrep" OR "semgrep")
+Para as buscas, foram definidas palavras-chave em inglês, tais como: \textit{"static analysis"}, \textit{"LLM"}, \textit{"large languagem model"}, \textit{"GPT"}, \textit{"C"}, \textit{"C++"}, \textit{"rule generation"}, \textit{"Linux kernel"}, \textit{"pointer"}, \textit{"undefined"}, \textit{"memory"}, \textit{"value-flow"} e \textit{"SemGrep"}. 
 Estes termos foram combinados por meio de operadores booleanos (\textit{AND}, \textit{OR}) para refinar os resultados, culminando na \textit{string} de busca apresentada na Figura \ref{fig:query}:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{Images/Query.png}
+    \includegraphics[width=0.98\textwidth]{Images/Query.png}
     \caption{\textit{Query} utilizada durante a pesquisa de materiais.}
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:query}
 \end{figure}
 
 \par
-Como critérios de inclusão, estabeleceram-se: (a) trabalhos publicados entre 2021 e 2026, de forma a capturar o estado da arte; (b) disponibilidade nos idiomas inglês ou português; e (c) relação direta com o tema, priorizando artigos que contivessem implementações ou experimentos aplicados a múltiplas linguagens de programação.
+Como critérios de inclusão, estabeleceram-se: (a) trabalhos publicados entre 2021 e 2026, de forma a capturar o estado da arte; (b) disponibilidade nos idiomas inglês ou português; e (c) relação direta com o tema, priorizando artigos que contivessem implementações ou experimentos aplicados a utilização de LLMs para geração de regras para a linguagem C/C++.
 \par
 Em contrapartida, os critérios de exclusão adotados foram: (a) trabalhos publicados antes de 2021, com exceção de referências clássicas ou seminais indispensáveis para a teoria; (b) artigos sem alinhamento direto com análise estática ou geração de regras de código; e (c) duplicidades de publicações entre as bases de dados consultadas.
 \par
 O processo de seleção ocorreu em duas etapas. 
-Na primeira fase (triagem), a aplicação da \textit{string} de busca retornou 4.770 resultados, dos quais foram selecionados 42 artigos potencialmente relevantes após a leitura prévia de títulos e resumos. 
+Na primeira fase (triagem), a aplicação da \textit{string} de busca retornou 4.770 resultados, dos quais foram selecionados 47 artigos potencialmente relevantes após a leitura prévia de títulos e resumos. 
 Na segunda fase (afunilamento), os trabalhos restantes passaram por uma leitura criteriosa da introdução e do escopo, sendo classificados em uma escala de relevância de 0 a 10 em relação aos objetivos desta pesquisa.
 \par
-Esse processo de filtragem resultou em 9 artigos classificados com notas entre 9 e 10 (alta relevância), além de 11 artigos categorizados como material de suporte, totalizando 20 trabalhos contemporâneos para compor a fundamentação teórica. 
+Esse processo de filtragem resultou em 6 artigos classificados com notas entre 9 e 10 (alta relevância), além de 9 artigos categorizados como material de suporte, totalizando 15 trabalhos contemporâneos para compor a fundamentação teórica. 
 Adicionalmente, foram incorporados 4 trabalhos seminais anteriores a 2021, essenciais para a consolidação dos conceitos clássicos abordados neste estudo.
 
 % ---------------------------------------------------------------
@@ -323,27 +336,66 @@ O referencial teórico apresenta os conceitos fundamentais que sustentam o desen
 Propõe-se um contraponto analítico entre os métodos da análise estática tradicional e as novas abordagens voltadas à automatização da geração de regras. 
 A estruturação dos tópicos foi concebida para apresentar gradativamente as tecnologias envolvidas, destacando o papel das LLMs e sua relevância para a modernização das ferramentas de verificação de código na atualidade.
 
-\subsection{Inteligência Artificial}
-\label{sec:inteligenciaartificial}
+\subsection{Análise estática baseado em regras}
+\label{sec:analiseestaticaregras}
 \par
-A Inteligência Artificial (IA) possui diversas versões segundo os pesquisadores, podendo ser categorizada em duas dimensões principais: a fidelidade ao desempenho humano ou a uma definição formal de racionalidade.
-A partir dessas dimensões, temos quatro possíveis combinações possíveis, sendo elas: Agir humanamente, Pensar humanamente, Pensar racionalmente e Agir racionalmente \cite{russell2020artificial}.
+Em anos recentes, ferramentas de análise estática baseado em regras foram introduzidas.
+Complementando as ferramentas tradicionais, ao identificar priviamente problemas durante o desenvolvimento pré-produção, reduzem significamente o custo e complexidade de \textit{debugging} e manutenção \cite{jiang2025factaligned}.
+Dos componentes mais utilizados, um dos mais relevantes são SemGrep e CodeQL \cite{jiang2025factaligned, hou2025generation}.
+\par 
+Formalmente, SemGrep é uma ferramenta de análise estática que suporta estruturas complexas e verificações básicas de fluxo de dados no código, permitindo inspeções sem execução para identificar vulnerabilidades de segurança, qualidade de código e violações a conformidade \cite{hou2025generation}.
 \par
-O modelo 'agir de forma humana', proposto por Alan Turing (1950) através do famoso Teste de Turing, tem o objetivo de avaliar se é possível um computador gerar respostas indistinguíveis das de um humano.
-Para isso, o sistema precisa possuir capacidades de processamento de linguagem natural, representação do conhecimento, raciocínio Automatizado e aprendizado de máquina para se adaptar e identificar padrões \cite{russell2020artificial}.
+Sua gramática baseada em YAML mimica a sintaxe da linguagen alvo, reduzindo sua curva de aprendizado ao contrário de seu concorrente CodeQL \cite{hou2025generation}, que possui sua própria gramática lógica, tratando o código como um banco de dados relacional, sendo possível realizar análises profundas porém custosa em tempo de aprendizado.
 \par
-O 'pensar de forma humana' baseia-se na modelagem cognitiva.
-A partir de uma teoria sobre o funcionamento doraciocínio humano, aplica-se esse modelo a um programa computacional. 
-Essa abordagem está intrinsecamente ligada à Ciência Cognitiva, que une a Inteligência Artificial à técnicas experimentais da psicologia para construir teorias precisas e testáveis sobre a mente humana \cite{russell2020artificial}.
+SemGrep converte código em uma árvore de sintaxe abstrata universal (UAST), aplicando um \textit{pattern-matching} uniforme em mais de 30 linguagens \cite{hou2025generation}.
+Com sua ativa continuidade e plataforma capaz de compartilhar regras existentes melhora sua adaptabilidade e desenvolvimento colaborativo.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{Images/Semgrep-java.png}
+    \caption{Exemplo de regra simplificada para detecção de falhas OSCI em Java.}
+    {\small Fonte: Adaptado de \cite{jiang2025factaligned}.}
+    \label{fig:semgrepjava}
+\end{figure}
+
 \par
-O 'pensar racionalmente' fundamenta-se na tradição filosófica das 'leis de pensamento'.
-O desafio dessa abordagem é que a lógica clássica frequentemente exige um conhecimento absoluto e certo sobre o mundo, uma condição que, na realidade, raramente é alcançada. 
-Ainda assim, busca-se a construção de modelos capazes de raciocínio lógico que processem informações brutas para compreender o funcionamento do mundo \cite{russell2020artificial}.
+\citeonline{jiang2025factaligned} explica com a figura \ref{fig:semgrepjava} que a partir de uma regra no SemGrep com o propósito de identificar uma falha de segurança (como a injeção de comandos no sistema operacional), do inglês \textit{Operating System Command Injection} (OSCI), em Java, sendo possível visualizar a utilidade prática desse \texit{framework}.
 \par
-Por fim, o 'agir racionalmente' está centrado no conceito de agente racional.
-Um agente é qualquer entidade que percebe seu ambiente e atua sobre ele.
-Ao ser dotado de racionalidade, o agente (como um programa de computador) ganha a capacidade de operar autonomamente, perceber o ambiente e se adaptar a diferentes circunstâncias.
-Um agente racional atua de modo a alcançar o melhor resultado possível para os seus objetivos ou, em situações de incerteza, o melhor resultado esperado \cite{russell2020artificial}.
+Para que a busca seja flexível e rastrar fluxo de dados, o SemGrep utiliza dois recursos fundamentais: (i) \textbf{Metavariáveis} (ex.: \textit{\$USER\_DATA}, \textit{\$X}), a partir de um cifrão e nome da variável em letras maiúsculas.
+Essas variáveis são atribuídas quando SemGrep identifica um padrão que se encaixa, sendo "salvo" o valor na metavariável, consequentemente, se a metavariável é reutilizada na mesma regra, o SemGrep exigirá que o valor capturado seja exatamente o mesmo, o que permite \textit{Data Flow}.
+(ii) \textbf{Ellipsis/Curinga} (...), representando qualquer sequência de coisas.
+Assim independente da quantidade de argumentos em uma função, número de linhas de código entre duas instruções, é possível omitir detalhes não importantes com (...), tornando SemGrep uma ferramenta abstraída.
+\par
+Os predicados são as afirmações que procuram o código.
+\textit{Tags} como \textit{pattern} ou \textit{pattern-inside} são predicados, com \textit{\textbf{pattern}} sendo uma afirmação exata, como na linha 5, e \textit{\textbf{pattern-inside}} define o contexto, não apontando a vulnerabilidade exata, mas exige que qualquer correspondência subsequente aconteça dentro da estrutura dele, como na linha 2.
+\par
+A partir destes predicados, é possível combinar operações lógicas (\textit{AND}, \textit{OR}, \textit{NOT}) sendo, respectivamente, \textit{patterns}, \textit{pattern-either}, \textit{pattern-not}.
+(i) O predicado \textit{\textbf{patterns}} representa a lógica \textit{AND} (E), para toda regra ou condição listada abaixo deste bloco devem ser verdadeiras simultaneamente.
+Como na linha 1, o bloco principal exige que o código esteja dentro da função (linha 2) \textbf{E} corresponda a um dos casos de injeção (linha 4).
+(ii) \textbf{\textit{pattern-either}} representa a lógica \textit{OR} (OU), se o código corresponde a qualquer uma das condições aninhadas sob este predicado, a avaliação será verdadeira. Na linha 4, a regra procura um fluxo direto de \textit{\$USER\_DATA} ou um fluxo indireto por atribuição.
+(iii) \textbf{\textit{pattern-not}} representa a lógica \textit{NOT} (NÃO).
+Não presente no exemplo, porém usado para excluir falsos positivos, anulando caso a regra bater coma  condição aninhada no predicado.
+\par
+Com estes conhecimentos, é possível compreender mais profundamente como a ferramenta utilizada funciona. SemGrep possui maneiras de lidar com falsos positivas nativamente, nos permitindo liberdade para aperfeiçoar a análise como bem queremos.
+
+\subsection{Aplicação de LLMs em análise estática}
+\label{sec:llmsanaliseestatica}
+\par
+
+\subsection{Abstração de Regras}
+\label{sec:regrasabstracao}
+\par
+
+% ---------------------------------------------------------------
+\section{Fundamentos}
+\label{sec:fundamentos}
+\par
+Esta seção detalha os conceitos técnicos diretamente empregados na implementação do projeto, complementando o referencial teórico.
+
+\subsection{Arquitetura Transformers}
+\label{sec:modelostransformers}
+\par
+
 
 \subsection{Linguagem Natural}
 \label{subsec:linguagemnatural}
@@ -374,59 +426,37 @@ Nesse caso, a representação de um \textit{token} depende exclusivamente do con
 \par
 \textbf{Codificador-Decodificador (\textit{Encoder-decoder}):} Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra (arquiteturas \textit{sequence-to-sequence}), esses modelos são projetados para tarefas como tradução automática e sumarização de textos \cite{tunstall2022natural}. 
 
-\subsection{Análise Estática}
-\label{sec:analiseestatica}
-\par
+\subsection{Métricas de Avaliação}
+\label{subsec:metricasavaliacao}
 
-
-\par
-Não finalizado.
-
-
-% ---------------------------------------------------------------
-\section{Fundamentos}
-\label{sec:fundamentos}
-
-Aprofunde os conceitos técnicos que serão utilizados na solução proposta. Diferentemente do referencial teórico (que apresenta conceitos gerais), os fundamentos devem detalhar as tecnologias, algoritmos, frameworks ou metodologias específicas que serão empregados no desenvolvimento.
-
-Por exemplo:
-\begin{itemize}
-    \item Se o trabalho utiliza aprendizado de máquina, explique os algoritmos escolhidos (árvores de decisão, redes neurais, SVM, etc.);
-    \item Se o trabalho envolve desenvolvimento de software, descreva as tecnologias (linguagens, frameworks, bancos de dados);
-    \item Se envolve análise de dados, explique as métricas e técnicas estatísticas que serão aplicadas.
-\end{itemize}
-
-Utilize figuras, diagramas e tabelas para ilustrar conceitos quando apropriado.
 
 % ---------------------------------------------------------------
 \section{Trabalhos relacionados}
-\label{sec:trabalhos_relacionados}
+\label{sec:trabalhosrelacionados}
 
-Apresente até \textbf{3 trabalhos} que \textbf{compartilhem o mesmo foco de resolução de problema} que o seu. O critério principal de seleção é: os trabalhos escolhidos devem ter tentado resolver o \textbf{mesmo problema} (ou um problema muito próximo) ao que você está propondo resolver. Não basta que o trabalho aborde o mesmo tema ou utilize a mesma tecnologia --- ele deve ter enfrentado o mesmo desafio prático ou teórico.
+Os três trabalhos apresentados apresentados a seguir foram selecionados por enfrentarem diretamente o mesmo problema central: a análise estática tradicional, buscando melhorias através de LLMs e geração de regras utilizando a mesma ferramenta SemGrep.
+Cada um deles avança com seus próprios \textit{pipelines} na utilização da LLM, cada um com um papel diferente no processo de geração de regras.
 
-\textbf{Por que esse critério é importante?} Ao selecionar trabalhos que atacam o mesmo problema, você demonstra que:
-\begin{itemize}
-    \item O problema é relevante e já foi reconhecido por outros pesquisadores;
-    \item Existem soluções anteriores, mas com limitações que o seu trabalho pretende superar;
-    \item Seu trabalho não é uma repetição, mas um avanço em relação ao que já foi feito.
-\end{itemize}
+\subsection{Trabalho 1: \textit{KNighter: Transforming Static Analysis with LLM-Synthesized Checkers} \cite{yang2025knighter}}
+\par
+O trabalho de \citeonline{yang2025knighter} é considerado o estudo pioneiro para a área de Analisadores Estáticos Automatizados.
+Publicado em SOSP 25 \textit{(ACM SIGOPS 31st Symposium on Operating Systems Principles)}, em Seul, República da Coreia, KNighter foi o primeiro sistema de geração de analisadores estáticos totalmente automatizado \cite{yang2025knighter}.
+\par
+Os autores buscam resolver o problema principal com métodos de análise tradicional.
+Apesar da análise estática ser o método mais eficiente pela sua falta de execução de código, para gerenciamento de sistemas de larga escala, esses métodos falham na falta de identificar diferentes padrões de bugs e gerenciamento de bases enormes de código \cite{yang2025knighter}.
+A figura \ref{fig:motivacaocheckers} mostra a motivação que os autores tinham sobre analisadores automatizados.
+\par
+A partir dessa motivação, a proposta realizada foi um \textit{framework} capaz de extrair informações de histórico de \textit{commits} e informações essenciais como a função \textit{devm\_kzalloc}, sem uma devida checagem de valor nulo, representa uma possível vulnerabilidade de \textit{Null Pointer Dereference} \cite{yang2025knighter}.
+Com um \textit{commit} como entrada, KNighter retorna como saída um analisador gerado para \textit{Cland Static Analyser} (CSA). Sendo um verificador válido aquele que identifica o código pré alteração do \textit{commit} como \textit{bug} e o código corrigido como correto \cite{yang2025knighter}.
+\par
 
-Para cada trabalho relacionado, descreva:
-\begin{enumerate}
-    \item \textbf{Qual problema} o trabalho tentou resolver (e por que é o mesmo problema que o seu);
-    \item A metodologia ou abordagem utilizada para resolvê-lo;
-    \item Os principais resultados obtidos;
-    \item As limitações identificadas na solução proposta;
-    \item Como o \textbf{seu trabalho se diferencia} ou avança em relação a ele.
-\end{enumerate}
 
-\subsection{Trabalho 1: [Título do trabalho]}
 
-\subsection{Trabalho 2: [Título do trabalho]}
+\subsection{Trabalho 2: \textit{Generation, Migration and Optimization of Cross-Language Static-Analysis Rules Based on Large Language Models}}
 
 [Descrever o segundo trabalho seguindo a mesma estrutura acima, sempre evidenciando que o problema abordado é o mesmo ou muito próximo ao seu.]
 
-\subsection{Trabalho 3: [Título do trabalho]}
+\subsection{Trabalho 3: \textit{LLM-based Vulnerability Detection at Project Scale: An Empirical Study}}
 
 [Descrever o terceiro trabalho seguindo a mesma estrutura acima, sempre evidenciando que o problema abordado é o mesmo ou muito próximo ao seu.]
 
