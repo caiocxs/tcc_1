@@ -219,7 +219,7 @@ Embora as janelas de contexto atuais alcançem marca de milhões de \textit{toke
 A figura \ref{fig:motivacaocheckers} introduz motivações para a necessidade de métodos mais eficientes e, principalmente, especializados, tal que em projetos grandes, a análise estática possui dois desafios: criar regras para diversos padrões de bugs e gerenciamento de bases de códigos imensas \cite{yang2025knighter}.
 O método de análise estática tradicional possui falhas para tratamento de diversos \textit{bugs}, além de trabalho braçal, e análises diretas via LLM possui limites de contexto e custos.
 \par
-Considerando esses dados, o analisador estático ideal deveria: detectar uma diversidade de falhas, incluindo \texit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
+Considerando esses dados, o analisador estático ideal deveria: detectar uma diversidade de falhas, incluindo \textit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
 Porém, dos métodos existentes, geralmente sacrificam um desses objetivos \cite{yang2025knighter}.
 \par
 O método apresentado por \citeonline{yang2025knighter}, KNighter, é um analisador estático sintetizado utilizando LLMs, que ao invés de métodos diretos de utilização de LLMs, é realizado um treinamento de padrões de \textit{bugs} a partir de histórico de \textit{patches} que a partir disso é dedicado para um \textit{checker} especializado.
@@ -359,7 +359,7 @@ Com sua ativa continuidade e plataforma capaz de compartilhar regras existentes 
 \end{figure}
 
 \par
-\citeonline{jiang2025factaligned} explica com a figura \ref{fig:semgrepjava} que a partir de uma regra no SemGrep com o propósito de identificar uma falha de segurança (como a injeção de comandos no sistema operacional), do inglês \textit{Operating System Command Injection} (OSCI), em Java, sendo possível visualizar a utilidade prática desse \texit{framework}.
+\citeonline{jiang2025factaligned} explica com a figura \ref{fig:semgrepjava} que a partir de uma regra no SemGrep com o propósito de identificar uma falha de segurança (como a injeção de comandos no sistema operacional), do inglês \textit{Operating System Command Injection} (OSCI), em Java, sendo possível visualizar a utilidade prática desse \textit{framework}.
 \par
 Para que a busca seja flexível e rastrar fluxo de dados, o SemGrep utiliza dois recursos fundamentais: (i) \textbf{Metavariáveis} (ex.: \textit{\$USER\_DATA}, \textit{\$X}), a partir de um cifrão e nome da variável em letras maiúsculas.
 Essas variáveis são atribuídas quando SemGrep identifica um padrão que se encaixa, sendo "salvo" o valor na metavariável, consequentemente, se a metavariável é reutilizada na mesma regra, o SemGrep exigirá que o valor capturado seja exatamente o mesmo, o que permite \textit{Data Flow}.
@@ -448,7 +448,39 @@ A figura \ref{fig:motivacaocheckers} mostra a motivação que os autores tinham 
 \par
 A partir dessa motivação, a proposta realizada foi um \textit{framework} capaz de extrair informações de histórico de \textit{commits} e informações essenciais como a função \textit{devm\_kzalloc}, sem uma devida checagem de valor nulo, representa uma possível vulnerabilidade de \textit{Null Pointer Dereference} \cite{yang2025knighter}.
 Com um \textit{commit} como entrada, KNighter retorna como saída um analisador gerado para \textit{Cland Static Analyser} (CSA). Sendo um verificador válido aquele que identifica o código pré alteração do \textit{commit} como \textit{bug} e o código corrigido como correto \cite{yang2025knighter}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Images/Overview-KNighter.png}
+    \caption{\textit{Overview} do KNighter}
+    {\small Fonte: Adaptado para o português para melhor compreensão \cite{yang2025knighter}.}
+    \label{fig:overviewknighter}
+\end{figure}
+
 \par
+O motor principal do framework é \textit{Cland Static Analyser} (CSA), \citeonline{yang2025knighter} explica que CSA opera a partir de uma execução simbólica \textit{path-sensitive}, construindo uma representação interna chamada \textit{ExplodedGraph}.
+CSA é modulavél pela sua construção a partir de \textit{checkers}, sendo eles, pequenos componentes especializados, montados a partir de um \textit{template} \cite{yang2025knighter}.
+\par
+Na figura \ref{fig:overviewknighter} mostra como o KNighter funciona em duas fases: sintetização de \textit{checkers}, o projeto analiza o \textit{patch} de entrada para identificar padrões de \textit{bugs}, sintetiza ,a partir do conteúdo identificado, um plano de detecção e implementa um CSA \textit{checker} \cite{yang2025knighter}.
+Se ocorre qualquer erro de compilação, é encaminhado para um agente de sintaxe que automaticamente repara o \textit{checker} a partir das mensagens de erro \cite{yang2025knighter}.
+\par
+Para a implementação do trabalho, \citeonline{yang2025knighter} explica a coleta de \textit{commits} de entrada, para a analisar entre o código defeituoso e corrigido.
+Foram coletados 10 tipos de CWEs, criando para cada CWE um respectivo CSA \textit{checker}.
+Além dessa coleção, foram preparados 3 tipos de exemplos de \textit{checkers} para aprendizado \textit{in-context}, lidando com os respectivos CWEs: \textit{Null Pointer Dereference} (CWE-476), \textit{Use of Uninitialized Variable} (CWE-457) e \textit{Double Free} (CWE-415) \cite{yang2025knighter}.
+Além desses exemplos, os autores identificaram repetições de atividades que cada \textit{checker} reutiliza, então separaram em 9 \textit{sub-checkers} para poderem serem reutilizados em outros verificadores.
+\par
+Para a avaliação de cada \textit{checker}, é analisado sua eficácia para o \textit{bug} do \textit{commit} analisado e reconhecer sua correção. Utilizando o repositório original do \textit{patch}, é utilizado o analisador para escanear toda base de código no \textit{commit} anterior do respectivo \textit{patch} contando todos os \textit{bugs} identificados ($N_{\text{buggy}}$), reescaneando na base atualizada e conta o número de \textit{bugs} atualizados ($N_{\text{patched}}$). 
+Um \textit{checker} é considerado válido se $N_{\text{buggy}}$ > $N_{\text{patched}}$ e $N_{\text{patched}}$ < $T_{\text{valid}}$, onde $T_{\text{valid}}$ é um valor limite (padrão 50) \cite{yang2025knighter}.
+\par 
+Apesar de seu forte pioneirismo, \citeonline{yang2025knighter} analisa suas falhas com seu projeto, com 36.06\% dos \textit{commits} não sendo possível gerar um analisador a partir disso, com sua maioria falhando por implementações incorretas, com o problema comum são otimizações realizadas pelo respectivo compilador (como strcp e memset), impedindo que o \textit{checker} lidasse com essas chamadas.
+Além disso, notaram limitações relacionadas a \textit{Buffer Overflow} e \textit{Use of Uninitialized Variable}, quais os autores acreditam que a razão é por dois fatores principais: a análise estática inerentemente possui limitações com determinar valores precisos, principalmente quando é preciso determinar limites de \textit{buffers}, e sua dificuldade para análises de código \textit{multi-thread}, como gerenciar uso correto de \textit{locks} \cite{yang2025knighter}. 
+\par 
+KNighter relata dentre 32 \textit{checkers} plausíveis, com 16 não identificando novas falhas, foram relatados 90 novos \textit{bugs}, que depois de uma inspeção manual, 32.2\% foram falsos positivos \cite{yang2025knighter}.
+Sendo o principal erro envolvem os analisadores com seu padrão correto e regras para \textit{matching} corretos, porém o \textit{checker} falha em gerenciar \textit{triggers} ou a condição do estado corretamente (como identificar um ponteiro já verificado antes de seu uso) \cite{yang2025knighter}.
+\par
+Para o presente trabalho, a contribuição de \citeonline{yang2025knighter} é insubstituível no ponto de vista conceitual: a automatização para um sistema de análise estática, gerenciamento de mais de um agente para refinamento e correção.
+\par
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Apontar diferenças do meu trabalho pra esse !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 
@@ -609,7 +641,7 @@ O cronograma a seguir apresenta, no formato de diagrama de Gantt, as atividades 
 %
 % Veja o arquivo bibliografia.bib para exemplos de cada tipo.
 % ---------------------------------------------------------------
-\bibliography{bibliografia.bib}
+\bibliography{bibliografia}
 
 % ---------------------------------------------------------------
 % APÊNDICES (se necessário)
