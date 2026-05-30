@@ -63,12 +63,12 @@
 % ---------------------------------------------------------------
 % INFORMAÇÕES DO DOCUMENTO
 % ---------------------------------------------------------------
-\titulo{Análise Estática Independente de Linguagem: Um Framework Genérico Orientado à Geração de Padrões Sintáticos}
+\titulo{Otimização de Regras de Análise Estática baseada em LLMs: Um Framework Especializado em Vulnerabilidades Críticas da Linguagem C}
 \autor{Caio Xavier da Silva}
 \local{São Paulo}
 \data{2026}
-\orientador{Celso Vital Crivelaro}
-% \coorientador{Prof. Nome do Coorientador} % Descomente se houver coorientador
+\orientador{Leonardo Massayuki Takuno}
+\coorientador{Thyago Conchado Quintas} % Descomente se houver coorientador
 
 \instituicao{%
   SENAC -- Serviço Nacional de Aprendizagem Comercial
@@ -258,7 +258,7 @@ Seu \textit{framework} analisa 222 vulnerabilidades conhecidas de 8 tipos de CWE
 Apesar de sua análise de identificação de falsos positivos sejam realizadas manualmente, somando 150 horas de trabalho humano, \citeonline{li2026llmbased} conseguiu concluir as causas desses falsos positivos e sua eficácia em detecção.
 \par
 Sua primeira conclusão é que métodos de análise estática baseado em LLMs exibem uma cobertura limitada de vulnerabilidades do mundo real \cite{li2026llmbased}.
-Os autores explicam que os métodos utilizados atingiram a média de \textit{recalls} de 21.09\% e 33.82\% para C/C++ e Java, indicando que é perdido uma grande porção de vulnerabilidades, geralmente causados por "inicios desalinhados" (\textit{misaligned source/sink definitions}) baseadas em análise manual \cite{li2026llmbased}.
+Os autores explicam que os métodos utilizados atingiram a média de \textit{recalls} de 21,09\% e 33,82\% para C/C++ e Java, indicando que é perdido uma grande porção de vulnerabilidades, geralmente causados por "inicios desalinhados" (\textit{misaligned source/sink definitions}) baseadas em análise manual \cite{li2026llmbased}.
 Porém, assim como \citeonline{hou2025generation}, \citeonline{li2026llmbased} também conclui que métodos de análise estática baseado em LLMs identificam mais vulnerabilidades únicas do que métodos tradicionais.
 \par
 Com estes resultados, este cenário apresenta potencial em analisadores estáticos com \textit{frameworks} dinâmicos para sistemas com riscos de vulnerabilidades relacionada à linguagem C/C++.
@@ -440,7 +440,8 @@ Cada um deles avança com seus próprios \textit{pipelines} na utilização da L
 \subsection{Trabalho 1: \textit{KNighter: Transforming Static Analysis with LLM-Synthesized Checkers} \cite{yang2025knighter}}
 \par
 O trabalho de \citeonline{yang2025knighter} é considerado o estudo pioneiro para a área de Analisadores Estáticos Automatizados.
-Publicado em SOSP 25 \textit{(ACM SIGOPS 31st Symposium on Operating Systems Principles)}, em Seul, República da Coreia, KNighter foi o primeiro sistema de geração de analisadores estáticos totalmente automatizado \cite{yang2025knighter}.
+Publicado em SOSP 25 \textit{(ACM SIGOPS 31st Symposium on Operating Systems Principles)}, em Seul, República da Coreia.
+KNighter foi o primeiro sistema de geração de analisadores estáticos totalmente automatizado \cite{yang2025knighter}.
 \par
 Os autores buscam resolver o problema principal com métodos de análise tradicional.
 Apesar da análise estática ser o método mais eficiente pela sua falta de execução de código, para gerenciamento de sistemas de larga escala, esses métodos falham na falta de identificar diferentes padrões de bugs e gerenciamento de bases enormes de código \cite{yang2025knighter}.
@@ -472,48 +473,168 @@ Além desses exemplos, os autores identificaram repetições de atividades que c
 Para a avaliação de cada \textit{checker}, é analisado sua eficácia para o \textit{bug} do \textit{commit} analisado e reconhecer sua correção. Utilizando o repositório original do \textit{patch}, é utilizado o analisador para escanear toda base de código no \textit{commit} anterior do respectivo \textit{patch} contando todos os \textit{bugs} identificados ($N_{\text{buggy}}$), reescaneando na base atualizada e conta o número de \textit{bugs} atualizados ($N_{\text{patched}}$). 
 Um \textit{checker} é considerado válido se $N_{\text{buggy}}$ > $N_{\text{patched}}$ e $N_{\text{patched}}$ < $T_{\text{valid}}$, onde $T_{\text{valid}}$ é um valor limite (padrão 50) \cite{yang2025knighter}.
 \par 
-Apesar de seu forte pioneirismo, \citeonline{yang2025knighter} analisa suas falhas com seu projeto, com 36.06\% dos \textit{commits} não sendo possível gerar um analisador a partir disso, com sua maioria falhando por implementações incorretas, com o problema comum são otimizações realizadas pelo respectivo compilador (como strcp e memset), impedindo que o \textit{checker} lidasse com essas chamadas.
+Apesar de seu forte pioneirismo, \citeonline{yang2025knighter} analisa suas falhas com seu projeto, com 36,06\% dos \textit{commits} não sendo possível gerar um analisador a partir disso, com sua maioria falhando por implementações incorretas, com o problema comum são otimizações realizadas pelo respectivo compilador (como strcp e memset), impedindo que o \textit{checker} lidasse com essas chamadas.
 Além disso, notaram limitações relacionadas a \textit{Buffer Overflow} e \textit{Use of Uninitialized Variable}, quais os autores acreditam que a razão é por dois fatores principais: a análise estática inerentemente possui limitações com determinar valores precisos, principalmente quando é preciso determinar limites de \textit{buffers}, e sua dificuldade para análises de código \textit{multi-thread}, como gerenciar uso correto de \textit{locks} \cite{yang2025knighter}. 
 \par 
-KNighter relata dentre 32 \textit{checkers} plausíveis, com 16 não identificando novas falhas, foram relatados 90 novos \textit{bugs}, que depois de uma inspeção manual, 32.2\% foram falsos positivos \cite{yang2025knighter}.
+KNighter relata dentre 32 \textit{checkers} plausíveis, com 16 não identificando novas falhas, foram relatados 90 novos \textit{bugs}, que depois de uma inspeção manual, 32,2\% foram falsos positivos \cite{yang2025knighter}.
 Sendo o principal erro envolvem os analisadores com seu padrão correto e regras para \textit{matching} corretos, porém o \textit{checker} falha em gerenciar \textit{triggers} ou a condição do estado corretamente (como identificar um ponteiro já verificado antes de seu uso) \cite{yang2025knighter}.
 \par
-Para o presente trabalho, a contribuição de \citeonline{yang2025knighter} é insubstituível no ponto de vista conceitual: a automatização para um sistema de análise estática, gerenciamento de mais de um agente para refinamento e correção.
+Para o presente trabalho, a contribuição de \citeonline{yang2025knighter} é insubstituível no ponto de vista conceitual: a automatização para um sistema de análise estática, gerenciamento de mais de um agente para refinamento e correção, cobrindo CWEs relevantes adotados neste TCC.
+No entanto, a ferramenta auxiliar difere: enquanto \citeonline{yang2025knighter} opera gerenciando regras para CSA, este trabalho opera exclusivamente com SemGrep, com suas regras de inclusão e exclusão lógica auxilia para evitar falsos positivos, que foi um defeito crítico em KNighter.
+Além disso, KNighter utiliza somente \textit{commits} para seu treinamento, o que limita sua detecção pelo simples fato de existirem outras vulnerabilidades que não se encaixam nos \textit{patches} já corrigidos, então para contribuir na solução deste problema, a utilização de \textit{datasets} como \citeonline{nistsard112juliet} e \textit{dataset} personalizado de \citeonline{li2026llmbased}. 
+
+\subsection{Trabalho 2: \textit{Generation, Migration and Optimization of Cross-Language Static-Analysis Rules Based on Large Language Models} \cite{hou2025generation}}
 \par
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Apontar diferenças do meu trabalho pra esse !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+O trabalho de \citeonline{hou2025generation}, publicado no IEEE International Conference on Software e Quality, Reliability and Security (QRS) em 2025, representa um dos trabalhos que compõem o atual estado da arte em Análise Estática Automatizado até o momento da elaboração desse TCC.
+Com a motivação de melhorar a análise estática para \textit{bugs} contextualizados de específicos projetos, utilizando \textit{rulesets} lidando com o máximo de casos (\textit{corner-cases}) diminuindo o trabalho braçal e capacidade de migrar regras para diferentes linguagens \cite{hou2025generation}.
+\par
+Os autores citam KNighter, explicando que apesar de sua efetividade, KNighter não possui dinâmica para lidar com diferentes linguagens, exigindo diversas alterações manuais para conseguir seu funcionamento \cite{hou2025generation}.
+Propondo um novo método baseado em LLMs que gera regras de análise estática a partir de padrões de históricos de código, utilizando regras gramáticas e \textit{few-shot learning} em contexto, além de suporte para migração de regras existentes para outras linguagens, geração de exemplos para cada regra especificado para lidar com \textit{corner-cases} \cite{hou2025generation}.
+\par
+Arquiteturamente, o \textit{framework} proposto adota uma estratégia de \textit{few-shot learning} para administrar conhecimento do domínio adquirido das LLMs durante seu pré-treinamento não supervisionado, integrando especificações de sintaxe de regras, histórico de informações de erros e descrição de otimizações de regras para guiar o comportamento de geração de regras das LLMs \cite{hou2025generation}.
+Aponta \citeonline{hou2025generation} que isso efetivamente soluciona dificuldades em \textit{corner-cases} que seriam mais complexos para um humano criar, diminuindo o caso de falsos positivos e falsos negativos.
+\par
+A ferramenta de análise estática utilizada, para reduzir o uso de apenas LLMs, é SemGrep.
+Os autores explicam que análise estática baseada em regras proveem extensibilidade por suas regras customizaveis, permitindo checagens para problemas específicos para projetos específicos \cite{hou2025generation}.
+Consequentemente, \citeonline{hou2025generation} afirma que não existe necessidade da construção de um analisador específico para realizar essas checagens.
+Para o objetivo do artigo com migração de regras, SemGrep se encaixa perfeitamente por seu suporte a mais de 30 linguagens, mimicando qualquer das linguagens suportadas com seu arquivo YAML \cite{hou2025generation}.
+\par
+Do ponto de vista técnico, a abordagem proposta segue um \textit{workflow} de três estágios: a Geração, Migração e Otimização das regras.
+No estágio inicial de Geração, o método dos autores é reconhecimento de \textit{patches} de código e gera descrições das regras, assim gera a regra a partir da descrição.
+Com as regras geradas, cada uma é avaliada em \textit{snippets} de teste para verificar uma eficácia, então as descrições das regras podem ser otimizadas de acordo com falsos positivos e falsos negativos \cite{hou2025generation}.
+Para o segundo estágio, seu método gera descrições de linguagens naturais e seus \textit{snippets} de teste para a migração da regra, subsequentemente criando a regra.
+No último estágio, seu método lê a regra criada, independente se foi gerada ou não, e cria \textit{snippets} para lidar com \textit{corner-cases}, seguindo os mesmos passos do estágio um \cite{hou2025generation}.
+\par
+Sua construção de metodologia segue um fluxo similar ao \citeonline{yang2025knighter}, apesar de criar uma avaliação extra relacionada à migração de linguagens.
+Para a utilização de \textit{datasets} para treinamento, \citeonline{hou2025generation} utiliza, para geração de regras, foi selecionado aleatóriamente 111 regras dentre o \textit{ruleset} oficial do SemGrep, cada regra contendo um YAML e \textit{snippets} de um código com \textit{bugs} e sua correção, inserindo cada regra para seu agente realizar a descrição de cada regra, com uma validação manual para garantir que as descrições correspondiam a cada regra.
+Para a adaptação de gramática do SemGrep, \citeonline{hou2025generation} utiliza a documentação oficial do SemGrep, incluindo partes relacionadas a Sintaxe de Regras e Sintaxe de Padrões. Convertendo o texto para \textit{Markdown}, e inserindo a gramática no contexto dos agentes.
+Apesar da documentação ser feita para leitores humanos, \citeonline{hou2025generation} inseriram códigos exemplos para um treinamento \textit{few-shot} para sua familiarização com a gramática.
+\par
+Para validar seu experimento, \citeonline{hou2025generation} utilizam três validações.
+\textbf{Validação Gramática}, regras com a gramática válida são aquelas que a regra gerada é reconhecida pela ferramenta de análise estática, para essa avaliação, foi aplicado cada regra com uma amostra de código aplicado na ferramenta, e examinado se SemGrep relata algum erro de gramática para a regra \cite{hou2025generation};
+\textbf{Validação Funcional}, uma regra é funcionalmente válida a partir que as regras geradas conseguem reportar \textit{bugs} em uma amostra de teste.
+Para cada amostra de teste, contendo N \textit{bugs} que se encaixam na respectiva regra, se a regra produzida retorna $B_{\text{VP}}$ verdadeiros positivos e $B_{\text{FP}}$ falsos positivos, é definido dois indicativos para avaliar a validade da regra: \cite{hou2025generation}
+
+\begin{align}
+    Taxa\ de\ Falsos\ Positivos : FP &= \frac{B_{FP}}{N} \\
+    Taxa\ de\ Verdadeiros\ Positivos : TP &= \frac{B_{VP}}{N}
+\end{align}
+
+\par
+Utilizando essa metodologia de avaliação, \citeonline{hou2025generation} utiliza o trabalho de \citeonline{yang2025knighter} como comparação de eficácia.
+Como o trabalho de KNighter provê publicamente um \textit{dataset} com 61 \textit{commits} de \textit{bugs fixes} no Kernel Linux, contendo o erro e sua correção, \citeonline{hou2025generation} avalia seu método para, além de comparar com KNighter mas, avaliar sua performance no Kernel Linux.
+\par
+Resultados de \citeonline{hou2025generation} criaram 41 regras válidas comparadas com as 37 geradas por \citeonline{yang2025knighter}, modestiamente ultrapassando performance contra KNighter, apesar dos autores afirmarem que seu trabalho precisa de mais refinamento. 
+Além de comparar com KNighter, \citeonline{hou2025generation} compara sua efetividade contra ferramentas comuns de análise estática como Smatch, CPPCheck, \textit{ruleset} oficial do SemGrep e TScanCode.
+Nenhuma das ferramentas identificaram os mesmos de alguns \textit{bugs} que sua metodologia conseguiu, que os autores dizem ser talvez pela falta de conhecimento do domínio específico do projeto analisado que métodos baseados em LMMs conseguem detectar \cite{hou2025generation}. 
+\par
+Para o presente trabalho, o estudo de \citeonline{hou2025generation} cumpre dois papéis fundamentais.
+Primeiro, apresenta aprimoramentos comparado com o seu pioneiro KNighter com seu fluxo lógico interpretativo, se mostrando promissor utilizando ferramentas sem limites de linguagem, \citeonline{hou2025generation} mostra que SemGrep, com suas funções lógicas, auxilia para evitar falsos positivos, apesar de seu custo computacional pelos diversos agentes.
+Segundo, estabelece o referencial na utilização de ferramentas tradicionais para integração com LLMs.
+Mesmo sem integração de outros \textit{datasets} para inclusão de novas regras, \citeonline{hou2025generation} foi capaz de exceder em performance pela mudança de \textit{workflow} para cada \textit{commits}.
 
 
+\subsection{Trabalho 3: \textit{LLM-based Vulnerability Detection at Project Scale: An Empirical Study} \cite{li2026llmbased}}
+\par
+O trabalho de \citeonline{li2026llmbased}, publicado no arXiv em 27 de janeiro de 2026, aguardando a revisão de seu trabalho para ser publicado em IEEE Transactions on Software Engineering (TSE), dentre os artigos encontrados, o trabalho mais atual na área de análise estática de vulnerabilidades automatizados via LLMs.
+\par
+Sua metodologia foi pensada para preencher as seguintes lacunas na análise estática automatizada: \textbf{(1) Efetividade e Complementaridade em projetos de mundo real}, métodos para fonte de regras possuem limitações em personalização. 
+Não se tornando claro sua eficácia quão generalizado e robusto são de fato esses métodos, quanto aplicados em projetos capazes de conter diversos tipos de vulnerabilidades \cite{li2026llmbased};
+\textbf{(2) Análise Compreensiva sobre Causa de Raízes de Falhas}, \citeonline{li2026llmbased} afirma que estudos recentes de análise estática baseada em LMMs priorizam métricas como precisão, \textit{recall} e \textit{F1-Score}, sem analisar sistemáticamente os fatores que afetam seu uso prático em um projeto no mundo real.
+Em particular, as raizes de casos de falsos positivos são raramente categorizadas ou quantificadas, dificultando usuários em como melhorar as ferramentas \cite{li2026llmbased};
+\textbf{(3) Escalabilidade e \textit{Overhead}}, os autores explicam que uma das principais preocupações nesses métodos baseado em LLMs é seu custo e eficiência.
+Porém, estudos recentes raramente medem o potencial custo máximo do uso computacional desses análisadores, como contagem de \textit{tokens} e tempo de processamento dependendo de projetos \cite{li2026llmbased}.
+\par
+A partir dessas lacunas, o trabalho de \citeonline{li2026llmbased} apresenta um estudo empírico analisando 5 projetos de análise estática baseado em LLMs lidando com múltiplos tipos de CWEs, linguagens de programação e \textit{workflows}.
+Sua avaliação utiliza duas configurações complementares: (i) \textit{dataset} personalizado com 222 vulnerabilidades conhecidas em contexto de mundo real, cobrindo 8 tipos de CWEs em C/C++ e Java, utilizado para avaliar a detecção de vulnerabilidades sistemáticamente \cite{li2026llmbased}.
+(ii) 24 projetos \textit{open-source} ativos, utilizados para avaliar em usabilidade prática no mundo real.
+\par
+Em seguida, foi examinado manualmente 385 resultados de análises, com mais de 150 horas para identificar cada falso positivo e sua causa raiz, e medir o seu custo máximo ou \textit{overhead} \cite{li2026llmbased}.
+Primeiro resultado de \citeonline{li2026llmbased} foi que \textbf{métodos existentes baseados em LMMs exibem cobertura limitada para vulnerabilidades de mundo real}, utilizando seu \textit{dataset} personalizado, os métodos avaliados atingiram um \textit{recall} médio de \textbf{21,09\%} e \textbf{33,82\%} em C/C++ e Java, respectivamente, indicando que eles ainda falham em uma grande porção de vulnerabilidades, geralmente pela falta de contexto e definição contínua da variável.
+Apesar dessa conclusão, os autores afirmam que esses métodos, comparado com ferramentas tradicionais, ainda descobrem mais vulnerabilidades únicas \cite{li2026llmbased}.
+\par
+Segunda conclusão foi \textbf{ambos métodos de análise estática (tradicionais e baseada em LMMs) exibem uma alta taxa de falsos positivos}, com a melhor ferramenta análisada ainda teve \textbf{85,3\%} de taxa média de falsos positivos \cite{li2026llmbased}.
+Dentre a avaliação das 385 detecções, foi estudado a razão de cada falso positivo e quantificado sua distribuição dentre ferramentas, mostrando que raciocínios superficiais de fluxo de dados, a identificação imprecisa de fontes e negligência de pontos críticos do programa em contextos complexos constituem as causas-raiz predominantes para falsos positivos analisados \cite{li2026llmbased}.
+A última conclusão é \textbf{análise de detecção de vulnerabilidades baseados em LMMs para projetos de larga escala continua computacionalmente caro}, \citeonline{li2026llmbased} realizou uma análise de custo em que mostrou que se pode custar entre cem mil \textit{tokens} à cem milhões de \textit{tokens} por projeto (p. ex., até 38,31 milhões de tokens de entrada e 38,07 milhões de tokens de saída), além do processamento de múltiplas horas para múltiplos dias (p. ex., até 4.368 minutos), criando uma limitação crítica para sua escalabilidade.
+\par
+Com o foco na linguagem C/C++, \citeonline{li2026llmbased} utilizou KNighter de \citeonline{yang2025knighter} e RepoAudit de \citeonline{guo2025repoaudit} e para métodos tradicionais, utilizaram SemGrep (\textit{ruleset} padrão) e CodeQL.
+\par
+Considerando as seguintes métricas de avaliação, \textbr{Com o \textit{dataset} personalizado}, é considerado uma vulnerabilidade detectada com sucesso pela ferramenta enquanto ela reporta uma vulnerabilidade (ou seja, positivo verdadeiro: TP), caso contrário, a vulnerabilidade é despercebida pela ferramenta (ou seja, falso negativo: FN) \cite{li2026llmbased}.
+Em particular, já que códigos não-vulnerável nos projetos são imensos e não totalmente identificado, \citeonline{li2026llmbased} foca em \textit{recall} do que precisão.
 
-\subsection{Trabalho 2: \textit{Generation, Migration and Optimization of Cross-Language Static-Analysis Rules Based on Large Language Models}}
+\begin{align}
+  Recall &= \frac{TP}{TP + FN} \times{100\%}.
+\end{align}
 
-[Descrever o segundo trabalho seguindo a mesma estrutura acima, sempre evidenciando que o problema abordado é o mesmo ou muito próximo ao seu.]
+\par
+Dentre os projetos \textit{open-source} de mundo real, é desconhecido o número de vulnerabilidades presentes.
+Logo, \citeonline{li2026llmbased}, para cada projeto, foi capturado: \textbf{(i) #Reportes}, o total de número de avisos produzidos, \textbf{(ii) #Arquivos}, o número de arquivos fontes distintos que contém pelo menos um aviso, e \textbf{(iii) #Amostras FPs}, o número de falsos positivos identificados pelas ferramentas dentre os avisos.
+A partir desses títulos, foi estimado a taxa de detecção de falsos positivos em amostras, do inglês \textit{Sampled False Discovery Rate} (SFDR) como:
 
-\subsection{Trabalho 3: \textit{LLM-based Vulnerability Detection at Project Scale: An Empirical Study}}
+\begin{align}
+  SFDR &= \frac{#Amostras FPs}{#Reportes}.
+\end{align}
 
-[Descrever o terceiro trabalho seguindo a mesma estrutura acima, sempre evidenciando que o problema abordado é o mesmo ou muito próximo ao seu.]
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.65\textwidth]{Images/LLM-Based-Analise.png}
+    \caption{Análide de CWEs (\textit{Memory Leak}, \textit{Use After Free}, \textit{Null Pointer Dereference})}
+    {\small Fonte: Adaptado para o português para melhor compreensão \cite{li2026llmbased}.}
+    \label{fig:cwescomparation}
+\end{figure}
 
-\vspace{0.5cm}
+\par
+Dentre essas ferramentas, RepoAudit ganhou destaque sendo a ferramenta com melhor \textit{recall} dentre todas as vulnerabilidades de C/C++ avaliadas.
+Superando CodeQl, SemGrep e KNighter em todas as CWEs analisadas \cite{li2026llmbased}.
+Após a avaliação manual dos autores, \citeonline{li2026llmbased} mostra na \ref{fig:cwescomparation} que a maioria das faltas de detecções são de identificação de fontes e APIs incorretos ou incompletos.
 
-Uma tabela comparativa ajuda a sintetizar as diferenças entre os trabalhos:
+Para o presente TCC, o trabalho de \citeonline{li2026llmbased} é essencial para a definição das fraquezas dos métodos implementados até o momento.
+Com sua análise profunda nas razões de falsos positivos, comparando com métodos tradicionais e baseados em LLMs, \citeonline{li2026llmbased} revela um padrão no desafio de minimizar falsos positivos, onde tanto métodos tradicionais e baseados em LLMs possuem.
+Com seus resultados, sabemos direções em quais áreas necessitam mais atenção para a minimização de detecção de erros, além de seu \textit{dataset} essencial para aperfeiçoamento de regras.
+
+\subsection{Síntese comparativa}
+\par
+A análise individual dos três trabalhos relacionados permite, em conjunto, delinear com precisão o estado da arte em Análise Estática Baseado em LLMs e identificar lacunas que este TCC busca preencher.
+Para facilitar essa análise, a Tabela \ref{tab:trabalhosrelacionados} sintetizam as características técnicas dos trabalhos relacionados entre si e o diferencial introduzido pela proposta deste trabalho.
 
 \begin{table}[htb]
     \centering
-    \caption{Comparação entre trabalhos relacionados}
-    \label{tab:trabalhos_relacionados}
-    \begin{tabular}{l|c|c|c|c}
+    \caption{Comparação técnica entre os trabalhos relacionados}
+    \label{tab:trabalhosrelacionados}
+    \begin{tabular}{p{2cm}|p{3cm}|p{3cm}|p{3cm}|p{3cm}}
         \toprule
-        \textbf{Critério} & \textbf{Trabalho 1} & \textbf{Trabalho 2} & \textbf{Trabalho 3} & \textbf{Este trabalho} \\
+        \textbf{Critério} 
+        & \textbf{Yang et al. (2025)} 
+        & \textbf{Hou et al. (2025)} 
+        & \textbf{Li et al. (2026)}
+        & \textbf{Este trabalho} \\
         \midrule
-        Objetivo           & [resumo]   & [resumo]   & [resumo]   & [resumo] \\
+        Foco principal
+        & Geração automatizada de verificadores estáticos a partir de histórico de \textit{patches}.
+        & Geração, otimização e migração multilinguagem de regras de análise estática.
+        & Estudo empírico comparativo de detectores baseados em LLMs em escala de projeto.
+        & Geração de regras automatizada a partir de histórico de \textit{patches} e \textit{datasets}. \\
         \midrule
-        Tecnologia         & [tecn.]    & [tecn.]    & [tecn.]    & [tecn.] \\
+        Método/ Tecnologia           
+        & LLMs + Clang Static Analyser (CSA) 
+        & LLMs (\textit{few-shot learning}) + SemGrep
+        & Avaliação de múltiplos agentes/geradores LLM frente a analisadores tradicionais.   
+        & LLMs (\textit{few-shot learning}) + \textit{CWEs datasets} + SemGrep \\
         \midrule
-        Validação          & [método]   & [método]   & [método]   & [método] \\
+        Métrica Principal de Avaliação
+        & Taxa de validade dos \textit{checkers} e volume de novos \textit{bugs} detectados.
+        & Validade sintática/ funcional e eficácia na transposição de regras entre linguagens.
+        & \textit{Recall}, Taxa de Falsos Positivos e custo computacional (tempo/ \textit{tokens}).
+        & \textit{Recall}, Taxa de Falsos Positivos e custo computacional (tempo/ \textit{tokens}). \\
         \midrule
-        Limitação          & [limit.]   & [limit.]   & [limit.]   & --- \\
+        Limitação / Trabalho Futuro
+        & Acoplamento estrito ao ecossistema C/C++ e geração de falsos positivos diante de lógicas de estado complexas.
+        & Alta taxa de falsos positivos e dificuldade em fluxo de dados.
+        & Taxas de falso alarme insustentáveis decorrentes de raciocínio de fluxo raso e custo de inferência proibitivos. 
+        & -- \\
         \bottomrule
     \end{tabular}
-    \legend{Fonte: Elaborado pelo autor (2025)}
+    \legend{Fonte: Elaborado pelo autor (2026)}
 \end{table}
 
 % ===============================================================
