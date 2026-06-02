@@ -274,10 +274,12 @@ A hipótese deste trabalho busca comprovar que com um \textit{framework} direcio
 Os objetivos desta pesquisa estruturam-se em duas frentes: o objetivo geral, focado em solucionar o problema central do estudo, e os objetivos específicos, que descrevem as etapas práticas e teóricas indispensáveis para a realização desse propósito maior.
 
 \subsection{Objetivo Geral}
+\label{sec:objgeral}
 \par
 O objetivo geral do trabalho é provar nossa hipótese que a partir um \textit{framework} com um módulo de síntese de regras baseado em LLM focalizado na linguagem C/C++, que a partir de uma mesclagem de metodologias dos trabalhos de \citeonline{hou2025generation, li2026llmbased} para o treinamento do agente, será possível obter uma detecção mais detalhada, para pelo menos 5 CWEs, comparada a métodos tradicionais de análise estática.
 
 \subsection{Objetivos específicos}
+\label{sec:objespecifico}
 \par
 Sobre os objetivos específicos, temos:
 
@@ -285,6 +287,7 @@ Sobre os objetivos específicos, temos:
   \item Implementar um \textit{framework} para geração de regras utilizando LLMs para a ferramenta SemGrep.
   \item Aplicar o \textit{pipeline} de síntese proposto em um \textit{benchmark} de código-fonte C/C++ para coletar logs de detecção do SemGrep utilizando as regras geradas.
   \item Avaliar quantitativamente a precisão e revocação e \textit{F1-Score} das regras geradas pela LLM, estabelecendo uma análise comparativa direta com os resultados de analisadores estáticos tradicionais.
+  \item Para os agentes, utilizar modelos pequenos que seja custosamente eficiente sua execução localmente.
 \end{enumerate}
 
 % ===============================================================
@@ -324,9 +327,187 @@ Em contrapartida, os critérios de exclusão adotados foram: (a) trabalhos publi
 O processo de seleção ocorreu em duas etapas. 
 Na primeira fase (triagem), a aplicação da \textit{string} de busca retornou 4.770 resultados, dos quais foram selecionados 47 artigos potencialmente relevantes após a leitura prévia de títulos e resumos. 
 Na segunda fase (afunilamento), os trabalhos restantes passaram por uma leitura criteriosa da introdução e do escopo, sendo classificados em uma escala de relevância de 0 a 10 em relação aos objetivos desta pesquisa.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Images/Funil.png}
+    \caption{Funil de pesquisa.}
+    {\small Fonte: Elaborado pelo autor (2026)}
+    \label{fig:funil}
+\end{figure}
+
 \par
+A avaliação de 0 a 10 foi a partir de seu resumo, palavras-chave, tecnologia aplicada. Caso o trabalho possui similaridades com outros artigos bem avaliados é considerado como suporte ou alta relevância. 
 Esse processo de filtragem resultou em 6 artigos classificados com notas entre 9 e 10 (alta relevância), além de 9 artigos categorizados como material de suporte, totalizando 15 trabalhos contemporâneos para compor a fundamentação teórica. 
 Adicionalmente, foram incorporados 4 trabalhos seminais anteriores a 2021, essenciais para a consolidação dos conceitos clássicos abordados neste estudo.
+
+% ---------------------------------------------------------------
+\section{Fundamentos}
+\label{sec:fundamentos}
+\par
+Esta seção detalha os conceitos técnicos e contextualização diretamente empregados na implementação do projeto.
+
+\subsection{Análise Estática Tradicional}
+\label{sec:analisetradicional}
+\par
+Verificações estáticas, segundo \citeonline{aho2007compilers}, são checagens de consistência realizadas durante o processo de compilação, sendo possível capturar erros de programação cedo, antes da sua execução. 
+\par
+Incluindo dois tipos de análises: 
+\textbf{(i) Verificação Sintática}, envolve a aplicação de restrições que não são aplicadas apenas pelas gramáticas, como um identificador ser declarado apenas uma vez dentro do escopo \cite{aho2007compilers}.
+\textbf{(ii) Verificação de Tipos}, assegura que as regras de tipagem da respectiva linguagem sejam seguidas, checando se os operadores ou funções estão sendo aplicados ao número ou tipo correto de operando.
+Se a conversão de tipos é necessária, o verificador pode inserir o operador correto na árvore de sintaxe para a conversão \cite{aho2007compilers}.
+\par
+Não é importante somente para otimização de código, as mesmas técnicas podem ser usadas para analisar \textit{software} já existentes para diversos padrões comuns de erros de programação \cite{aho2007compilers}.
+PREfix e Metal são duas ferramentas mencionadas por \citeonline{aho2007compilers} utilizam análise estática interprocedural, rastreando o fluxo de informações em um programa inteiro, para encontrar erros de programação estaticamente em grandes bases de código.
+Estas ferramentas são capazes de rastrear o caminho de entradas fornecidas pelos usuários enquanto essas \textit{strings} são copiadas ou combinadas ao longo de vários procedimento, acompanhando as entradas é possível previnir contra \textit{SQL Injection} e \textit{Buffer Overflows} \cite{aho2007compilers}.
+
+\subsubsection{Árvore Sintática Abstrata}
+\label{sec:ast}
+\par
+Durante o processo de análise sintática, é comum a geração de uma árvore de análise (\textit{Parse Tree}), também conhecida como árvore de sintaxe concreta, onde os nós internos representam os símbolos não-terminais definidos pela gramática da linguagem \cite{aho2007compilers}.
+Contudo, para as fases subsequentes de compilação ou de análise estática de código, essa representação contém detalhes puramente estruturais que não afetam a semântica do programa \cite{aho2007compilers}.
+\par
+A Árvore Sintática Abstrata, do inglês \textit{Abstract Syntax Tree} (AST), surge como uma representação intermediária otimizada.
+Em uma AST, cada nó interno representa um operador ou um constructo de programação, enquanto nós filhos representam os operandos ou os componentes semânticos daquele constructo \cite{aho2007compilers}.
+Nós auxiliares exigidos pela gramática para contornar ambiguidades ou definir precedência (como produções única ou parênteses) são descartados, resultando em uma estrutura de dados mais limpa e focada no significado das operações \cite{aho2007compilers}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.45\textwidth]{Images/AST.png}
+    \caption{Árvore Sintática Abstrata para a expressão 9-5+2}
+    {\small Fonte: \cite{aho2007compilers}}
+    \label{fig:ast}
+\end{figure}
+
+\par
+Tomando como exemplo, na figura \ref{fig:ast}, a expressão matemática 9 - 5 + 2, a raiz da AST representaria o operador +, tendo como filho esquerdo a subexpressão correspondente a 9 - 5 e como filho direito a constante 2.
+Esse agrupamento estrutural reflete a precedência e a associatividade à esquerda dos operadores, tornando redundante a presença de nós sintáticos adicionais.
+Em ferramentas de análise estática voltadas para linguagens complexas como C/C++, operar sobre a AST é essencial, pois permite que a verificação de propriedades e a busca por vulnerabilidades sejam conduzidas diretamente sobre a lógica estrutural do código, isolando a análise de variações gramaticais irrelevantes \cite{aho2007compilers}.
+\par
+No contexto da análise de vulnerabilidades, a AST é fundamental para identificar padrões estruturais perigosos.
+Ao invés de realizar buscas textuais limitadas, os analisadores percorrem a árvore em busca de composições específicas de nós.
+Por exemplo, para detectar um risco de desreferenciação de ponteiro nulo (\textit{Null Pointer Dereference}), uma regra de análise pode inspecionar a AST em busca de um nó que represente uma chamada de alocação de memória, como a função \textit{devm\_kzalloc}, verificando se não existe um nó condicional adjacente encarregado de checar o valor de retorno antes de sua utilização.
+
+\subsubsection{Grafos de Fluxo de Controle}
+\label{sec:gfc}
+\par
+Complementar à Árvore Sintática Abstrata (AST), utilizam-se os grafos de fluxo de controle, do inglês \textit{Control Flow Graphs} (CFG).
+Enquanto a AST foca em representar hierarquicamente a sintaxe estrutural do código, o CFG é um grafo direcionado construído para modelar os possíveis caminhos de execução do programa, sendo a base essencial para análises sensíveis ao fluxo (\textit{flow-sensitive}) \cite{aho2007compilers}.
+\par
+Representação em grafo de código intermediário é muito útil para a geração de código \cite{aho2007compilers}.
+De acordo com \citeonline{aho2007compilers}, essa representação é construida em dois passos, primeiro, é particionado o código intermediário em blocos básicos (\textit{basic blocks}), que atuam como os nós do grafo.
+Um bloco básico é uma sequência máxima de instruções consecutivas de três endereços onde o fluxo de controle entra obrigatoriamente pela primeira instrução, sem saltos para o interior dele, e sai apenas pela última, sem interrupções ou ramificações em seu interior \cite{aho2007compilers}.
+As arestas relacionados do grafo indicam as transições de controle (\textit{control flow}) permitidas no programa, representando que a execução pode fluir do final de um bloco básico específico para o início de outro \cite{aho2007compilers}.
+\par
+Em um CFG, é prática normal substituir os saltos (\textit{jumps}) que apontariam para número de linhas ou rótulos específicos por saltos diretos para tal bloco, a razão dessa mudança é que, após construir o grafo, é comum fazer alterações substanciais nas intruções de blocos (otimizações) \cite{aho2007compilers}.
+Caso não houvesse essa otimização, seria necessário corrigir os alvos toda vez que uma instrução fosse alterada.
+\par
+CFGs podem ser representados na programação por qualquer estrutura de dados tradicional para grafos. 
+Quanto ao conteúdo interno dos nós (blocos básicos), \citeonline{aho2007compilers} afirma que eles podem ser representados por um ponteiro para a primeira instrução e uma contagem de instruções.
+No entanto, como as otimizações alteram frequentemente a quantidade de instruções, costuma ser mais eficiente representar o conteúdo de cada bloco básico, ou nó, como uma lista encadeada (\textit{linked list}) de instruções \cite{aho2007compilers}.
+
+\subsubsection{Análise de Fluxo de Dados}
+\label{sec:analisefluxo}
+\par
+A Análise de Fluxo de Dados, em inglês \textit{Data Flow Analysis} (DFA), é definida como um conjunto de técnicas que derivam informações sobre o fluxo de dados ao longo dos possíveis caminhos de execução de um programa \cite{aho2007compilers}.
+Tradicionalmente fundamentais para as otimizações globais em compiladores, essas técnicas permitem determinar, por exemplo, se duas expressões avaliam para o mesmo valor em todos os caminhos possíveis ou se o resultado de uma atribuição nunca é utilizado (código morto) \cite{aho2007compilers}.
+\par
+A execução de um programa é modelada como uma série de transformações do estado do programa, onde o estado consiste nos valores de todas as variáveis do programa em um dado momento \cite{aho2007compilers}.
+Cada instrução executada transforma um estado de entrada em um novo estado de saída.
+No entanto, \citeonline{aho2007compilers} afirma que é impossível acompanhar todos os estados exatos devido ao número ilimitado de caminhos de execução.
+Por esse motivo, a DFA opera através de abstrações, ignorando detalhes irrelevantes e guardando apenas as características essenciais para o objetivo da otimização \cite{aho2007compilers}.
+\par
+É associado a cada ponto do programa um valor de fluxo de dados (que representa a abstrações dos estados possíveis) pertencente a um "domínio" \citeonline{aho2007compilers}.
+O problema de DFAs consiste em encontrar uma solução para dois conjuntos de restrições principais:
+\textbf{Funções de transferência} (\textit{Transfer Functions}), são restrições baseadas na semântica de cada instrução, pegando o valor do fluxo de dados antes da instrução e geram um novo valor de saída \cite{aho2007compilers}.
+O fluxo pode acontecer "para frente" (\textit{forward}), onde a entrada molda a saída, ou "para trás" (\textit{backward}), onde a direção desse fluxo é invertida.
+\textbf{Restrições de Fluxo de Controle} (\textit{Control-Flow Constraints}), definem como a informação transita de um bloco básico para outro dentro do CFG. 
+Essencialmente, o valor do fluxo de dados que entra em uma instrução é matematicamente determinado pela combinação dos valores que saem dos instruções ou blocos predecessores \cite{aho2007compilers}.
+\par
+No contexto da segurança de \textit{software} e da detecção de falhas abordadas neste trabalho, a abstração fornecida pela DFA é o motor principal que permite analisadores estáticos avançados identificarem vulnerabilidades complexas.
+É através do rastreamento do estado das variáveis pelos caminhos de controle que se torna viável detectar comportamentos críticos em linguagens como C/C++, como \textit{Null Pointer Dereference} (CWE-476) ou uso de variáveis não inicializadas (CWE-457).
+
+\subsubsection{Sensibilidade de Fluxo}
+\label{sec:sensifluxo}
+\par
+A precisão de uma análise estática depende fortemente de sua sensibilidade ao fluxo de controle.
+Segundo \citeonline{aho2007compilers}, as abordagens de análise (como a análise de apontamento de ponteiros) podem ser categorizadas em dois tipos principais:
+\par
+\textbf{Análise Sensível ao Fluxo}, em inglês \textit{Flow-Sensitive Analysis} (FSA), essa abordagem acompanha o fluxo de controle do programa e computa o estado exato (por exemplo, para onde cada variável pode apontar) após a execução de cada instrução individual \citeonline{aho2007compilers}.
+Isso significa que a análise avalia as restrições e funções de transferência passo a passo; ela não apenas considera novas informações e relações que um comando gera (\textit{generate}), mas também contabiliza as informações anteriores que o comando invalida ou mata (\textit{kills}).
+\par
+\textbf{Análise Insensível ao Fluxo}, em inglês \textit{Flow-Insensitive Analysis} (FIA), em contrapartida, essa abordagem ignora o fluxo de controle, assumindo essencialmente que cada instrução do programa pode ser executada em qualquer ordem \cite{aho2007compilers}.
+A FIA computa apenas um mapa global indicando para onde cada variável possivelmente apontar em qualquer momento da execução do programa.
+Em uma análise insensível ao fluxo, uma atribuição nunca invalida (\textit{kill}) relações de apontamento; ela apenas gera novas relações. Ou seja, se uma variável puder apontar para dois objetos diferentes após a avaliação de duas instruções distintas, o sistema apenas registra e acumula a informação global de que ela aponta para ambos \cite{aho2007compilers}.
+\par
+\citeonline{aho2007compilers} explicam que a falta de sensibilidade ao fluxo enfraquece consideravelmente a precisão dos resultados da análise, uma vez que produz superaproximações do estado real do programa. 
+No entanto, essa abstração tem o benefício direto de reduzir drasticamente o tamanho da representação dos resultados e fazer com que o algoritmo termine de forma mais rápida, o que é frequentemente necessário ao analisar bases de código em larga escala.
+
+\subsubsection{Limitações da Análise Estática}
+\label{sec:limitacoesanalise}
+\par
+\citeonline{aho2007compilers} explicam o problema de encontrar todos os erros de um programa é indecidível.
+Uma ferramenta de análise de fluxo de dados pode até ser projetada para alertar programadores sobre todas as possíveis partes do código com uma categoria específica de erros, porém se a maioria desses avisos forem falsos alarmes, os usuários não vão utilizar a ferramenta.
+\par
+Por conta dessa complexidade, \citeonline{aho2007compilers} afirmam que os detectores práticos de erros frequentemente não são perfeitos (á prova de falhas ou \textit{sound}) nem completos (\textit{complete}).
+As abordagens tradicionais de detecção de vulnerabilidades estática geralmente codificam o conhecimento especializado como regras projetadas manualmente, com padrões e modelos de fluxo de dados, sua dependência de padrões predefinidos limita inerentemente a generalização e a cobertura para tipos de vulnerabilidades previamente não vistos ou em evolução \cite{li2026llmbased}.
+\par
+Isso significa que a análise estática pode não encontrar todos os erros no programa, e nem todos os erros relatados têm a garantia de serem erros reais, e se as ferramentas relatassem todos os erros potenciais, o volume de falsos positivos tornariam as ferramentas inutilizáveis \cite{aho2007compilers}.
+
+\subsection{Vulnerabilidades de Linguagem}
+\label{sec:vulnerabilidadeslinguagem}
+\par
+O termo Vulnerabilidade (\textit{Vulnerability}) é definido como um conjunto de condições que permite que um invasor (atacante) viole uma política de segurança explícita ou implícita \cite{seacord2013secure, seicertc2016}.
+Nem toda falha de segurança (\textit{security flaw}) leva a uma vulnerabilidade \cite{seacord2013secure}.
+\par
+\citeonline{seacord2013secure} explicam que para que uma falha torne um programa vulnerável a ataques, é necessário que os dados de entrada desse programa cruzem um limite de segurança (\textit{security boundary}).
+Uma falha pode existir no código sem as pré-condições para ser explorada; por exemplo, se o programa apresentar um erro grave mas não possui permissões para ser acessado localmente, ele não viola a política de segurança e não constitui uma vulnerabilidade ativa \cite{seacord2013secure}.
+
+\subsubsection{\textit{Common Weakness Enumeration}}
+\label{sec:cwes}
+\par
+
+\subsubsection{\textit{Common Vulnerabilidades and Exposures}}
+\label{sec:cves}
+\par
+
+\subsection{Arquitetura Transformers}
+\label{sec:modelostransformers}
+\par
+
+
+\subsubsection{Linguagem Natural}
+\label{subsec:linguagemnatural}
+\par
+Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). 
+Também conhecidas como gramáticas de estrutura de frase (\textit{phrase-structure grammars}), as GLCs utilizam um formalismo que é equivalente à Forma de Backus-Naur (BNF), padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
+\par
+Uma GLC consiste em um conjunto de regras ou produções, onde cada uma expressa como os símbolos podem ser ordenados e agrupados, e um léxico de palavras e símbolos.
+Tal estrutura define uma linguagem formal, na qual existe uma separação estrita: sentenças que podem ser derivadas pelas regras são consideradas gramaticais, enquanto as que não podem são denomidadas agramaticais \cite{jurafsky2026speech}.
+\par
+Contudo, essa distinção rígida é uma característica das gramáticas formais e ser apenas como um modelo simplificado das linguagens naturais.
+Diferente das linguagens de programação, a validade e o sentido em linguagem natural dependem intrinsecamente do contexto.
+Na linguística computacional, o uso desses modelos para capturar tal complexidade é fundamentado na gramática generativa, visto que a linguagem passa a ser definida pelo conjunto de possíveis 'geradas' por suas regras gramaticais \cite{jurafsky2026speech}.
+
+\subsubsection{Modelos de Linguagens de Grande Escala}
+\label{subsec:llm}
+\par
+Os Modelos de Linguagem de Grande Escala (LLMs), em sua maioria, baseiam-se na arquitetura \textit{Transformer}, originalmente projetada para tarefas sequenciais, como a tradução automática. 
+A arquitetura consiste em dois componentes principais: o Codificador (\textit{Encoder}), o qual converte uma entrada de \textit{tokens} em uma sequência de vetores representativos (frequentemente chamada de estado oculto ou contexto), e o Decodificador (\textit{Decoder}), que utiliza o contexto gerado pelo codificador para produzir iterativamente uma sequência de \textit{tokens} de saída, um por vez \cite{tunstall2022natural}.
+\par
+Com o passar dos anos, esses blocos funcionais foram adaptados para atuar como modelos independentes. Embora existam centenas de variações de \textit{Transformers}, a maioria se encaixa em um desses três tipos:
+\par
+\textbf{Apenas Codificador (\textit{Encoder-only}):} Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficientes para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação calculada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto à direita (depois do \textit{token}); esse mecanismo é geralmente denominado atenção bidirecional \cite{tunstall2022natural}.
+\par
+\textbf{Apenas Decodificador (\textit{Decoder-only}):} Dada uma entrada de texto, esses modelos completam a sequência prevendo iterativamente a palavra subsequente mais provável.
+A família de modelos GPT pertence a essa classe. 
+Nesse caso, a representação de um \textit{token} depende exclusivamente do contexto à sua esquerda; esse comportamento é conhecido como atenção causal ou autorregressiva \cite{tunstall2022natural}.
+\par
+\textbf{Codificador-Decodificador (\textit{Encoder-decoder}):} Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra (arquiteturas \textit{sequence-to-sequence}), esses modelos são projetados para tarefas como tradução automática e sumarização de textos \cite{tunstall2022natural}. 
+
+\subsection{Métricas de Avaliação}
+\label{subsec:metricasavaliacao}
+
 
 % ---------------------------------------------------------------
 \section{Referencial teórico}
@@ -376,7 +557,12 @@ Como na linha 1, o bloco principal exige que o código esteja dentro da função
 (iii) \textbf{\textit{pattern-not}} representa a lógica \textit{NOT} (NÃO).
 Não presente no exemplo, porém usado para excluir falsos positivos, anulando caso a regra bater coma  condição aninhada no predicado.
 \par
-Com estes conhecimentos, é possível compreender mais profundamente como a ferramenta utilizada funciona. SemGrep possui maneiras de lidar com falsos positivas nativamente, nos permitindo liberdade para aperfeiçoar a análise como bem queremos.
+Com estes conhecimentos, é possível compreender mais profundamente como a ferramenta utilizada funciona. SemGrep possui maneiras de lidar com falsos positivas nativamente, nos permitindo liberdade para aperfeiçoar a análise de regras.
+
+\subsubsection{Árvore Sintática Abstrata}
+\label{sec:arvoreast}
+\par
+
 
 \subsection{Aplicação de LLMs em análise estática}
 \label{sec:llmsanaliseestatica}
@@ -385,49 +571,6 @@ Com estes conhecimentos, é possível compreender mais profundamente como a ferr
 \subsection{Abstração de Regras}
 \label{sec:regrasabstracao}
 \par
-
-% ---------------------------------------------------------------
-\section{Fundamentos}
-\label{sec:fundamentos}
-\par
-Esta seção detalha os conceitos técnicos diretamente empregados na implementação do projeto, complementando o referencial teórico.
-
-\subsection{Arquitetura Transformers}
-\label{sec:modelostransformers}
-\par
-
-
-\subsection{Linguagem Natural}
-\label{subsec:linguagemnatural}
-\par
-Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). 
-Também conhecidas como gramáticas de estrutura de frase (\textit{phrase-structure grammars}), as GLCs utilizam um formalismo que é equivalente à Forma de Backus-Naur (BNF), padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
-\par
-Uma GLC consiste em um conjunto de regras ou produções, onde cada uma expressa como os símbolos podem ser ordenados e agrupados, e um léxico de palavras e símbolos.
-Tal estrutura define uma linguagem formal, na qual existe uma separação estrita: sentenças que podem ser derivadas pelas regras são consideradas gramaticais, enquanto as que não podem são denomidadas agramaticais \cite{jurafsky2026speech}.
-\par
-Contudo, essa distinção rígida é uma característica das gramáticas formais e ser apenas como um modelo simplificado das linguagens naturais.
-Diferente das linguagens de programação, a validade e o sentido em linguagem natural dependem intrinsecamente do contexto.
-Na linguística computacional, o uso desses modelos para capturar tal complexidade é fundamentado na gramática generativa, visto que a linguagem passa a ser definida pelo conjunto de possíveis 'geradas' por suas regras gramaticais \cite{jurafsky2026speech}.
-
-\subsection{Modelos de Linguagens de Grande Escala}
-\label{subsec:llm}
-\par
-Os Modelos de Linguagem de Grande Escala (LLMs), em sua maioria, baseiam-se na arquitetura \textit{Transformer}, originalmente projetada para tarefas sequenciais, como a tradução automática. 
-A arquitetura consiste em dois componentes principais: o Codificador (\textit{Encoder}), o qual converte uma entrada de \textit{tokens} em uma sequência de vetores representativos (frequentemente chamada de estado oculto ou contexto), e o Decodificador (\textit{Decoder}), que utiliza o contexto gerado pelo codificador para produzir iterativamente uma sequência de \textit{tokens} de saída, um por vez \cite{tunstall2022natural}.
-\par
-Com o passar dos anos, esses blocos funcionais foram adaptados para atuar como modelos independentes. Embora existam centenas de variações de \textit{Transformers}, a maioria se encaixa em um desses três tipos:
-\par
-\textbf{Apenas Codificador (\textit{Encoder-only}):} Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficientes para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação calculada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto à direita (depois do \textit{token}); esse mecanismo é geralmente denominado atenção bidirecional \cite{tunstall2022natural}.
-\par
-\textbf{Apenas Decodificador (\textit{Decoder-only}):} Dada uma entrada de texto, esses modelos completam a sequência prevendo iterativamente a palavra subsequente mais provável.
-A família de modelos GPT pertence a essa classe. 
-Nesse caso, a representação de um \textit{token} depende exclusivamente do contexto à sua esquerda; esse comportamento é conhecido como atenção causal ou autorregressiva \cite{tunstall2022natural}.
-\par
-\textbf{Codificador-Decodificador (\textit{Encoder-decoder}):} Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra (arquiteturas \textit{sequence-to-sequence}), esses modelos são projetados para tarefas como tradução automática e sumarização de textos \cite{tunstall2022natural}. 
-
-\subsection{Métricas de Avaliação}
-\label{subsec:metricasavaliacao}
 
 
 % ---------------------------------------------------------------
@@ -559,7 +702,7 @@ A última conclusão é \textbf{análise de detecção de vulnerabilidades basea
 \par
 Com o foco na linguagem C/C++, \citeonline{li2026llmbased} utilizou KNighter de \citeonline{yang2025knighter} e RepoAudit de \citeonline{guo2025repoaudit} e para métodos tradicionais, utilizaram SemGrep (\textit{ruleset} padrão) e CodeQL.
 \par
-Considerando as seguintes métricas de avaliação, \textbr{Com o \textit{dataset} personalizado}, é considerado uma vulnerabilidade detectada com sucesso pela ferramenta enquanto ela reporta uma vulnerabilidade (ou seja, positivo verdadeiro: TP), caso contrário, a vulnerabilidade é despercebida pela ferramenta (ou seja, falso negativo: FN) \cite{li2026llmbased}.
+Considerando as seguintes métricas de avaliação, \textbf{Com o \textit{dataset} personalizado}, é considerado uma vulnerabilidade detectada com sucesso pela ferramenta enquanto ela reporta uma vulnerabilidade (ou seja, positivo verdadeiro: TP), caso contrário, a vulnerabilidade é despercebida pela ferramenta (ou seja, falso negativo: FN) \cite{li2026llmbased}.
 Em particular, já que códigos não-vulnerável nos projetos são imensos e não totalmente identificado, \citeonline{li2026llmbased} foca em \textit{recall} do que precisão.
 
 \begin{align}
@@ -568,11 +711,11 @@ Em particular, já que códigos não-vulnerável nos projetos são imensos e nã
 
 \par
 Dentre os projetos \textit{open-source} de mundo real, é desconhecido o número de vulnerabilidades presentes.
-Logo, \citeonline{li2026llmbased}, para cada projeto, foi capturado: \textbf{(i) #Reportes}, o total de número de avisos produzidos, \textbf{(ii) #Arquivos}, o número de arquivos fontes distintos que contém pelo menos um aviso, e \textbf{(iii) #Amostras FPs}, o número de falsos positivos identificados pelas ferramentas dentre os avisos.
+Logo, \citeonline{li2026llmbased}, para cada projeto, foi capturado: \textbf{(i) \#Reportes}, o total de número de avisos produzidos, \textbf{(ii) \#Arquivos}, o número de arquivos fontes distintos que contém pelo menos um aviso, e \textbf{(iii) \#Amostras FPs}, o número de falsos positivos identificados pelas ferramentas dentre os avisos.
 A partir desses títulos, foi estimado a taxa de detecção de falsos positivos em amostras, do inglês \textit{Sampled False Discovery Rate} (SFDR) como:
 
 \begin{align}
-  SFDR &= \frac{#Amostras FPs}{#Reportes}.
+  SFDR &= \frac{\#Amostras FPs}{\#Reportes}.
 \end{align}
 
 \begin{figure}[h]
@@ -642,33 +785,69 @@ Para facilitar essa análise, a Tabela \ref{tab:trabalhosrelacionados} sintetiza
 % ===============================================================
 \chapter{Desenvolvimento}
 \label{cap:desenvolvimento}
-
-Neste capítulo, apresenta-se a solução proposta para o problema identificado, bem como o cronograma de trabalho previsto para o desenvolvimento completo do projeto no TCC2.
+\par
+Este capítulo apresenta a proposta de desenvolvimento deste trabalho, detalhando a arquitetura do sistema, as decisões metodológicas, o planejamento experimental e o cronograma de execução previstos para TCC2, expandindo como será realizada cada etapa da solução, bem como serão apresentados prazos para cada fase.
 
 % ---------------------------------------------------------------
 \section{Solução proposta}
 \label{sec:solucao}
+\par
+Este trabalho utiliza o método \textit{Design Science Research} (DSR), conforme definido \citeonline{hevner2004design}, como método científico orientador.
+O DSR é um paradigma de pesquisa fundamentalmente focado na resolução de problemas, responsável por produzir quatro tipos de artefatos: constructos, modelos, métodos, instanciações \cite{hevner2004design}.
+Este trabalho, é por definição, um artefato projetado para resolver um probema organizacional relevante, otimização da análise estática em projetos de larga escala, realizando uma solução computacional avaliável.
+\par
+A solução proposta consiste em uma Extensão Geradora de Regras baseado em LLMs direcionada à Projetos de Larga Escala para a ferramenta de análise estática, SemGrep.
+O ciclo deste trabalho está estruturado em quatro fases:
+(1) \textbf{construção de \textit{dataset}}, organização e identificação de \textit{datasets} públicos e banco de \textit{commits} de bases de código de projetos \textit{open-source};
+(2) \textbf{\textit{pipeline} de geração de regras}, aplicação de LLMs em um \textit{pipeline} para gerar regras satisfatórias para a ferramenta SemGrep;
+(3) \textbf{avaliação de resultados}, analisar cada relatório para obter taxa de falsos positivos no \textit{dataset} de aprendizado;
+(4) \textbf{aplicação no mundo real}, com o conjunto de regras, será analisado os resultados em projetos \textit{open-source} como Linux Kernel.
 
-Descreva detalhadamente a solução que será desenvolvida para resolver o problema apresentado na introdução. A descrição deve incluir:
+\subsection{Arquitetura do trabalho}
+\label{sec:arquitetura}
+\par
+Este trabalho é organizado em módulos independentes, um \textit{dataset} global incluindo todos os CWEs selecionados e identificado, um \textit{pipeline} de geração de regras baseado em LLMs que é capaz de gerar regras a partir de qualquer projeto e analisar os \textit{commits} somando o conhecimento do \textit{dataset}.
+\par
 
-\begin{itemize}
-    \item \textbf{Visão geral da solução}: o que será desenvolvido (sistema, aplicativo, modelo, ferramenta, etc.);
-    \item \textbf{Arquitetura}: como os componentes da solução se organizam e interagem;
-    \item \textbf{Tecnologias e ferramentas}: quais linguagens, frameworks, bibliotecas, bancos de dados e ambientes serão utilizados, e por que foram escolhidos;
-    \item \textbf{Funcionalidades principais}: o que a solução fará para atender aos objetivos;
-    \item \textbf{Metodologia de desenvolvimento}: qual abordagem será utilizada (ágil, cascata, prototipação, etc.);
-    \item \textbf{Critérios de validação}: como será medido o sucesso da solução (métricas, testes, avaliação com usuários, etc.).
-\end{itemize}
 
-Utilize diagramas, fluxogramas ou mockups para ilustrar a solução. Exemplo de descrição de arquitetura:
+\begin{enumerate}
+  \item O módulo de \textit{dataset} consiste em: Um conjunto de bases de código de \citeonline{nistsard112juliet}, é possivel obter uma grande quantidade de códigos para diversos casos para cada CWEs, utilizando de referência de \citeonline{yang2025knighter, hou2025generation}, além da base de \citeonline{nistsard112juliet} será coletado históricos de \textit{commits} de projetos \textit{open-source} ativos, obtendo mais exemplos de \textit{corner-cases}.
 
-\textit{A solução proposta consiste em uma aplicação web composta por três camadas: front-end desenvolvido em React.js, back-end em Node.js com Express, e banco de dados PostgreSQL. A comunicação entre front-end e back-end será feita por meio de uma API REST.}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Images/Pipeline.png}
+    \caption{\textit{Pipeline} para gerador de regras.}
+    {\small Fonte: Elaborado pelo autor (2026)}
+    \label{fig:pipeline}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Images/QuartoAgente.png}
+    \caption{Pós-processamento para otimizar regras e abranger \textit{corner-cases}}
+    {\small Fonte: Elaborado pelo autor (2026)}
+    \label{fig:quartoagente}
+\end{figure}
+
+  \item A camada do \textit{pipeline} é composta por: A partir de uma entrada contendo o código com erro e corrigido, seja de um respectivo \textit{commit} ou de um \textit{dataset}, é computado pelo agente responsável por analisar códigos, a partir do \textit{input} é analizado seus padrões e o que difere o \textit{bug} da \textit{correção}. 
+Com sua análise, o agente (\#1) gera um reporte sobre a entrada, direcionando o próximo agente à gerar a regra.
+O modelo (\#2), responsável por gerar a regra formal para a ferramenta, gera a regra a partir do conteúdo do reporte com o contexto da gramática do SemGrep.
+Com a regra gerada, é inserido a regra na ferramenta e é realizado uma validação de gramática, caso SemGrep reprovar a regra, é direcionado para o agente (\#3), especializado na ferramenta, avalia os \textit{logs} de erro e corrige a regra, retornando para a validação novamente.
+Caso a regra é validada, é testado a regra em bancos da mesma CWE para calcular eficácia e a regra é adicionada para o conjunto de regras.
+Depois de adicionar a regra ao conjunto, o agente (\#4) analisa todo o conjunto e unifica regras lidando com os mesmos CWEs, incluindo mais \textit{corner-cases}.
+\end{enumerate}
+
+
+
+Para todos os agentes mencionados, teremos como objetivo secundário, visto na \ref{sec:objetivo}, a utilização de modelos pequenos que podem ser usados localmente e com menos gasto de tokens.
+
+
 
 % ---------------------------------------------------------------
 \section{Cronograma de trabalho}
 \label{sec:cronograma}
 
-O cronograma a seguir apresenta, no formato de diagrama de Gantt, as atividades previstas para o desenvolvimento do TCC2, distribuídas ao longo das semanas do semestre.
+O cronograma a seguir está organizado as atividades do TCC2 em 16 semanas, conforme ilustrado no diagrama de Gantt da Figura \ref{fig:gantt}.
 
 \begin{figure}[htb]
     \centering
@@ -677,64 +856,49 @@ O cronograma a seguir apresenta, no formato de diagrama de Gantt, as atividades 
     \begin{ganttchart}[
         hgrid,
         vgrid,
-        x unit=0.72cm,
+        x unit=0.55cm,
         y unit title=0.6cm,
-        y unit chart=0.7cm,
-        title height=1,
-        bar height=0.5,
-        bar label font=\scriptsize,
-        title label font=\small,
-        milestone label font=\scriptsize\itshape,
-        group label font=\scriptsize\bfseries,
+        y unit chart=0.5cm,
+        bar label font=\tiny,
+        title label font=\tiny,
+        milestone label font=\small\itshape,
+        group label font=\small\bfseries,
         bar/.append style={fill=blue!40},
         group/.append style={draw=black, fill=blue!70},
         milestone/.append style={fill=red!70},
     ]{1}{16}
-        % Título: semanas de 1 a 16
-        \gantttitle{Semanas}{16} \\
+        \gantttitle{Semanas do TCC2}{16} \\
         \gantttitlelist{1,...,16}{1} \\
 
-        % Grupo 1: Revisão e Planejamento
-        \ganttgroup{Fase 1: Planejamento}{1}{4} \\
-        \ganttbar{Revisão bibliográfica}{1}{3} \\
-        \ganttbar{Definição de requisitos}{2}{4} \\
-        \ganttbar{Projeto da arquitetura}{3}{4} \\
-        \ganttmilestone{Entrega do projeto}{4} \\
+        \ganttgroup{F1: \textit{Datasets}}{1}{4} \\
+        \ganttbar{Coleta de \textit{datasets} e \textit{commits}}{1}{3} \\
+        \ganttbar{Identificação de CWEs}{2}{4} \\
 
-        % Grupo 2: Desenvolvimento
-        \ganttgroup{Fase 2: Desenvolvimento}{5}{11} \\
-        \ganttbar{Implementação do módulo 1}{5}{7} \\
-        \ganttbar{Implementação do módulo 2}{7}{9} \\
-        \ganttbar{Integração dos módulos}{9}{11} \\
-        \ganttmilestone{Protótipo funcional}{11} \\
+        \ganttgroup{F2: Modelos}{4}{6} \\
+        \ganttbar{Avaliação de modelos}{4}{6} \\
 
-        % Grupo 3: Testes e Finalização
-        \ganttgroup{Fase 3: Validação}{12}{16} \\
-        \ganttbar{Testes e validação}{12}{14} \\
-        \ganttbar{Ajustes e correções}{14}{15} \\
-        \ganttbar{Redação final do TCC2}{13}{16} \\
-        \ganttmilestone{Entrega final}{16}
+        \ganttgroup{F3: Protótipo de agentes}{5}{10} \\
+        \ganttbar{Análise de regras}{5}{7} \\
+        \ganttbar{Geração de regras}{6}{9} \\
+        \ganttbar{Análise de erros}{8}{10} \\
+        \ganttbar{Otimização de regras}{9}{10} \\
+        \ganttmilestone{Protótipo funcional}{10} \\
 
-        % Ligações entre atividades
-        \ganttlink{elem2}{elem3}
-        \ganttlink{elem3}{elem4}
-        \ganttlink{elem4}{elem5}
-        \ganttlink{elem7}{elem8}
-        \ganttlink{elem8}{elem9}
-        \ganttlink{elem9}{elem10}
-        \ganttlink{elem12}{elem13}
+        \ganttgroup{F4: Experimentos}{10}{13} \\
+        \ganttbar{Análise de resultados}{10}{11} \\
+        \ganttbar{Identificação de falsos positivos}{11}{13} \\
+        
+        \ganttgroup{F5: Escrita}{13}{15} \\
+        \ganttbar{Redação do TCC2}{13}{15} \\
+        
+        \ganttgroup{F6: Entrega}{15}{16} \\
+        \ganttbar{Revisão final e submissão}{15}{16} \\
+        \ganttmilestone{Entrega TCC2}{16}
+
     \end{ganttchart}
-    \legend{Fonte: Elaborado pelo autor (2025)}
+    \legend{Fonte: Elaborado pelo autor (2026)}
 \end{figure}
 
-\textbf{Instruções para personalização do cronograma}:
-\begin{itemize}
-    \item Ajuste o número de semanas conforme o calendário acadêmico do semestre;
-    \item Modifique as atividades de acordo com as etapas do seu projeto;
-    \item Os marcos (\textit{milestones}) indicam entregas importantes --- adapte-os às datas de avaliação;
-    \item As setas entre atividades indicam dependências --- uma atividade só inicia após a conclusão da anterior;
-    \item Utilize o diagrama como ferramenta de acompanhamento: atualize-o a cada reunião com o orientador.
-\end{itemize}
 
 % ---------------------------------------------------------------
 % ELEMENTOS PÓS-TEXTUAIS
