@@ -205,13 +205,12 @@ Modelos de Linguagem de Larga Escala possuem o conhecimento prévio adquirido du
 Durante a inferência, essas capacidades podem ser direcionadas via engenharia de \textit{prompt} (como o fornecimento de históricos de \textit{commits} de correção no contexto) para extrair padrões sintáticos e semânticos de \textit{bugs} específicos do sistema \cite{tang2021grammar}. 
 A capacidade de analisar vários conteúdos sugere que LLMs são capazes de se adaptar a novos tipos de falhas sem a necessidade de criação explícita de regras \cite{yang2025knighter}.
 \par
-Contudo, as estratégias de pós-processamento dependem da inferência contínua das LLMs durante a inspeção de código \cite{hou2025generation}. 
-Apesar das janelas de contexto atuais atingirem a ordem de milhões de \textit{tokens}, restrições práticas persistem.
-A submissão integral do código-fonte, aliada às iterações exigidas a cada modificação, não apenas acarreta custos computacionais proibitivos, como também exacerba o risco de alucinações, gerando inferências plausíveis, porém tecnicamente incorretas.
-Especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
+Embora as LLMs atuais possuam janelas de contexto na ordem de milhões de \textit{tokens}, a inspeção direta e contínua do código-fonte esbarra em severas restrições práticas.
+A submissão integral de bases de código de projetos em larga escala, como o \textit{kernel} do Linux, acarreta custos computacionais proibitivos.
+Estudos empíricos demonstram que essa abordagem pode consumir dezenas de milhões de \textit{tokens} e exigir dias de processamento contínuo, criando uma limitação crítica para a escalabilidade das ferramentas \cite{hou2025generation}.
+Além da ineficiência temporal e financeira, essa sobrecarga de contexto exacerba o risco de alucinações da inteligência artificial, induzindo o modelo a gerar inferências estruturalmente plausíveis, porém tecnicamente incorretas.
 \par
 A figura \ref{fig:motivacaocheckers} introduz motivações para a necessidade de métodos mais eficientes e, principalmente, especializados, tal que em projetos grandes, a análise estática possui dois desafios: criar regras para diversos padrões de bugs e gerenciamento de bases de códigos imensas \cite{yang2025knighter}.
-Em contrapartida, a inspeção direta de código por LLMs esbarra em restrições de janela de contexto e implica em altos custos computacionais.
 \par
 Considerando esses dados, o analisador estático ideal deveria: detectar uma diversidade de falhas, incluindo \textit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
 Porém, dos métodos existentes, geralmente sacrificam um desses objetivos \cite{yang2025knighter}.
