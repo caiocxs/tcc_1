@@ -789,14 +789,39 @@ O ciclo deste trabalho está estruturado em quatro fases:
 \subsection{Arquitetura do trabalho}
 \label{sec:arquitetura}
 \par
-Este trabalho é organizado em módulos independentes, um \textit{dataset} global incluindo todos os CWEs selecionados e identificado, um \textit{pipeline} de geração de regras baseado em LLMs que é capaz de gerar regras a partir de qualquer projeto e analisar os \textit{commits} somando o conhecimento do \textit{dataset}.
+Este trabalho é organizado em dois módulos principais independentes e complementares: um \textit{dataset} global unificado de CWEs e uma camada de \textit{pipeline} geradora de regras baseada em LLMs.
+Capaz de gerar regras a partir de qualquer projeto e analisar os \textit{commits} somando o conhecimento do \textit{dataset}.
 \par
 
 
 \begin{enumerate}
-  \item O módulo de \textit{dataset} é estruturado a partir de bases de código providas por \citeonline{nistsard112juliet}.
-Esse repositório fornece um volume expressivo de amostras de código categorizadas por CWEs, viabilizando o treinamento e a validação do modelo com base nas referência metodológicas estabelecidas por \citeonline{yang2025knighter} e \citeonline{hou2025generation}.
+  \item \textbf{Módulo de \textit{Dataset}}:
+    A base de conhecimento do sistema é estruturada a partir de do repositório provido por \citeonline{nistsard112juliet}.
+Esta fonte fornece um volume expressivo de amostras de código categorizadas por CWEs, viabilizando o treinamento e a validação do modelo.
+Para complementar essa base estática e garantir a cobertura de \textit{corner-cases} do mundo real, o módulo também realiza a coleta e integração de históricos de \textit{commits} extraídos de projetos \textit{open-source} ativos.
 Além da base de \citeonline{nistsard112juliet}, será coletado históricos de \textit{commits} de projetos \textit{open-source} ativos, obtendo mais exemplos de \textit{corner-cases}.
+\item \textbf{Camada do \textit{Pipeline} (Agentes LLM)}: 
+  O fluxo de abstração, síntese e otimização das regras ocorre de maneira iterativa, orquestrado por um conjunto de agentes especializados.
+  Em vez de uma execução linear rígida, o sistema adota um ciclo de retroalimentação visualizado integralmente na Figura \ref{fig:pipeline} e na Figura \ref{fig:quartoagente}.
+  O funcionamento da camada abstrai-se nas seguintes frentes:
+
+  \begin{itemize}
+  \item \textbf{Análise e Abstração (Agente \#1)}:
+    Recebe os fragmentos de código (vulneráveis e corrigidos) e sintetiza um relatório destacando os padrões diferenciais e a lógica da falha. 
+  \item \textbf{Síntese de Sintaxe (Agente \#2)}: 
+    Traduz o relatório abstraído para a gramática formal de regras exigidas pela ferramenta SemGrep.
+  \item \textbf{Assistência e Validação (Agente \#3)}: 
+    Atua no controle de qualidade; caso o motor do SemGrep acuse erros sintáticos durante a validação da regra gerada, este agente interpreta os \textit{logs} de erro e aplica as correções necessárias de forma iterativa.
+    Caso a regra continua rejeitada pela ferramenta depois de três tentativas, será descartada, para evitar consumo infinito de memória e \textit{tokens}.
+  \item \textbf{Otimização Contínua e Consolidação de Regras (Agente \#4)}:
+    Após a aprovação e eficácia comprovada, as regras são integradas ao conjunto principal.
+    Este agente realiza uma varredura periódica para unificar regras que tratam do mesmo CWE, consolidando padrões e maximizando a abrangência de \textit{corner-cases}.
+  \end{itemize}
+\end{enumerate}
+
+\par
+Alinhado aos objetivos específicos (Seção \ref{sec:objespecifico}), a arquitetura foi desenhada priorizando a adoção de modelos de linguagem de menor escala (com menos parâmetros) para a orquestração destes agentes.
+Essa decisão visa viabilizar a execução do \textit{framework} em infraestruturas locais, otimizando o consumo computacional e o gasto de \textit{tokens}.
 
 \begin{figure}[h]
     \centering
@@ -813,20 +838,6 @@ Além da base de \citeonline{nistsard112juliet}, será coletado históricos de \
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:quartoagente}
 \end{figure}
-
-  \item A camada do \textit{pipeline} é composta por: A partir de uma entrada contendo o código com erro e corrigido, seja de um respectivo \textit{commit} ou de um \textit{dataset}, é computado pelo agente responsável por analisar códigos, a partir do \textit{input} são analisados seus padrões e o que difere o \textit{bug} da \textit{correção}. 
-Com sua análise, o agente (\#1) gera um reporte sobre a entrada, direcionando o próximo agente à gerar a regra.
-O modelo (\#2), responsável por gerar a regra formal para a ferramenta, gera a regra a partir do conteúdo do reporte com o contexto da gramática do SemGrep.
-Com a regra gerada, é inserido a regra na ferramenta e é realizado uma validação de gramática, caso SemGrep reprovar a regra, é direcionado para o agente (\#3), especializado na ferramenta, avalia os \textit{logs} de erro e corrige a regra, retornando para a validação novamente.
-Caso a regra seja validada, é testado a regra em bancos da mesma CWE para calcular eficácia e a regra é adicionada para o conjunto de regras.
-Depois de adicionar a regra ao conjunto, o agente (\#4) analisa todo o conjunto e unifica regras lidando com os mesmos CWEs, incluindo mais \textit{corner-cases}.
-\end{enumerate}
-
-
-
-Para todos os agentes mencionados, teremos como objetivo secundário, visto na \ref{sec:objetivo}, a utilização de modelos pequenos que podem ser usados localmente e com menos gasto de tokens.
-
-
 
 % ---------------------------------------------------------------
 \section{Cronograma de trabalho}
