@@ -164,7 +164,8 @@ CFGs são muitas vezes utilizados para a análise clássica de fluxo de dados, d
         A dependência de verificações pré-definidas ou modelagens formais restringe as ferramentas a um subconjunto limitado de padrões de \textit{bugs}. Isso prejudica a escalabilidade e a capacidade de detectar vulnerabilidades imprevistas ou casos extremos (\textit{corner-cases}) \cite{yang2025knighter}. \\
         \midrule
         Esforço Humano & 
-        A criação de regras personalizadas exige um alto nível de especialização técnica. A complexidade sintática torna a tarefa inacessível para desenvolvedores comuns, sendo inviável mesmo com treinamento de curto prazo para realizar uma regra eficiente \cite{hou2025generation}. \\
+        A criação de regras personalizadas exige um alto nível de especialização técnica. A complexidade sintática torna a tarefa inacessível para desenvolvedores comuns, sendo inviável mesmo com treinamento de curto prazo para realizar uma regra eficiente \cite{hou2025generation}.
+        Pesquisas revelam que menos de 5\% das regras de análise estática utilizadas na indústria são criadas por usuários comuns \cite{hou2025generation}. \\
         \midrule
         Falta de Extensibilidade Multilinguagem &
         A maioria das regras é desenvolvida com lógica rigidamente codificada (\textit{hard-coded}) para uma linguagem de programação específica. A necessidade de construir e manter \textit{parsers} específicos para cada nova linguagem exige alta especialização técnica, o que inviabiliza a portabilidade e gera altos custos na adaptação de analisadores para ecossistemas poliglotas \cite{hou2025generation}. \\
@@ -184,18 +185,6 @@ Enquanto a análise estática tradicional se limita a apontar as violações, o 
 Contudo, apesar de sua utilidade, tanto as ferramentas clássicas de detecção quanto os métodos tradicionais de correção enfrentam graves desafios estruturais.
 Conforme apontado por \citeonline{hou2025generation} e \citeonline{tang2021grammar}, a eficácia destas abordagens é frequentemente limitada por sua dependência de lógica rígida, o que compromete severamente a sua extensibilidade. 
 A Tabela \ref{tab:limitacoes_analise_trad} sintetiza as principais limitações destas abordagens clássicas apontadas na literatura.
-
-\par
-Embora existam outras ferramentas de análise estática que vão além de regras pré-definidas permitindo, através de interfaces amigáveis, que desenvolvedores incluam suas próprias regras personalizadas, como SemGrep, \citeonline{hou2025generation} ressalta como é impossível para um desenvolvedor não especialista desenvolver regras personalizadas eficientes, mesmo com um treinamento de curto prazo.
-Essa dificuldade é confirmada por pesquisas que revelam que menos de 5\% das regras de análise estática utilizadas na indústria são criadas por usuários comuns \cite{hou2025generation}.
-\par
-Além do esforço de criação, as regras de detecção estática são inerentemente imperfeitas \cite{jiang2025factaligned}.
-Quando é definido o conjunto de regras (\textit{ruleset}), os projetistas focam em semânticas comuns de exemplos conhecidos de \textit{bugs}. 
-Essas observações são abstraídas em modelos generalizados para tentar capturar vulnerabilidades semelhantes em códigos não vistos \cite{jiang2025factaligned}.
-Porém, \citeonline{yang2025knighter} explica que essa dependência contínua de verificações restritas exige ampla experiência de domínio e um esforço contínuo para manutenção.
-Como aponta \citeonline{jiang2025factaligned}, a riqueza gramatical da programação torna inviável prever todas as possíveis variações e \textit{corner cases}.
-\par
-Como resultado direto, estas ferramentas de análise estática tradicionais frequentemente geram uma abundância de falsos positivos ou falsos negativos no mundo real, além de terem sua escalabilidade severamente prejudicada diante de um aspecto mais amplo de problemas \cite{jiang2025factaligned, yang2025knighter}.
 
 \section{Contexto}
 \label{sec:contexto}
@@ -222,7 +211,6 @@ A submissão integral do código-fonte, aliada às iterações exigidas a cada m
 Especialmente com sistemas de grande escala complexos (como exemplo, o \textit{kernel} do Linux, com mais de 50 milhões de linhas de código) \cite{yang2025knighter}.
 \par
 A figura \ref{fig:motivacaocheckers} introduz motivações para a necessidade de métodos mais eficientes e, principalmente, especializados, tal que em projetos grandes, a análise estática possui dois desafios: criar regras para diversos padrões de bugs e gerenciamento de bases de códigos imensas \cite{yang2025knighter}.
-Os métodos tradicionais de análise estática apresentam limitações na cobertura de anomalias imprevistas (\textit{corner-cases}) e exigem elevado esforço manual para a engenharia de regras.
 Em contrapartida, a inspeção direta de código por LLMs esbarra em restrições de janela de contexto e implica em altos custos computacionais.
 \par
 Considerando esses dados, o analisador estático ideal deveria: detectar uma diversidade de falhas, incluindo \textit{corner-cases} e semânticas específicas de sistemas, e eficientemente processar milhões de linhas de código \cite{yang2025knighter}.
