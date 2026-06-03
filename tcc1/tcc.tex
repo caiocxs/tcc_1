@@ -221,12 +221,17 @@ A partir desse paradigma, \citeonline{yang2025knighter} sobrepassa os problemas 
 \section{Justificativa}
 \label{sec:justificativa}
 \par
-Apesar das conquistas e avanços que \citeonline{yang2025knighter} realizou, \citeonline{hou2025generation} mencionam uma barreira fundamental relacionada à diversidade de linguagens.
-Até onde sabemos, o KNIghter é um método direcionado à projetos C/C++ utilizando um \textit{framework Clang Static Analysis}.
-A sua expansão para outros ecossistemas exigiria extensos ajustes nesse paradigma \cite{hou2025generation}.
+A literatura recente demonstra avanços significativos na aplicação de Modelos de Linguagem de Larga Escala, em inglês \textit{Large Language Models} (LLM), para a análise estática, comprovando a viabilidade de sintetizar verificadores automatizados de código \cite{hou2025generation, yang2025knighter}.
+Trabalhos recentes atestam que a integração de LLMs com ferramentas ágeis e baseadas em regras, como o SemGrep, supera as abordagens tradicionais de lógica rígida, permitindo uma maior flexibilidade e abrangência na identificação de vulnerabilidades \cite{hou2025generation, yang2025knighter, li2026llmbased}.
 \par
-A partir dessa limitação, \citeonline{hou2025generation} introduziu a metodologia de \textit{prompting} para abordagem de diferentes linguagens, utilizando poucos exemplos (\textit{few-shot learning}) como aprendizado.
-Os autores citam a ferramenta \textit{Semgrep}, uma ferramenta utilizada para montagem de regras personalizadas para análise estática, como na Figura \ref{fig:semgrep}, tal que a utilizam para o \textit{ruleset} que geram via LLMs.
+Contudo, apesar dessas evoluções que nosso pioneiro \citeonline{yang2025knighter} realizou, estudos atuais revelam que métodos baseado em LLMs ainda exibem uma cobertura limitada e perdem uma grande porção de vulnerabilidades no mundo real, frequentemente falhando em lidar com variações semânticas complexas e \textit{corner-cases} \cite{hou2025generation, yang2025knighter}.
+Porém estudos concluiram que métodos de análise estática baseado em LLMs identificam mais vulnerabilidades únicas do que métodos tradicionais \cite{yang2025knighter, hou2025generation, li2026llmbased}.
+\par
+\citeonline{hou2025generation} citam a ferramenta \textit{Semgrep}, uma ferramenta utilizada para montagem de regras personalizadas para análise estática, como na Figura \ref{fig:semgrep}, tal que a utilizam para o \textit{ruleset} que geram via LLMs.
+\par
+Portanto, a justificativa deste trabalho reside na urgência de preencher essa lacuna de eficácia e escalabilidade.
+O desenvolvimento de um \textit{framework} iterativo e focado na geração automatizada de regras para o motor do SemGrep justifica-se pela necessidade de mitigar a dependência de engenharia manual e contornar os altos custos da inferência direta por IAs.
+Ao propor um sistema especializado nas vulnerabilidades críticas (CWEs) da linguagem C/C++, essa pesquisa busca entregar uma solução capaz de identificar padrões semânticos e \textit{corner-cases} com maior precisão e viabilidade técnica do que os analisadores estáticos tradicionais ou métodos generalistas baseados puramente em LLMs.
 
 \begin{figure}[h]
     \centering
@@ -235,26 +240,6 @@ Os autores citam a ferramenta \textit{Semgrep}, uma ferramenta utilizada para mo
     {\small Fonte: Adaptado para português com finalidade de melhorar compreensão \cite{hou2025generation}.}
     \label{fig:semgrep}
 \end{figure}
-
-\par
-A proposta sendo um \textit{framework} baseado em LLMs para regras de análise estática para lidar com as limitações de escrever regras lidando com todos os possíveis casos (\textit{corner-cases}) \cite{hou2025generation}.
-Integrando o domínio de conhecimento adquirido de LLMs durante pré-treinamento não-supervisionado, integrando com as descrições de regras otimizadas para guiar a geração delas pelas LLMs.
-\par
-Com essa metodologia, \citeonline{hou2025generation} afirma, utilizando a ferramenta \textit{SemGrep} e seu \textit{ruleset} especializado, que seu método atingiu 81,99\% de validação gramatical de suas regras pela ferramenta e 74,73\% sendo regras funcionais e válidas.
-Apesar de seu \textit{framework} possuir um foco em diversidade de linguagens, \citeonline{hou2025generation} superou a quantidade de regras válidas de KNighter \cite{yang2025knighter}, de 37 regras para 41 regras, analisando tipos de \textit{bugs} como \textit{Null Pointer Dereference} (CWE-476), \textit{Memory Leak} (CWE-401), \textit{Use After Free} (CWE-416), \textit{Double Free} (CWE-415), \textit{Use of Uninitialized Variable} (CWE-457), \textit{Buffer Overflow} (CWE-120), \textit{Out-of-Bounds} (CWE-119), \textit{Integer Overflow} (CWE-190), \textit{Race Condition} (CWE-362) e \textit{API Misuse} (CWE-227), utilizando de base e foco o projeto \textit{open-source} Linux.
-\par
-Além do KNighter, foi comparado sua performance para identificação de bugs entre \textit{rulesets} oficiais de SemGrep e ferramentas de análise estática tradicionais como Smatch e CPPCheck.
-Onde entre todos os avisos e erros que as ferramentas obtiveram, nenhuma identificou defeitos tal que o método de \citeonline{hou2025generation} identificou.
-\par
-Outro trabalho que desafia esse nível de eficiência é \citeonline{li2026llmbased}. 
-Seu \textit{framework} analisa 222 vulnerabilidades conhecidas de 8 tipos de CWEs em C/C++ e Java, além de 24 projetos \textit{open-source} ativos. 
-Apesar de sua análise de identificação de falsos positivos serem realizadas manualmente, somando 150 horas de trabalho humano, \citeonline{li2026llmbased} conseguiu concluir as causas desses falsos positivos e sua eficácia em detecção.
-\par
-Sua primeira conclusão é que métodos de análise estática baseado em LLMs exibem uma cobertura limitada de vulnerabilidades do mundo real \cite{li2026llmbased}.
-Os autores explicam que os métodos utilizados atingiram a média de \textit{recalls} de 21,09\% e 33,82\% para C/C++ e Java, indicando que é perdido uma grande porção de vulnerabilidades, geralmente causados por "inicios desalinhados" (\textit{misaligned source/sink definitions}) baseadas em análise manual \cite{li2026llmbased}.
-Porém, assim como \citeonline{hou2025generation}, \citeonline{li2026llmbased} também conclui que métodos de análise estática baseado em LLMs identificam mais vulnerabilidades únicas do que métodos tradicionais.
-\par
-Com estes resultados, este cenário apresenta potencial em analisadores estáticos com \textit{frameworks} dinâmicos para sistemas com riscos de vulnerabilidades relacionada à linguagem C/C++.
 
 \section{Hipótese}
 \label{sec:hipotese}
@@ -599,7 +584,7 @@ Com um \textit{commit} como entrada, KNighter retorna como saída um analisador 
 
 \par
 O motor principal do framework é \textit{Clang Static Analyser} (CSA), \citeonline{yang2025knighter} explica que CSA opera a partir de uma execução simbólica \textit{path-sensitive}, construindo uma representação interna chamada \textit{ExplodedGraph}.
-CSA é modulavél pela sua construção a partir de \textit{checkers}, sendo eles, pequenos componentes especializados, montados a partir de um \textit{template} \cite{yang2025knighter}.
+CSA é modulável pela sua construção a partir de \textit{checkers}, sendo eles, pequenos componentes especializados, montados a partir de um \textit{template} \cite{yang2025knighter}.
 \par
 Na figura \ref{fig:overviewknighter} mostra como o KNighter funciona em duas fases: sintetização de \textit{checkers}, o projeto analisa o \textit{patch} de entrada para identificar padrões de \textit{bugs}, sintetiza , a partir do conteúdo identificado, um plano de detecção e implementa um CSA \textit{checker} \cite{yang2025knighter}.
 Se ocorre qualquer erro de compilação, é encaminhado para um agente de sintaxe que automaticamente repara o \textit{checker} a partir das mensagens de erro \cite{yang2025knighter}.
