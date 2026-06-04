@@ -365,7 +365,7 @@ Em ferramentas de análise estática voltadas para linguagens complexas como C/C
 \par
 No contexto da análise de vulnerabilidades, a AST é fundamental para identificar padrões estruturais perigosos.
 Ao invés de realizar buscas textuais limitadas, os analisadores percorrem a árvore em busca de composições específicas de nós.
-Por exemplo, para detectar um risco de desreferenciação de ponteiro nulo (\textit{Null Pointer Dereference}), uma regra de análise pode inspecionar a AST em busca de um nó que represente uma chamada de alocação de memória, como a função \textit{devm\_kzalloc}, verificando se não existe um nó condicional adjacente encarregado de checar o valor de retorno antes de sua utilização.
+Por exemplo, para detectar um risco de desreferenciação de ponteiro nulo (\textit{Null Pointer Dereference}), uma regra de análise pode inspecionar a AST em busca de um nó que represente uma chamada de alocação de memória, como a função \texttt{devm\_kzalloc}, verificando se não existe um nó condicional adjacente encarregado de checar o valor de retorno antes de sua utilização.
 
 \subsubsection{Grafos de Fluxo de Controle}
 \label{sec:gfc}
@@ -442,14 +442,119 @@ Nem toda falha de segurança (\textit{security flaw}) leva a uma vulnerabilidade
 \par
 \citeonline{seacord2013secure} explicam que para que uma falha torne um programa vulnerável a ataques, é necessário que os dados de entrada desse programa cruzem um limite de segurança (\textit{security boundary}).
 Uma falha pode existir no código sem as pré-condições para ser explorada; por exemplo, se o programa apresentar um erro grave mas não possui permissões para ser acessado localmente, ele não viola a política de segurança e não constitui uma vulnerabilidade ativa \cite{seacord2013secure}.
+\par
+Uma vulnerabilidade pode existir mesmo sem que haja uma falha ou defeito no código \cite{seacord2013secure}.
+Como a segurança é um atributo de qualidade que muitas vezes precisa ser balanceado com outros fatores (como desempenho e usabilidade), os projetistas de \textit{software} podem decidir intencionalmente deixar um produto vulnerável a certas formas de exploração \cite{seacord2013secure}.
+Isso representação uma aceitação consciente do risco pelo projetista e não um erro de programação.
 
 \subsubsection{\textit{Common Weakness Enumeration}}
 \label{sec:cwes}
 \par
+A Enumeração de Fraquezas Comuns, mais popularmente conhecida do inglês \textit{Common Weakness Enumeration} (CWE), é um dicionário formal e uma lista desenvolvida pela comunidade que cataloga fraquezas comuns de \textit{software} e \textit{hardware} \cite{mitrecwe}.
+\par
+Neste contexto, o termo fraqueza (\textit{weakness}) é definido como uma condição em um componente de \textit{software}, \textit{firmware}, \textit{hardware} ou serviço que, sob determinadas circunstâncias, pode contribuir para a introdução de vulnerabilidades \cite{mitrecwe}.
+O projeto identifica, classifica e descreve esses problemas sob a nomenclatura de CWEs individuais (como, por exemplo, CWE-476 \textit{Null Pointer Dereference}).
+\par
+O propósito principal de se mapear essas fraquezas é permitir que desenvolvedores de \textit{software}, projetistas de \textit{hardware} e arquitetos de segurança as eliminem ainda na fase de desenvolvimento, antes da implantação (\textit{deployment}), o que torna a correção muito mais fácil e barata.
+O conteúdo de CWEs pode ser navegado através de diferentes visões, agrupando fraquezas para domínios específicos, como visões focadas estritamente em conceitos de Desenvolvimento de \textit{Software}, organizando as falhas que surgem durante a programação), Design de \textit{Hardware} e Conceitos de Pesquisa, organizando as falhas por comportamentos \cite{mitrecwe}.
+\par
+O dicionário CWE fornece mapeamentos externos essenciais e atua como base para diversos outros recursos e guias de segurança fundamentais na indústria, como as listas \textbf{CWE Top 25}, \textbf{OWASP Top 10} e os \textbf{padrões de codificação segura do SEI CERT} \cite{mitrecwe, seicertc2016}.
+A lista de fraquezas é atualizada de três a quatro vezes por ano para adicionar ou aprimorar informações, e o dicionário é construído, em parte, tomando como base os problemas reportados nos registros de vulnerabilidades ativas do catálogo CVE, do inglês \textit{Common Vulnerabilities and Exposures}.
+\par
+Para o escopo deste trabalho, serão consideradas primariamente cinco vulnerabilidades presentes na lista oficial da CWE, todas são fraquezas relacionadas a falhas de memória.
+São elas:
+
+\begin{itemize}
+  \item \textbf{CWE-401}: \textit{Memory Leak}; 
+  \item \textbf{CWE-415}: \textit{Double Free}; 
+  \item \textbf{CWE-416}: \textit{Dangling Pointer}; 
+  \item \textbf{CWE-457}: \textit{Use of Uninitialized Variable};
+  \item \textbf{CWE-476}: \textit{Null Pointer Dereference}. 
+\end{itemize}
+
+\subsubsection{CWE-401}
+\label{sec:401}
+\par
+A CWE-401, chamada de Vazamento de Memória, do inglês \textit{Missing Release of Memory after Effective Lifetime} ou \textit{Memory Leak}, ocorre quando um programa aloca memória, mas falha em rastrea-lá ou libera-lá adequadamente após ela não ser mais necessária \cite{cwe401}. 
+Isso torna o bloco de memória indisponível para realocação ou reúso.
+\par
+De acordo com \citeonline{cwe401}, é frequentemente causada por caminhos de execução, como condições de erro, dados malformados ou sessões interrompidas abruptamente, onde o código falha em executar a rotina de limpeza.
+Também surge da confusão sobre qual parte do programa é responsável por realizar o \textit{free} em linguagens de gerenciamento manual, como C.
+\par
+Embora normalmente resulte em problemas gerais de confiabilidade do \textit{software}, se um invasor conseguir desencadear repetidamente esse vazamento de forma intencional, ele poderá esgotar a memória do sistema \cite{cwe401}.
+Consequentemente leva a uma Negação de Serviço, em inglês \textit{Denial of Service} (DoS) por consumo excessivo de resursos (CPU ou memória) ou travamentos.
+\par
+A melhor forma é utilizar linguagens, bibliotecas ou \textit{frameworks} que forneçam gerenciamento automático de memória (como \textit{garbage collectors}) \cite{cwe401}.
+Linguagens como C, contudo, não oferecem esse gerenciamento de forma nativa.
+A adoção de bibliotecas externas para suprir essa falta exige cautela do projetista, que deve ponderar o custo de desempenho (\textit{overhead}), o risco de introdução de novas vulnerabilidades pela própria biblioteca e o aumento no esforço de análise de segurança do sistema.
+
+\subsubsection{CWE-415}
+\label{sec:415}
+\par
+A CWE-415, chamada de Liberação Dupla, do inglês \textit{Double Free}, ocorre quando o produto chama a função de liberação (como \texttt{free()}) duas vezes no mesmo endereço de memória \cite{cwe415}.
+\par
+Semelhante ao vazamento de memória (\ref{sec:401}), costuma ser resultado de condições de erro não tratadas corretamente ou confusão lógica sobre a responsabilidade de limpar a memória, especialmente quando ponteiros são usados de forma global ou espalhados por centenas de linhas e múltiplos arquivos \cite{cwe415}.
+\par
+Chamar a função \texttt{free()} de forma dupla corrompe as estruturas de dados de gerenciamento de memória do sistema.
+O programa pode travar, ou, pior, fazer com que duas chamadas futuras da função \texttt{malloc()} retornem exatamente o mesmo ponteiro \cite{cwe415}.
+Se o invasor controlar os dados inseridos nessa memória "duplamente alocada", ele ganha uma condição conhecida como \textit{write-what-where} e pode realizar ataques de \textit{buffer overflow}, chegando a \textbf{executar código arbitrário} \cite{cwe415}.
+\par
+Para garantir que cada alocação seja liberada apenas uma vez, uma técnica prática é definir o ponteiro como \texttt{NULL} imediatamente após o primeiro \texttt{free}, garantindo que não possa ser liberado novamente por engano \cite{cwe415}.
+
+\subsubsection{CWE-416}
+\label{sec:416}
+\par
+A CWE-416, chamada de Uso Após Liberação, do inglês \textit{Use After Free} (UAF), ocorre quando o programa continua a utilizar ou referenciar um ponteiro para a memória que já foi liberada \cite{cwe416}.
+Como a memória já foi devolvida, ela pode ter sido realocada e preenchida com dados novos; logo, as operações quando o ponteiro original interagem acidentalmente com os dados da nova alocação \cite{cwe416}.
+\par 
+Frequentemente resulta de outras fraquezas primárias, como, em concorrência, condições de corrida, manipulação inadequada de erros ou apenas liberação precoce por falha lógica \cite{cwe416}.
+\par 
+Possível causar alteração não intencional de memória, corrompendo dados válidos, vazamento de informações confidenciais, como permissão de leitura indevida, e DoS por travamento \cite{cwe416}.
+Além disso, se o invasor conseguir inserir dados maliciosos logo após o ponteiro ser liberado, é possível \textbf{executar códigos ou comandos arbitrários} assumindo o controle da execução \cite{cwe416}.
+\par
+Além do uso de gerenciamento automático, usar o conceito visto em CWE-415 (\ref{sec:415}), definindo os ponteiros como \texttt{NULL} imediatamente após serem liberados.
+Se houver uma falha que tente reutilizar esse ponteiro depois disso, ocorrerá um travamento (Desreferenciamento de Nulo), mas isso elimina a possibilidade crítica de execução de código malicioso \cite{cwe415}.
+
+\subsubsection{CWE-457}
+\label{sec:457}
+\par
+A CWE-457, chamada de Uso de Variável Não Inicializada, do inglês \textit{Use of Uninitialized Variable}, ocorre quando o código usa uma variável que não recebeu um valor inicial \cite{cwe457}.
+Em linguagens como C, variáveis armazenadas na pilha (\textit{stack}) não são limpas por padrão e conterão lixo de memória deixado por chamadas de funções anteriores.
+\par
+Segundo \citeonline{cwe457}, tipicamente ocorre por erros tipográficos no código ou por que um fluxo lógico (como \texttt{switch} ou \texttt{if/else}) falhou em cobrir todos os casos e não atribuiu valor à variável antes de ela ser utilizada.
+\par
+Essa fraqueza pode gerar comportamentos totalmente imprevisíveis, corromper o fluxo de controle esperado do programa ou causar DoS.
+Em cenários críticos, um invasor pode influenciar os dados residuais na pilha (pré-inicializando o lixo intencionalmente) para contornar checagens de senha, burlar travas lógicas ou \textbf{executar código} \cite{cwe457}.
+O problema se agrava com \textit{strings}, pois funções contam com um terminador nulo que pode não existir no lixo residual.
+\par
+Sempre garantir explicitamente que variáveis essenciais recebam um valor padrão aceitável no momento de declaração \cite{cwe457}.
+É fortemente recomendado configurar e usar ferramentas de compilação em modos rigorosos, pelos compiladores moderrnos costumarem emitir alertas consistentes quando variáveis são lidas sem serem inicializadas \cite{cwe457}.
+
+\subsubsection{CWE-476}
+\label{sec:476}
+\par
+A CWE-476, chamada de Desreferenciamento de Ponteiro Nulo, do inglês \textit{Null Pointer Dereference}, ocorre quando o código tenta desreferenciar, acessar o conteúdo ou método apontado, um ponteiro sob a suposição de que ele é válido, mas seu valor real é \texttt{NULL} \cite{cwe476}.
+\par
+Muitas funções de busca ou resolução de rede (por exemplo: \texttt{gethostbyaddr}) retornam nulo quando falham, e os desenvolvedores se esquecem de checar o retorno (\textit{Unchecked Return Value}) antes de usar o resultado do ponteiro \cite{cwe476}.
+Também pode ser consequência de variáveis não inicializadas ou concorrência em sistemas assíncronos.
+\par
+Segundo \citeonline{cwe476}, a consequência geralmente é o \textbf{travamento completo do processo} (DoS), sendo muito difícil que o programa se recupere para um estado seguro de funcionamento, mesmo com tratamentos de exceção.
+Em raras circunstâncias, como quando \texttt{NULL} equivale ao endereço de memória literal \texttt{0x00} e o código privilegiado pode acessá-lo, um invasor pode ler/escrever na memória e \textbf{executar códigos} \cite{cwe476}.
+\par
+Validar e checar estritamente resultados de todas as funções, confirmando que o valor não é nulo antes de utilizá-lo. Inicializar variáveis com valores padrões também previnem essa situação \cite{cwe476}.
 
 \subsubsection{\textit{Common Vulnerabilities and Exposures}}
 \label{sec:cves}
 \par
+A Enumeração Comum de Vulnerabilidades e Exposições, mais popularmente conhecida do inglês \textit{Common Vulnerabilities and Exposures} (CVE).
+Similarmente à CWEs, CVE atua como um dicionário, com foco em identificar, definir e catalogar vulnerabilidades de segurança cibernética que foram divulgadas publicamente \cite{cveabout}.
+\par 
+CVE possui um único registro no seu catálogo para cada vulnerabilidade descoberta para uma versão específica de um \textit{software}.
+O objetivo principal de se atribuir um CVE é permitir que profissionais de TI, ferramentas automatizadas e equipes de segurança cibernética saibam que estão se referindo exatamente ao mesmo problema \cite{cveabout}.
+\par
+Após a confirmação de uma vulnerabilidade, ela recebe um identificador único composto pelo ano de relato ou atribuição, seguido por um sequencial numérico.
+Parceiros como \textit{National Vulnerability Database} (NVD) adicionam o registro com suas descrições, atribuindo um índice de severidade metrificado pela \textit{Common Vulnerability Scoring System} (CVSS) e sua causa raiz proveniente da CWE \cite{cveabout}.
+
 
 \subsection{Arquitetura Transformers}
 \label{sec:modelostransformers}
@@ -571,7 +676,7 @@ Apesar da análise estática ser o método mais eficiente pela sua falta de exec
 A figura \ref{fig:motivacaocheckers} mostra a motivação que os autores tinham sobre analisadores automatizados.
 \par
 Motivado pelas limitações expostas, o trabalho propõe um \textit{framework} voltado à extração de padrões a partir de histórico de \textit{commits}.
-Como exemplo empírico, a identificação de chamadas à função \textit{devm\_kzalloc} desacompanhadas de verificação de nulidade configura uma heurística válida para a detecção da vulnerabilidade \textit{Null Pointer Dereference} (CWE-476) \cite{yang2025knighter}.
+Como exemplo empírico, a identificação de chamadas à função \texttt{devm\_kzalloc} desacompanhadas de verificação de nulidade configura uma heurística válida para a detecção da vulnerabilidade \textit{Null Pointer Dereference} (CWE-476) \cite{yang2025knighter}.
 Com um \textit{commit} como entrada, KNighter retorna como saída um analisador gerado para \textit{Clang Static Analyser} (CSA). Sendo um verificador válido aquele que identifica o código pré alteração do \textit{commit} como \textit{bug} e o código corrigido como correto \cite{yang2025knighter}.
 
 \begin{figure}[h]
@@ -671,7 +776,7 @@ Em particular, as raízes de casos de falsos positivos são raramente categoriza
 \textbf{(3) Escalabilidade e \textit{Overhead}}, os autores explicam que uma das principais preocupações nesses métodos baseado em LLMs é seu custo e eficiência.
 Porém, estudos recentes raramente medem o potencial custo máximo do uso computacional desses análisadores, como contagem de \textit{tokens} e tempo de processamento dependendo de projetos \cite{li2026llmbased}.
 \par
-A partir dessas lacunas, o trabalho de \citeonline{li2026llmbased} apresenta um estudo empírico analisando 5 projetos de análise estática baseado em LLMs lidando com múltiplos tipos de CWEs, linguagens de programação e \textit{workflows}.
+A partir dessas lacunas, o trabalho de \citeonline{li2026llmbased} apresenta um estudo empírico analisando 4 projetos de análise estática baseado em LLMs lidando com múltiplos tipos de CWEs, linguagens de programação e \textit{workflows}.
 Sua avaliação utiliza duas configurações complementares: (i) \textit{dataset} personalizado com 222 vulnerabilidades conhecidas em contexto de mundo real, cobrindo 8 tipos de CWEs em C/C++ e Java, utilizado para avaliar a detecção de vulnerabilidades sistemáticamente \cite{li2026llmbased}.
 (ii) 24 projetos \textit{open-source} ativos, utilizados para avaliar em usabilidade prática no mundo real.
 \par
