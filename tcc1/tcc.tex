@@ -498,7 +498,7 @@ No entanto, essa abstração tem o benefício direto de reduzir drasticamente o 
 \subsubsection{Limitações da Análise Estática}
 \label{sec:limitacoesanalise}
 \par
-\citeonline{aho2007compilers} explicam o problema de encontrar todos os erros de um programa é indecidível.
+\citeonline{aho2007compilers} explicam que o problema de encontrar todos os erros de um programa é indecidível.
 Uma ferramenta de análise de fluxo de dados pode até ser projetada para alertar programadores sobre todas as possíveis partes do código com uma categoria específica de erros, porém se a maioria desses avisos forem falsos alarmes, os usuários não vão utilizar a ferramenta.
 \par
 Por conta dessa complexidade, \citeonline{aho2007compilers} afirmam que os detectores práticos de erros frequentemente não são perfeitos (á prova de falhas ou \textit{sound}) nem completos (\textit{complete}).
@@ -545,7 +545,7 @@ A partir destes predicados, é possível combinar operações lógicas (\textit{
 Como na linha 1, o bloco principal exige que o código esteja dentro da função (linha 2) \textbf{E} corresponda a um dos casos de injeção (linha 4).
 (ii) \textbf{\textit{pattern-either}} representa a lógica \textit{OR} (OU), se o código corresponde a qualquer uma das condições aninhadas sob este predicado, a avaliação será verdadeira. Na linha 4, a regra procura um fluxo direto de \textit{\$USER\_DATA} ou um fluxo indireto por atribuição.
 (iii) \textbf{\textit{pattern-not}} representa a lógica \textit{NOT} (NÃO).
-Não presente no exemplo, porém usado para excluir falsos positivos, anulando caso a regra bater coma  condição aninhada no predicado.
+Não presente no exemplo, porém usado para excluir falsos positivos, anulando caso a regra bater com a condição aninhada no predicado.
 \par
 Com estes conhecimentos, é possível compreender mais profundamente como a ferramenta utilizada funciona. SemGrep possui maneiras de lidar com falsos positivas nativamente, nos permitindo liberdade para aperfeiçoar a análise de regras.
 
@@ -591,7 +591,7 @@ São elas:
 \subsubsection{CWE-401}
 \label{sec:401}
 \par
-A CWE-401, chamada de Vazamento de Memória, do inglês \textit{Missing Release of Memory after Effective Lifetime} ou \textit{Memory Leak}, ocorre quando um programa aloca memória, mas falha em rastrea-lá ou libera-lá adequadamente após ela não ser mais necessária \cite{cwe401}. 
+A CWE-401, chamada de Vazamento de Memória, do inglês \textit{Missing Release of Memory after Effective Lifetime} ou \textit{Memory Leak}, ocorre quando um programa aloca memória, mas falha em rastreá-la ou liberá-la adequadamente após ela não ser mais necessária \cite{cwe401}. 
 Isso torna o bloco de memória indisponível para realocação ou reúso.
 \par
 De acordo com \citeonline{cwe401}, é frequentemente causada por caminhos de execução, como condições de erro, dados malformados ou sessões interrompidas abruptamente, onde o código falha em executar a rotina de limpeza.
@@ -637,7 +637,7 @@ Se houver uma falha que tente reutilizar esse ponteiro depois disso, ocorrerá u
 A CWE-457, chamada de Uso de Variável Não Inicializada, do inglês \textit{Use of Uninitialized Variable}, ocorre quando o código usa uma variável que não recebeu um valor inicial \cite{cwe457}.
 Em linguagens como C, variáveis armazenadas na pilha (\textit{stack}) não são limpas por padrão e conterão lixo de memória deixado por chamadas de funções anteriores.
 \par
-Segundo \citeonline{cwe457}, tipicamente ocorre por erros tipográficos no código ou por que um fluxo lógico (como \texttt{switch} ou \texttt{if/else}) falhou em cobrir todos os casos e não atribuiu valor à variável antes de ela ser utilizada.
+Segundo \citeonline{cwe457}, tipicamente ocorre por erros tipográficos no código ou porque um fluxo lógico (como \texttt{switch} ou \texttt{if/else}) falhou em cobrir todos os casos e não atribuiu valor à variável antes de ela ser utilizada.
 \par
 Essa fraqueza pode gerar comportamentos totalmente imprevisíveis, corromper o fluxo de controle esperado do programa ou causar DoS.
 Em cenários críticos, um invasor pode influenciar os dados residuais na pilha (pré-inicializando o lixo intencionalmente) para contornar checagens de senha, burlar travas lógicas ou \textbf{executar código} \cite{cwe457}.
@@ -678,7 +678,7 @@ Um sistema formal amplamente utilizado para modelar a estrutura constituinte em 
 Também conhecidas como gramáticas de estrutura de frase (\textit{phrase-structure grammars}), as CFGs utilizam um formalismo que é equivalente à Forma de Backus-Naur (BNF), padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
 \par
 Uma CFG consiste em um conjunto de regras ou produções, onde cada uma expressa como os símbolos podem ser ordenados e agrupados, e um léxico de palavras e símbolos.
-Tal estrutura define uma linguagem formal, na qual existe uma separação estrita: sentenças que podem ser derivadas pelas regras são consideradas gramaticais, enquanto as que não podem são denomidadas agramaticais \cite{jurafsky2026speech}.
+Tal estrutura define uma linguagem formal, na qual existe uma separação estrita: sentenças que podem ser derivadas pelas regras são consideradas gramaticais, enquanto as que não podem são denominadas agramaticais \cite{jurafsky2026speech}.
 \par
 Contudo, essa distinção rígida é uma característica das gramáticas formais e serve apenas como um modelo simplificado das linguagens naturais.
 Diferente das linguagens de programação, a validade e o sentido em linguagem natural dependem intrinsecamente do contexto.
@@ -691,8 +691,8 @@ O Processamento de Linguagem Natural, do inglês \textit{Natural Language Proces
 \par
 Os autores pontuam que o problema da compreensão da linguagem é consideravelmente complexo, pois não se restringe apenas ao entendimento da estrutura sintática das sentenças, mas exige uma profunda compreensão da semântica, do contexto e do assunto abordado.
 \par
-O campo de NLP progrediu através de diferentes abordagens de resolução, a abordagem mais relevante para este trabalho é o Apredizado Profundo (\textit{Deep Learning}).
-Baseado na arquitetura \textit{Transformer}, esse paradigma mudou o foco da engenharia manual de características para a aprendizagem de representação (\textit{representation learning}), onde os modelos aprendem automaticamente vetores de significativo contínuos (\textit{embeddings} contextuais) operando em vastas quantidades de texto não rotulado, mediante o pré-treinamento autossupervisionado \cite{jurafsky2026speech}.
+O campo de NLP progrediu através de diferentes abordagens de resolução, a abordagem mais relevante para este trabalho é o Aprendizado Profundo (\textit{Deep Learning}).
+Baseado na arquitetura \textit{Transformer}, esse paradigma mudou o foco da engenharia manual de características para a aprendizagem de representação (\textit{representation learning}), onde os modelos aprendem automaticamente vetores de significado contínuos (\textit{embeddings} contextuais) operando em vastas quantidades de texto não rotulado, mediante o pré-treinamento autossupervisionado \cite{jurafsky2026speech}.
 \par
 O NLP é dividido em tarefas de Compreensão de Linguagem Natural (\textit{Natural Language Understanding} - NLU), focadas em extrair significado, e Geração de Linguagem Natural (\textit{Natural Language Generation} - NLG), focadas na produção de texto coerente \cite{tunstall2022natural}.
 \par
@@ -782,11 +782,11 @@ Segundo \citeonline{jurafsky2026speech}, uma LLM é um sistema probabilístico q
 Existem três configurações principais de \textit{Transformers} (codificadores, decodificadores e codificadores-decodificadores), os LLMs generativos modernos (como a família GPT, Claude, Lhama, etc.) utilizam a arquitetura baseada estritamente em Decodificadores (\textit{Decoders}).
 Pela natureza de gerar iterativamente o próximo \textit{token} por vez e consumir a própria saída como entrada para o passo seguinte, esse processo é denominado geração causal ou autorregressiva (\textit{causal or autorregressive generation}) \cite{jurafsky2026speech}.
 \par
-A ideia central, proposta por \citeonline{jurafsky2026speech}, que torna os LLMs possíveis í o pré-treinamento.
+A ideia central, proposta por \citeonline{jurafsky2026speech}, que torna os LLMs possíveis é o pré-treinamento.
 Os modelos aprendem conhecimentos profundos sobre a linguagem, o contexto e o mundo simplesmente sendo ensinados de forma iterativa a prever a próxima palavra em \textit{corpora} gigantescos de texto.
 \par
-Esse processor é autossupervisionado (\textit{self-supervised}), pois a sequência natural de palavras serve como sua própria supervisão.
-O algoritmo ajusta bilhões de parâmetros da rede (pesos de atenção e \textit{feed-forward}) minimizando a função de perda de entropia cruzada (\textit{cross-entropy loss}), que penaliza o modelo quando ele atribui uma probabilidade baixa à palagbra que de fato é a correta no texto \cite{jurafsky2026speech}.
+Esse processo é autossupervisionado (\textit{self-supervised}), pois a sequência natural de palavras serve como sua própria supervisão.
+O algoritmo ajusta bilhões de parâmetros da rede (pesos de atenção e \textit{feed-forward}) minimizando a função de perda de entropia cruzada (\textit{cross-entropy loss}), que penaliza o modelo quando ele atribui uma probabilidade baixa à palavra que de fato é a correta no texto \cite{jurafsky2026speech}.
 \par
 Após o pré-treinamento, qualquer tarefa de Processamento de Linguagem Natural (\ref{sec:processamentoln}) pode ser modelada como uma geração condicional guiada por um \textit{prompt} \cite{jurafsky2026speech}.
 Sua capacidade de aprendizado em contexto (\textit{in-context learning}) permite que LLMs aprendam a executar novas tarefas durante a fase de inferência (quando estão apenas gerando texto) a partir das instruções ou demonstrações contidas no \textit{prompt}, sem que haja nenhuma atualização de parâmetros baseada em gradientes no modelo subjacente \cite{jurafsky2026speech}.
@@ -831,7 +831,7 @@ Sendo analisado também quais regras geram \textit{loops} de correção, quais o
 \label{sec:validadefuncional}
 \par
 Define a precisão da regra sobre distinguir corretamente um código defeituoso e corrigido.
-Para realizar essa avaliação, cada regra introduzida a ferramenta, é avaliado os relatórios gerados a partir dela sobre o código gerador da regra (defeituoso e corrigido).
+Para realizar essa avaliação, cada regra introduzida à ferramenta, é avaliado os relatórios gerados a partir dela sobre o código gerador da regra (defeituoso e corrigido).
 \par
 Analisando a verificação em ambos casos, é identificado o número de relatos no código com \textit{bugs} ($X_{identificados}$) e no código corrigido ($X_{corrigidos}$), sendo validado somente nos casos em que no código corrigido não seja identificado nenhum relatório ($X_{corrigidos} = 0$) e no código defeituoso todos os $N$ casos presentes ($X_{identificados} >= N$).
 
@@ -852,8 +852,8 @@ Cada previsão feita pelo modelo cai em uma das quatro categorias:
 \end{itemize}
 \par
 A \textbf{Precisão} (\textit{Precision - P)} indica a proporção de exemplos positivos que foram corretamente identificados.
-No contexto desse trabalho, representa a proporção de trechos de códigos classificados realmente eram \textit{bugs}.
-É especialmente importante sua corretude quando o custo de falsos positivos é alta, causando a inutilizáção da ferramenta \cite{aho2007compilers}.
+No contexto desse trabalho, representa a proporção de trechos de códigos classificados que realmente eram \textit{bugs}.
+É especialmente importante sua corretude quando o custo de falsos positivos é alta, causando a inutilização da ferramenta \cite{aho2007compilers}.
 
 \begin{equation}
   \textit{Precision} = \frac{TP}{TP + FP}
@@ -985,7 +985,7 @@ Aponta \citeonline{hou2025generation} que isso efetivamente soluciona dificuldad
 A ferramenta de análise estática utilizada, para reduzir o uso de apenas LLMs, é SemGrep.
 Os autores explicam que análise estática baseada em regras proveem extensibilidade por suas regras customizaveis, permitindo checagens para problemas específicos para projetos específicos \cite{hou2025generation}.
 Consequentemente, \citeonline{hou2025generation} afirma que não existe necessidade da construção de um analisador específico para realizar essas checagens.
-Para o objetivo do artigo com migração de regras, SemGrep se encaixa perfeitamente por seu suporte a mais de 30 linguagens, mimetizaando qualquer das linguagens suportadas com seu arquivo YAML \cite{hou2025generation}.
+Para o objetivo do artigo com migração de regras, SemGrep se encaixa perfeitamente por seu suporte a mais de 30 linguagens, mimetizando qualquer das linguagens suportadas com seu arquivo YAML \cite{hou2025generation}.
 \par
 Do ponto de vista técnico, a abordagem proposta segue um \textit{workflow} de três estágios: a Geração, Migração e Otimização das regras.
 No estágio inicial de Geração, o método dos autores é reconhecimento de \textit{patches} de código e gera descrições das regras, assim gera a regra a partir da descrição.
@@ -1043,7 +1043,7 @@ Apesar dessa conclusão, os autores afirmam que esses métodos, comparado com fe
 \par
 Segunda conclusão foi \textbf{ambos os métodos de análise estática (tradicionais e baseada em LLMs) exibem uma alta taxa de falsos positivos}, com a melhor ferramenta analisada ainda teve \textbf{85,3\%} de taxa média de falsos positivos \cite{li2026llmbased}.
 Dentre a avaliação das 385 detecções, foi estudado a razão de cada falso positivo e quantificado sua distribuição dentre ferramentas, mostrando que raciocínios superficiais de fluxo de dados, a identificação imprecisa de fontes e negligência de pontos críticos do programa em contextos complexos constituem as causas-raiz predominantes para falsos positivos analisados \cite{li2026llmbased}.
-A última conclusão é \textbf{análise de detecção de vulnerabilidades baseada em LLMs para projetos de larga escala continua computacionalmente caro}, \citeonline{li2026llmbased} realizou uma análise de custo em que mostrou que se pode custar entre cem mil \textit{tokens} à cem milhões de \textit{tokens} por projeto (p. ex., até 38,31 milhões de tokens de entrada e 38,07 milhões de tokens de saída), além do processamento de múltiplas horas para múltiplos dias (p. ex., até 4.368 minutos), criando uma limitação crítica para sua escalabilidade.
+A última conclusão é a \textbf{análise de detecção de vulnerabilidades baseada em LLMs para projetos de larga escala continua computacionalmente caro}, \citeonline{li2026llmbased} realizou uma análise de custo em que mostrou que se pode custar entre cem mil \textit{tokens} à cem milhões de \textit{tokens} por projeto (p. ex., até 38,31 milhões de tokens de entrada e 38,07 milhões de tokens de saída), além do processamento de múltiplas horas para múltiplos dias (p. ex., até 4.368 minutos), criando uma limitação crítica para sua escalabilidade.
 \par
 Com o foco na linguagem C/C++, \citeonline{li2026llmbased} utilizou KNighter de \citeonline{yang2025knighter} e RepoAudit de \citeonline{guo2025repoaudit} e para métodos tradicionais, utilizaram SemGrep (\textit{ruleset} padrão) e CodeQL.
 \par
@@ -1065,7 +1065,7 @@ A partir desses títulos, foi estimado a taxa de detecção de falsos positivos 
 
 \begin{figure}[h]
     \centering
-    \caption{Análide de CWEs (\textit{Memory Leak}, \textit{Use After Free}, \textit{Null Pointer Dereference})}
+    \caption{Análise de CWEs (\textit{Memory Leak}, \textit{Use After Free}, \textit{Null Pointer Dereference})}
     \includegraphics[width=0.65\textwidth]{Images/LLM-Based-Analise.png}
     \\
     {\small Fonte: Adaptado para o português para melhor compreensão \cite{li2026llmbased}.}
