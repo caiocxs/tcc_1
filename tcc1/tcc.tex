@@ -118,7 +118,7 @@
 % ---------------------------------------------------------------
 \begin{resumo}
   Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. 
-O objetivo deste trabalho é desenvolver e avaliar um \textit{framework} iterativo baseado em LLMs capaz de sintetizar automaticamente regras de análise estática para a ferramenta SemGrep, como foco em vulnerabilidades críticas da linguagem C/C++.
+O objetivo deste trabalho é desenvolver e avaliar um \textit{framework} iterativo baseado em LLMs capaz de sintetizar automaticamente regras de análise estática para a ferramenta SemGrep, com foco em vulnerabilidades críticas da linguagem C/C++.
 A justificativa baseia-se na necessidade de reduzir custos computacionais na inferência direta por IAs e mitigar a dependência de engenharia manual e rígida de regras.
 
 \vspace{\onelineskip}
@@ -184,6 +184,13 @@ TP   & \textit{True Positive} (Verdadeiros Positivos) \\
 \end{tabular}
 \end{center}
 
+\cleardoublepage
+
+% ---------------------------------------------------------------
+% LISTA DE ILUSTRAÇÕES
+% ---------------------------------------------------------------
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
 \cleardoublepage
 
 % ---------------------------------------------------------------
@@ -253,6 +260,7 @@ A Tabela \ref{tab:limitacoes_analise_trad} sintetiza as principais limitações 
     \centering
     \caption{Motivação para \textit{checkers} feitos por llms.}
     \includegraphics[width=0.55\textwidth]{Images/problemas em larga escala.png}
+    \\
     {\small Fonte: Adaptado pelo autor para melhor compreensão \cite{yang2025knighter}}
     \label{fig:motivacaocheckers}
 \end{figure}
@@ -284,8 +292,8 @@ A partir desse paradigma, \citeonline{yang2025knighter} sobrepassa os problemas 
 A literatura recente demonstra avanços significativos na aplicação de Modelos de Linguagem de Larga Escala, em inglês \textit{Large Language Models} (LLM), para a análise estática, comprovando a viabilidade de sintetizar verificadores automatizados de código \cite{hou2025generation, yang2025knighter}.
 Trabalhos recentes atestam que a integração de LLMs com ferramentas ágeis e baseadas em regras, como o SemGrep, supera as abordagens tradicionais de lógica rígida, permitindo uma maior flexibilidade e abrangência na identificação de vulnerabilidades \cite{hou2025generation, yang2025knighter, li2026llmbased}.
 \par
-Contudo, apesar dessas evoluções que nosso pioneiro \citeonline{yang2025knighter} realizou, estudos atuais revelam que métodos baseado em LLMs ainda exibem uma cobertura limitada e perdem uma grande porção de vulnerabilidades no mundo real, frequentemente falhando em lidar com variações semânticas complexas e \textit{corner-cases} \cite{hou2025generation, yang2025knighter}.
-Porém estudos concluiram que métodos de análise estática baseado em LLMs identificam mais vulnerabilidades únicas do que métodos tradicionais \cite{yang2025knighter, hou2025generation, li2026llmbased}.
+Contudo, apesar dessas evoluções que nosso pioneiro \citeonline{yang2025knighter} realizou, estudos atuais revelam que métodos baseados em LLMs ainda exibem uma cobertura limitada e perdem uma grande porção de vulnerabilidades no mundo real, frequentemente falhando em lidar com variações semânticas complexas e \textit{corner-cases} \cite{hou2025generation, yang2025knighter}.
+Porém estudos concluíram que métodos de análise estática baseado em LLMs identificam mais vulnerabilidades únicas do que métodos tradicionais \cite{yang2025knighter, hou2025generation, li2026llmbased}.
 \par
 \citeonline{hou2025generation} citam a ferramenta \textit{Semgrep}, uma ferramenta utilizada para montagem de regras personalizadas para análise estática, como na Figura \ref{fig:semgrep}, tal que a utilizam para o \textit{ruleset} que geram via LLMs.
 \par
@@ -297,6 +305,7 @@ Ao propor um sistema especializado nas vulnerabilidades críticas (CWEs) da ling
     \centering
     \caption{Exemplo de regra criada para detectar uma senha embutida no argumento da função em Python.}
     \includegraphics[width=0.80\textwidth]{Images/Semgrep.png}
+    \\
     {\small Fonte: Adaptado para português com finalidade de melhorar compreensão \cite{hou2025generation}.}
     \label{fig:semgrep}
 \end{figure}
@@ -354,6 +363,7 @@ Estes termos foram combinados por meio de operadores booleanos (\textit{AND}, \t
     \centering
     \caption{\textit{Query} utilizada durante a pesquisa de materiais.}
     \includegraphics[width=0.98\textwidth]{Images/Query.png}
+    \\
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:query}
 \end{figure}
@@ -371,6 +381,7 @@ Na segunda fase (afunilamento), os trabalhos restantes passaram por uma leitura 
     \centering
     \caption{Funil de pesquisa.}
     \includegraphics[width=0.75\textwidth]{Images/Funil.png}
+    \\
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:funil}
 \end{figure}
@@ -398,7 +409,7 @@ Se a conversão de tipos é necessária, o verificador pode inserir o operador c
 \par
 Não é importante somente para otimização de código, as mesmas técnicas podem ser usadas para analisar \textit{software} já existentes para diversos padrões comuns de erros de programação \cite{aho2007compilers}.
 PREfix e Metal são duas ferramentas mencionadas por \citeonline{aho2007compilers} utilizam análise estática interprocedural, rastreando o fluxo de informações em um programa inteiro, para encontrar erros de programação estaticamente em grandes bases de código.
-Estas ferramentas são capazes de rastrear o caminho de entradas fornecidas pelos usuários enquanto essas \textit{strings} são copiadas ou combinadas ao longo de vários procedimento, acompanhando as entradas é possível prevenir contra \textit{SQL Injection} e \textit{Buffer Overflows} \cite{aho2007compilers}.
+Estas ferramentas são capazes de rastrear o caminho de entradas fornecidas pelos usuários enquanto essas \textit{strings} são copiadas ou combinadas ao longo de vários procedimentos, acompanhando as entradas é possível prevenir contra \textit{SQL Injection} e \textit{Buffer Overflows} \cite{aho2007compilers}.
 
 \subsubsection{Árvore Sintática Abstrata}
 \label{sec:ast}
@@ -414,6 +425,7 @@ Nós auxiliares exigidos pela gramática para contornar ambiguidades ou definir 
     \centering
     \caption{Árvore Sintática Abstrata para a expressão 9-5+2}
     \includegraphics[width=0.45\textwidth]{Images/AST.png}
+    \\
     {\small Fonte: \cite{aho2007compilers}}
     \label{fig:ast}
 \end{figure}
@@ -492,7 +504,7 @@ Uma ferramenta de análise de fluxo de dados pode até ser projetada para alerta
 Por conta dessa complexidade, \citeonline{aho2007compilers} afirmam que os detectores práticos de erros frequentemente não são perfeitos (á prova de falhas ou \textit{sound}) nem completos (\textit{complete}).
 As abordagens tradicionais de detecção de vulnerabilidades estática geralmente codificam o conhecimento especializado como regras projetadas manualmente, com padrões e modelos de fluxo de dados, sua dependência de padrões predefinidos limita inerentemente a generalização e a cobertura para tipos de vulnerabilidades previamente não vistos ou em evolução \cite{li2026llmbased}.
 \par
-Isso significa que a análise estática pode não encontrar todos os erros no programa, e nem todos os erros relatados têm a garantia de serem erros reais, e se as ferramentas relatassem todos os erros potenciais, o volume de falsos positivos tornariam as ferramentas inutilizáveis \cite{aho2007compilers}.
+Isso significa que a análise estática pode não encontrar todos os erros no programa, e nem todos os erros relatados têm a garantia de serem erros reais, e se as ferramentas relatassem todos os erros potenciais, o volume de falsos positivos tornaria as ferramentas inutilizáveis \cite{aho2007compilers}.
 
 \subsubsection{Análise estática baseada em regras}
 \label{sec:analiseestaticaregras}
@@ -512,6 +524,7 @@ Com sua ativa continuidade e plataforma capaz de compartilhar regras existentes 
     \centering
     \caption{Exemplo de regra simplificada para detecção de falhas OSCI em Java.}
     \includegraphics[width=0.95\textwidth]{Images/Semgrep-java.png}
+    \\
     {\small Fonte: Adaptado de \cite{jiang2025factaligned}.}
     \label{fig:semgrepjava}
 \end{figure}
@@ -679,7 +692,7 @@ O Processamento de Linguagem Natural, do inglês \textit{Natural Language Proces
 Os autores pontuam que o problema da compreensão da linguagem é consideravelmente complexo, pois não se restringe apenas ao entendimento da estrutura sintática das sentenças, mas exige uma profunda compreensão da semântica, do contexto e do assunto abordado.
 \par
 O campo de NLP progrediu através de diferentes abordagens de resolução, a abordagem mais relevante para este trabalho é o Apredizado Profundo (\textit{Deep Learning}).
-Baseado na arquitetura \textit{Transformer}, esse paradigma mudou o foco da engenharia manual de características para a aprendizagem de representação (\textit{representation learning}), onde os modelos aprendem automaticamente vetores de significativo contínuos (\textit{embeddings} contextuais) operando em vasta quantidades de texto não rotulado, mediante o pré-treinamento autossupervisionado \cite{jurafsky2026speech}.
+Baseado na arquitetura \textit{Transformer}, esse paradigma mudou o foco da engenharia manual de características para a aprendizagem de representação (\textit{representation learning}), onde os modelos aprendem automaticamente vetores de significativo contínuos (\textit{embeddings} contextuais) operando em vastas quantidades de texto não rotulado, mediante o pré-treinamento autossupervisionado \cite{jurafsky2026speech}.
 \par
 O NLP é dividido em tarefas de Compreensão de Linguagem Natural (\textit{Natural Language Understanding} - NLU), focadas em extrair significado, e Geração de Linguagem Natural (\textit{Natural Language Generation} - NLG), focadas na produção de texto coerente \cite{tunstall2022natural}.
 \par
@@ -776,7 +789,7 @@ Esse processor é autossupervisionado (\textit{self-supervised}), pois a sequên
 O algoritmo ajusta bilhões de parâmetros da rede (pesos de atenção e \textit{feed-forward}) minimizando a função de perda de entropia cruzada (\textit{cross-entropy loss}), que penaliza o modelo quando ele atribui uma probabilidade baixa à palagbra que de fato é a correta no texto \cite{jurafsky2026speech}.
 \par
 Após o pré-treinamento, qualquer tarefa de Processamento de Linguagem Natural (\ref{sec:processamentoln}) pode ser modelada como uma geração condicional guiada por um \textit{prompt} \cite{jurafsky2026speech}.
-Sua capacidade de aprendizado em contexto (\textit{in-context learning}) permite que LLMs aprendem a executar novas tarefas durante a fase de inferência (quando estão apenas gerando texto) a partir das instruções ou demonstrações contidas no \textit{prompt}, sem que haja nenhuma atualização de parâmetros baseada em gradientes no modelo subjacente \cite{jurafsky2026speech}.
+Sua capacidade de aprendizado em contexto (\textit{in-context learning}) permite que LLMs aprendam a executar novas tarefas durante a fase de inferência (quando estão apenas gerando texto) a partir das instruções ou demonstrações contidas no \textit{prompt}, sem que haja nenhuma atualização de parâmetros baseada em gradientes no modelo subjacente \cite{jurafsky2026speech}.
 \par
 Um modelo apenas pré-treinamento tende a simplesmente dar continuidade ao texto de forma passiva em vez de responder à intenção do usuário, além de ser suscetível a gerar alucinações (\textit{hallucinations}) ou saída inseguras \cite{jurafsky2026speech}.
 Para torná-los assistentes úteis, os LLMs passam por duas fases cruciais de Pós-Treinamento (\textit{Post-training}).
@@ -926,6 +939,7 @@ Com um \textit{commit} como entrada, KNighter retorna como saída um analisador 
     \centering
     \caption{\textit{Overview} do KNighter}
     \includegraphics[width=1\textwidth]{Images/Overview-KNighter.png}
+    \\
     {\small Fonte: Adaptado para o português para melhor compreensão \cite{yang2025knighter}.}
     \label{fig:overviewknighter}
 \end{figure}
@@ -951,7 +965,7 @@ Apesar de seu forte pioneirismo, \citeonline{yang2025knighter} analisa suas falh
 Além disso, notaram limitações relacionadas a \textit{Buffer Overflow} e \textit{Use of Uninitialized Variable}, quais os autores acreditam que a razão é por dois fatores principais: a análise estática inerentemente possui limitações com determinar valores precisos, principalmente quando é preciso determinar limites de \textit{buffers}, e sua dificuldade para análises de código \textit{multi-thread}, como gerenciar uso correto de \textit{locks} \cite{yang2025knighter}. 
 \par 
 KNighter relata dentre 32 \textit{checkers} plausíveis, com 16 não identificando novas falhas, foram relatados 90 novos \textit{bugs}, que depois de uma inspeção manual, 32,2\% foram falsos positivos \cite{yang2025knighter}.
-Sendo o principal erro envolvem os analisadores com seu padrão correto e regras para \textit{matching} corretos, porém o \textit{checker} falha em gerenciar \textit{triggers} ou a condição do estado corretamente (como identificar um ponteiro já verificado antes de seu uso) \cite{yang2025knighter}.
+Sendo o principal erro envolve os analisadores com seu padrão correto e regras para \textit{matching} corretos, porém o \textit{checker} falha em gerenciar \textit{triggers} ou a condição do estado corretamente (como identificar um ponteiro já verificado antes de seu uso) \cite{yang2025knighter}.
 \par
 Para o presente trabalho, a contribuição de \citeonline{yang2025knighter} é insubstituível no ponto de vista conceitual: a automatização para um sistema de análise estática, gerenciamento de mais de um agente para refinamento e correção, cobrindo CWEs relevantes adotados neste TCC.
 No entanto, a ferramenta auxiliar difere: enquanto \citeonline{yang2025knighter} opera gerenciando regras para CSA, este trabalho opera exclusivamente com SemGrep, com suas regras de inclusão e exclusão lógica auxilia para evitar falsos positivos, que foi um defeito crítico em KNighter.
@@ -1013,10 +1027,10 @@ Mesmo sem integração de outros \textit{datasets} para inclusão de novas regra
 O trabalho de \citeonline{li2026llmbased}, publicado no arXiv em 27 de janeiro de 2026, aguardando a revisão de seu trabalho para ser publicado em IEEE Transactions on Software Engineering (TSE), dentre os artigos encontrados, o trabalho mais atual na área de análise estática de vulnerabilidades automatizados via LLMs.
 \par
 Sua metodologia foi pensada para preencher as seguintes lacunas na análise estática automatizada: \textbf{(1) Efetividade e Complementaridade em projetos de mundo real}, métodos para fonte de regras possuem limitações em personalização. 
-Não se tornando claro sua eficácia quão generalizado e robusto são de fato esses métodos, quanto aplicados em projetos capazes de conter diversos tipos de vulnerabilidades \cite{li2026llmbased};
+Não se tornando clara sua eficácia quão generalizado e robusto são de fato esses métodos, quanto aplicados em projetos capazes de conter diversos tipos de vulnerabilidades \cite{li2026llmbased};
 \textbf{(2) Análise Abrangente sobre Causa de Raízes de Falhas}, \citeonline{li2026llmbased} afirma que estudos recentes de análise estática baseada em LLMs priorizam métricas como precisão, \textit{recall} e \textit{F1-Score}, sem analisar sistemáticamente os fatores que afetam seu uso prático em um projeto no mundo real.
 Em particular, as raízes de casos de falsos positivos são raramente categorizadas ou quantificadas, dificultando usuários em como melhorar as ferramentas \cite{li2026llmbased};
-\textbf{(3) Escalabilidade e \textit{Overhead}}, os autores explicam que uma das principais preocupações nesses métodos baseado em LLMs é seu custo e eficiência.
+\textbf{(3) Escalabilidade e \textit{Overhead}}, os autores explicam que uma das principais preocupações nesses métodos baseados em LLMs é seu custo e eficiência.
 Porém, estudos recentes raramente medem o potencial custo máximo do uso computacional desses análisadores, como contagem de \textit{tokens} e tempo de processamento dependendo de projetos \cite{li2026llmbased}.
 \par
 A partir dessas lacunas, o trabalho de \citeonline{li2026llmbased} apresenta um estudo empírico analisando 5 projetos de análise estática baseado em LLMs lidando com múltiplos tipos de CWEs, linguagens de programação e \textit{workflows}.
@@ -1053,6 +1067,7 @@ A partir desses títulos, foi estimado a taxa de detecção de falsos positivos 
     \centering
     \caption{Análide de CWEs (\textit{Memory Leak}, \textit{Use After Free}, \textit{Null Pointer Dereference})}
     \includegraphics[width=0.65\textwidth]{Images/LLM-Based-Analise.png}
+    \\
     {\small Fonte: Adaptado para o português para melhor compreensão \cite{li2026llmbased}.}
     \label{fig:cwescomparation}
 \end{figure}
@@ -1127,7 +1142,7 @@ Este trabalho utiliza o método \textit{Design Science Research} (DSR), conforme
 O DSR é um paradigma de pesquisa fundamentalmente focado na resolução de problemas, responsável por produzir quatro tipos de artefatos: constructos, modelos, métodos, instanciações \cite{hevner2004design}.
 Este trabalho, é por definição, um artefato projetado para resolver um problema organizacional relevante, otimização da análise estática em projetos de larga escala, realizando uma solução computacional avaliável.
 \par
-A solução proposta consiste em uma Extensão Geradora de Regras baseado em LLMs direcionada à Projetos de Larga Escala para a ferramenta de análise estática, SemGrep.
+A solução proposta consiste em uma Extensão Geradora de Regras baseado em LLMs direcionada a Projetos de Larga Escala para a ferramenta de análise estática, SemGrep.
 O ciclo deste trabalho está estruturado em quatro fases:
 (1) \textbf{construção de \textit{dataset}}, organização e identificação de \textit{datasets} públicos e banco de \textit{commits} de bases de código de projetos \textit{open-source};
 (2) \textbf{\textit{pipeline} de geração de regras}, aplicação de LLMs em um \textit{pipeline} para gerar regras satisfatórias para a ferramenta SemGrep;
@@ -1175,6 +1190,7 @@ Essa decisão visa viabilizar a execução do \textit{framework} em infraestrutu
     \centering
     \caption{\textit{Pipeline} para gerador de regras.}
     \includegraphics[width=1\textwidth]{Images/Pipeline.png}
+    \\
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:pipeline}
 \end{figure}
@@ -1183,6 +1199,7 @@ Essa decisão visa viabilizar a execução do \textit{framework} em infraestrutu
     \centering
     \caption{Pós-processamento para otimizar regras e abranger \textit{corner-cases}}
     \includegraphics[width=1\textwidth]{Images/QuartoAgente.png}
+    \\
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:quartoagente}
 \end{figure}
@@ -1246,6 +1263,7 @@ O cronograma a seguir está organizado as atividades do TCC2 em 16 semanas, conf
         \ganttlink{elem9}{elem10}
         \ganttlink{elem12}{elem13}
     \end{ganttchart}
+    \\
     \legend{Fonte: Elaborado pelo autor (2026)}
 \end{figure}
 
