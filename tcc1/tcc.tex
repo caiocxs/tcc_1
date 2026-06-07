@@ -191,8 +191,8 @@ A Tabela \ref{tab:limitacoes_analise_trad} sintetiza as principais limitações 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.55\textwidth]{Images/problemas em larga escala.png}
     \caption{Motivação para \textit{checkers} feitos por llms.}
+    \includegraphics[width=0.55\textwidth]{Images/problemas em larga escala.png}
     {\small Fonte: Adaptado pelo autor para melhor compreensão \cite{yang2025knighter}}
     \label{fig:motivacaocheckers}
 \end{figure}
@@ -235,8 +235,8 @@ Ao propor um sistema especializado nas vulnerabilidades críticas (CWEs) da ling
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.80\textwidth]{Images/Semgrep.png}
     \caption{Exemplo de regra criada para detectar uma senha embutida no argumento da função em Python.}
+    \includegraphics[width=0.80\textwidth]{Images/Semgrep.png}
     {\small Fonte: Adaptado para português com finalidade de melhorar compreensão \cite{hou2025generation}.}
     \label{fig:semgrep}
 \end{figure}
@@ -287,13 +287,13 @@ A pesquisa bibliográfica foi conduzida de forma sistemática para identificar t
 As buscas foram centralizadas no motor Google Acadêmico (\textit{Google Scholar}), devido à sua ampla indexação, com foco principal em bases de dados consolidadas na área da Computação, como arXiv, IEEE Xplore e ACM Digital Library.
 \par
 % "static analysis" ("LLM" OR "large language model" OR "GPT") ("C" OR "C++" OR "Linux kernel") ("pointer" OR "undefined" OR "memory" OR "value-flow") ("SemGrep" OR "semgrep")
-Para as buscas, foram definidas palavras-chave em inglês, tais como: \textit{"static analysis"}, \textit{"LLM"}, \textit{"large language model"}, \textit{"GPT"}, \textit{"C"}, \textit{"C++"}, \textit{"rule generation"}, \textit{"Linux kernel"}, \textit{"pointer"}, \textit{"undefined"}, \textit{"memory"}, \textit{"value-flow"} e \textit{"SemGrep"}. 
+Para as buscas, foram definidas palavras-chave em inglês, tais como: \textit{``static analysis''}, \textit{``LLM''}, \textit{``large language model''}, \textit{``GPT''}, \textit{``C''}, \textit{``C++''}, \textit{``rule generation''}, \textit{``Linux kernel''}, \textit{``pointer''}, \textit{``undefined''}, \textit{``memory''}, \textit{``value-flow''} e \textit{``SemGrep''}. 
 Estes termos foram combinados por meio de operadores booleanos (\textit{AND}, \textit{OR}) para refinar os resultados, culminando na \textit{string} de busca apresentada na Figura \ref{fig:query}:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.98\textwidth]{Images/Query.png}
     \caption{\textit{Query} utilizada durante a pesquisa de materiais.}
+    \includegraphics[width=0.98\textwidth]{Images/Query.png}
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:query}
 \end{figure}
@@ -309,8 +309,8 @@ Na segunda fase (afunilamento), os trabalhos restantes passaram por uma leitura 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.75\textwidth]{Images/Funil.png}
     \caption{Funil de pesquisa.}
+    \includegraphics[width=0.75\textwidth]{Images/Funil.png}
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:funil}
 \end{figure}
@@ -352,8 +352,8 @@ Nós auxiliares exigidos pela gramática para contornar ambiguidades ou definir 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.45\textwidth]{Images/AST.png}
     \caption{Árvore Sintática Abstrata para a expressão 9-5+2}
+    \includegraphics[width=0.45\textwidth]{Images/AST.png}
     {\small Fonte: \cite{aho2007compilers}}
     \label{fig:ast}
 \end{figure}
@@ -397,10 +397,10 @@ Cada instrução executada transforma um estado de entrada em um novo estado de 
 No entanto, \citeonline{aho2007compilers} afirma que é impossível acompanhar todos os estados exatos devido ao número ilimitado de caminhos de execução.
 Por esse motivo, a DFA opera através de abstrações, ignorando detalhes irrelevantes e guardando apenas as características essenciais para o objetivo da otimização \cite{aho2007compilers}.
 \par
-É associado a cada ponto do programa um valor de fluxo de dados (que representa a abstrações dos estados possíveis) pertencente a um "domínio" \cite{aho2007compilers}.
+É associado a cada ponto do programa um valor de fluxo de dados (que representa a abstrações dos estados possíveis) pertencente a um ``domínio'' \cite{aho2007compilers}.
 O problema de DFAs consiste em encontrar uma solução para dois conjuntos de restrições principais:
 \textbf{Funções de transferência} (\textit{Transfer Functions}), são restrições baseadas na semântica de cada instrução, pegando o valor do fluxo de dados antes da instrução e geram um novo valor de saída \cite{aho2007compilers}.
-O fluxo pode acontecer "para frente" (\textit{forward}), onde a entrada molda a saída, ou "para trás" (\textit{backward}), onde a direção desse fluxo é invertida.
+O fluxo pode acontecer ``para frente'' (\textit{forward}), onde a entrada molda a saída, ou ``para trás'' (\textit{backward}), onde a direção desse fluxo é invertida.
 \textbf{Restrições de Fluxo de Controle} (\textit{Control-Flow Constraints}), definem como a informação transita de um bloco básico para outro dentro do CFG. 
 Essencialmente, o valor do fluxo de dados que entra em uma instrução é matematicamente determinado pela combinação dos valores que saem das instruções ou blocos predecessores \cite{aho2007compilers}.
 \par
@@ -433,6 +433,49 @@ Por conta dessa complexidade, \citeonline{aho2007compilers} afirmam que os detec
 As abordagens tradicionais de detecção de vulnerabilidades estática geralmente codificam o conhecimento especializado como regras projetadas manualmente, com padrões e modelos de fluxo de dados, sua dependência de padrões predefinidos limita inerentemente a generalização e a cobertura para tipos de vulnerabilidades previamente não vistos ou em evolução \cite{li2026llmbased}.
 \par
 Isso significa que a análise estática pode não encontrar todos os erros no programa, e nem todos os erros relatados têm a garantia de serem erros reais, e se as ferramentas relatassem todos os erros potenciais, o volume de falsos positivos tornariam as ferramentas inutilizáveis \cite{aho2007compilers}.
+
+\subsubsection{Análise estática baseada em regras}
+\label{sec:analiseestaticaregras}
+\par
+Em anos recentes, ferramentas de análise estática baseada em regras foram introduzidas.
+Complementando as ferramentas tradicionais, ao identificar previamente problemas durante o desenvolvimento pré-produção, reduzem significamente o custo e complexidade de \textit{debugging} e manutenção \cite{jiang2025factaligned}.
+Dos componentes mais utilizados, um dos mais relevantes são SemGrep e CodeQL \cite{jiang2025factaligned, hou2025generation}.
+\par 
+Formalmente, SemGrep é uma ferramenta de análise estática que suporta estruturas complexas e verificações básicas de fluxo de dados no código, permitindo inspeções sem execução para identificar vulnerabilidades de segurança, qualidade de código e violações a conformidade \cite{hou2025generation}.
+\par
+Sua gramática baseada em YAML mimetiza a sintaxe da linguagem alvo, reduzindo sua curva de aprendizado ao contrário de seu concorrente CodeQL \cite{hou2025generation}, que possui sua própria gramática lógica, tratando o código como um banco de dados relacional, sendo possível realizar análises profundas porém custosa em tempo de aprendizado.
+\par
+SemGrep converte código em uma árvore de sintaxe abstrata universal (UAST), aplicando um \textit{pattern-matching} uniforme em mais de 30 linguagens \cite{hou2025generation}.
+Com sua ativa continuidade e plataforma capaz de compartilhar regras existentes melhora sua adaptabilidade e desenvolvimento colaborativo.
+
+\begin{figure}[h]
+    \centering
+    \caption{Exemplo de regra simplificada para detecção de falhas OSCI em Java.}
+    \includegraphics[width=0.95\textwidth]{Images/Semgrep-java.png}
+    {\small Fonte: Adaptado de \cite{jiang2025factaligned}.}
+    \label{fig:semgrepjava}
+\end{figure}
+
+\par
+\citeonline{jiang2025factaligned} explica com a figura \ref{fig:semgrepjava} que a partir de uma regra no SemGrep com o propósito de identificar uma falha de segurança (como a injeção de comandos no sistema operacional), do inglês \textit{Operating System Command Injection} (OSCI), em Java, sendo possível visualizar a utilidade prática desse \textit{framework}.
+\par
+Para que a busca seja flexível e rastrear fluxo de dados, o SemGrep utiliza dois recursos fundamentais: (i) \textbf{Metavariáveis} (ex.: \textit{\$USER\_DATA}, \textit{\$X}), a partir de um cifrão e nome da variável em letras maiúsculas.
+Essas variáveis são atribuídas quando SemGrep identifica um padrão que se encaixa, sendo ``salvo'' o valor na metavariável, consequentemente, se a metavariável é reutilizada na mesma regra, o SemGrep exigirá que o valor capturado seja exatamente o mesmo, o que permite \textit{Data Flow}.
+(ii) \textbf{Ellipsis/Curinga} (...), representando qualquer sequência de coisas.
+Assim independente da quantidade de argumentos em uma função, número de linhas de código entre duas instruções, é possível omitir detalhes não importantes com (...), tornando SemGrep uma ferramenta abstraída.
+\par
+Os predicados são as afirmações que procuram o código.
+\textit{Tags} como \textit{pattern} ou \textit{pattern-inside} são predicados, com \textit{\textbf{pattern}} sendo uma afirmação exata, como na linha 5, e \textit{\textbf{pattern-inside}} define o contexto, não apontando a vulnerabilidade exata, mas exige que qualquer correspondência subsequente aconteça dentro da estrutura dele, como na linha 2.
+\par
+A partir destes predicados, é possível combinar operações lógicas (\textit{AND}, \textit{OR}, \textit{NOT}) sendo, respectivamente, \textit{patterns}, \textit{pattern-either}, \textit{pattern-not}.
+(i) O predicado \textit{\textbf{patterns}} representa a lógica \textit{AND} (E), para toda regra ou condição listada abaixo deste bloco devem ser verdadeiras simultaneamente.
+Como na linha 1, o bloco principal exige que o código esteja dentro da função (linha 2) \textbf{E} corresponda a um dos casos de injeção (linha 4).
+(ii) \textbf{\textit{pattern-either}} representa a lógica \textit{OR} (OU), se o código corresponde a qualquer uma das condições aninhadas sob este predicado, a avaliação será verdadeira. Na linha 4, a regra procura um fluxo direto de \textit{\$USER\_DATA} ou um fluxo indireto por atribuição.
+(iii) \textbf{\textit{pattern-not}} representa a lógica \textit{NOT} (NÃO).
+Não presente no exemplo, porém usado para excluir falsos positivos, anulando caso a regra bater coma  condição aninhada no predicado.
+\par
+Com estes conhecimentos, é possível compreender mais profundamente como a ferramenta utilizada funciona. SemGrep possui maneiras de lidar com falsos positivas nativamente, nos permitindo liberdade para aperfeiçoar a análise de regras.
+
 
 \subsection{Vulnerabilidades de Linguagem}
 \label{sec:vulnerabilidadeslinguagem}
@@ -497,7 +540,7 @@ Semelhante ao vazamento de memória (\ref{sec:401}), costuma ser resultado de co
 \par
 Chamar a função \texttt{free()} de forma dupla corrompe as estruturas de dados de gerenciamento de memória do sistema.
 O programa pode travar, ou, pior, fazer com que duas chamadas futuras da função \texttt{malloc()} retornem exatamente o mesmo ponteiro \cite{cwe415}.
-Se o invasor controlar os dados inseridos nessa memória "duplamente alocada", ele ganha uma condição conhecida como \textit{write-what-where} e pode realizar ataques de \textit{buffer overflow}, chegando a \textbf{executar código arbitrário} \cite{cwe415}.
+Se o invasor controlar os dados inseridos nessa memória ``duplamente alocada'', ele ganha uma condição conhecida como \textit{write-what-where} e pode realizar ataques de \textit{buffer overflow}, chegando a \textbf{executar código arbitrário} \cite{cwe415}.
 \par
 Para garantir que cada alocação seja liberada apenas uma vez, uma técnica prática é definir o ponteiro como \texttt{NULL} imediatamente após o primeiro \texttt{free}, garantindo que não possa ser liberado novamente por engano \cite{cwe415}.
 
@@ -555,13 +598,7 @@ O objetivo principal de se atribuir um CVE é permitir que profissionais de TI, 
 Após a confirmação de uma vulnerabilidade, ela recebe um identificador único composto pelo ano de relato ou atribuição, seguido por um sequencial numérico.
 Parceiros como \textit{National Vulnerability Database} (NVD) adicionam o registro com suas descrições, atribuindo um índice de severidade metrificado pela \textit{Common Vulnerability Scoring System} (CVSS) e sua causa raiz proveniente da CWE \cite{cveabout}.
 
-
-\subsection{Arquitetura Transformers}
-\label{sec:modelostransformers}
-\par
-
-
-\subsubsection{Linguagem Natural}
+\subsection{Linguagem Natural}
 \label{subsec:linguagemnatural}
 \par
 Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). 
@@ -574,25 +611,226 @@ Contudo, essa distinção rígida é uma característica das gramáticas formais
 Diferente das linguagens de programação, a validade e o sentido em linguagem natural dependem intrinsecamente do contexto.
 Na linguística computacional, o uso desses modelos para capturar tal complexidade é fundamentado na gramática generativa, visto que a linguagem passa a ser definida pelo conjunto de possíveis 'geradas' por suas regras gramaticais \cite{jurafsky2026speech}.
 
+\subsubsection{Processamento de Linguagem Natural}
+\label{sec:processamentoln}
+\par
+O Processamento de Linguagem Natural, do inglês \textit{Natural Language Processing} (NLP), tem de objetivo fundamental capacitar os sistemas computacionais a processar, armazenar, compreender e gerar a linguagem humana, permitindo que as máquinas se comuniquem com sucesso e realizem tarefas inferenciais complexas \cite{jurafsky2026speech}.
+\par
+Os autores pontuam que o problema da compreensão da linguagem é consideravelmente complexo, pois não se restringe apenas ao entendimento da estrutura sintática das sentenças, mas exige uma profunda compreensão da semântica, do contexto e do assunto abordado.
+\par
+O campo de NLP progrediu através de diferentes abordagens de resolução, a abordagem mais relevante para este trabalho é o Apredizado Profundo (\textit{Deep Learning}).
+Baseado na arquitetura \textit{Transformer}, esse paradigma mudou o foco da engenharia manual de características para a aprendizagem de representação (\textit{representation learning}), onde os modelos aprendem automaticamente vetores de significativo contínuos (\textit{embeddings} contextuais) operando em vasta quantidades de texto não rotulado, mediante o pré-treinamento autossupervisionado \cite{jurafsky2026speech}.
+\par
+O NLP é dividido em tarefas de Compreensão de Linguagem Natural (\textit{Natural Language Understanding} - NLU), focadas em extrair significado, e Geração de Linguagem Natural (\textit{Natural Language Generation} - NLG), focadas na produção de texto coerente \cite{tunstall2022natural}.
+\par
+Para modelos mais utilizados de LLMs, o foco inerente desses modelos é NLG.
+Graças à capacidade de aprendizado em contexto (\textit{in-context learning}) guiado por \textit{prompts}, esses modelos utilizam a sua capacidade de geração (NLG) para resolver, de forma indireta, os problemas de compreensão (NLU) \cite{tunstall2022natural, jurafsky2026speech}.
+
+\subsection{Arquitetura \textit{Transformer}}
+\label{sec:modelostransformers}
+\par
+A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017attention} inicialmente para tarefas como a tradução automática, é um modelo de transdução de sequências que dispensa o uso total de Redes Neurais Recorrentes (RNNs) e convolucionais (CNNs).
+Ao invés disso, ela se baseia exclusivamente em mecanismos de atenção para capturar dependências globais entre as sequências de entrada e saída.
+\par
+A arquitetura segue uma estrutura de \textbf{Codificador-Decodificador} (\textit{Encoder-Decoder}).
+
+\begin{itemize}
+  \item \textbf{Codificador (\textit{Encoder})}: 
+Segundo \citeonline{vaswani2017attention}, o codificador tem a função de converter uma sequência de \textit{tokens} de entrada em uma sequência de representações contínuas (\textit{embeddings} ou estados ocultos contextuais).
+Composto por uma pilha de camadas idênticas de $N = 6$.
+Cada camada possui duas subcamadas principais:
+
+\begin{enumerate}
+  \item Mecanismo de Autoatenção de Múltiplas Cabeças (\textit{Multi-Head Self-Attention}).
+  \item Rede Neural \textit{Feed-Forward} totalmente Conectada, aplicada de forma independente a cada posição (\textit{Position-Wise fully Connected Feed-Forward Network}).
+\end{enumerate}
+
+\par
+Em torno de cada uma das subcamadas, o modelo emprega uma conexão residual (\textit{skip/residual connection}) seguida de uma normalização de camada (\textit{layer normalization}) \cite{vaswani2017attention, tunstall2022natural}.
+\par
+Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficientes para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação calculada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto à direita (depois do \textit{token}); esse mecanismo é geralmente denominado atenção bidirecional \cite{tunstall2022natural}.
+  \item \textbf{Decodificador (\textit{Decoder})}:
+O decodificador utiliza as representações contínuas geradas pelo codificador para produzir iterativamente a sequência de saída, gerando um símbolo (\textit{token}) de cada vez, com uma propriedade autorregressiva, ou seja, consumindo os símbolos gerados anteriormente como entrada adicional \cite{vaswani2017attention, tunstall2022natural}.
+\par
+Assim como o codificador, é composto por uma pilha de $N = 6$ camadas idênticas.
+Além das camadas presentes no codificador, o decodificador introduz uma terceira subcamada e aplica uma modificação vital na sua autoatenção:
+
+\begin{enumerate}
+  \item Autoatenção Mascarada de Múltiplas Cabeças (\textit{Masked Multi-Head Attention}):
+A autoatenção do decodificador é mascarada (através da atribuição de valores $-\infty$ para conexões ilegais) para impedir que uma posição acesse informações de \textit{tokens} futuros (\textit{leftward information flow}), garantindo que a previsão do próximo \textit{token} dependa apenas das saídas já conhecidas \cite{vaswani2017attention, tunstall2022natural}.
+  \item Atenção Codificador-Decodificador (\textit{Encoder-Decoder Attention} ou \textit{Cross-Attention}):
+Esta subcamada realiza a atenção sobre a saída da pilha do codificador.
+Nela, as consultas vêm da camada anterior do decodificador, enquanto as chaves e valores vêm da saída do codificador, permitindo que o modelo relacione \textit{tokens} de ambas as sequências \cite{vaswani2017attention, tunstall2022natural, jurafsky2026speech}.
+  \item Rede Neural \textit{Feed-Forward} orientada à posição.
+\end{enumerate}
+
+\par
+A partir disso, dada uma entrada de texto, esses modelos completam a sequência prevendo iterativamente a palavra subsequente mais provável.
+\end{itemize}
+
+\par
+A função de atenção no \textit{Transformer} mapeia um vetor de Consulta (\textit{Query} - $Q$), um conjunto de vetores Chave (\textit{Key} - $K$) e vetores Valor (\textit{Value} - $V$) para produzir uma saída \cite{vaswani2017attention, tunstall2022natural}.
+\par
+A Atenção de Produto Escalar Escalado (\textit{Scaled Dot-Product Attention}) é calculada pela seguinte fórmula:
+
+\begin{equation}
+  Attention(Q, K, V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V 
+\end{equation}
+
+\par
+onde $d_{k}$ é a dimensão dos vetores Chave. Essa operação permite que cada \textit{token} ``preste atenção'' em todos os outros \textit{tokens} da sequência, ponderando sua importância relativa.
+O fator de escala $\sqrt{d_k}$ é utilizado para estabilizar os gradientes durante treinamento.
+\par
+Esses modelos não aplicam a atenção apenas uma vez.
+Em vez de realizar uma única função de atenção com dimensões globais, a arquitetura projeta as Consultas, Chaves e Valores $h$ vezes de forma linear e independente.
+Eles realizam $h$ projeções lineares independentes de $Q, K$ e $V$.
+Espressada por:
+
+\begin{equation}
+  MultiHead(Q, K, V) = Concat(head_1, ..., head_h) W^O
+\end{equation}
+
+onde $head_i = Attention(QW^{Q}_i, KW^{K}_i,VW^{V}_i)$.
+Isso permite que o modelo atenda simultaneamente a informações de diferentes subespaços de representação em várias posições do texto \cite{vaswani2017attention}.
+\par
+Dado que o \textit{Transformer} não contém recorrência ou convolução, o modelo nativamente desconhece a ordem de sequência.
+Para solucionar isso, \citeonline{vaswani2017attention} propuseram injetar informações sobre a posição relativa ou absoluta dos \textit{tokens} na sequência através de Codificações Posicionais (\textit{Positional Encodings}) \cite{vaswani2017attention}.
+Esses vetores de posição possuem a mesma dimensão que os \textit{embeddings} dos \textit{tokens} e são inseridos nas bases das pilhas do codificador e do decodificador.
+\par
+No final da pilha do decodificador, o vetor de representação contínua é passado por uma transformação linear (\textit{unembedding matrix}) e, em seguida, por uma função \textit{softmax} para converter as pontuações (\textit{logits}) em probabilidades normalizadas sobre o vocabulário, gerando a previsão do próximo \textit{token} \cite{vaswani2017attention}.
+
 \subsubsection{Modelos de Linguagens de Grande Escala}
 \label{subsec:llm}
 \par
-Os Modelos de Linguagem de Grande Escala (LLMs), em sua maioria, baseiam-se na arquitetura \textit{Transformer}, originalmente projetada para tarefas sequenciais, como a tradução automática. 
-A arquitetura consiste em dois componentes principais: o Codificador (\textit{Encoder}), o qual converte uma entrada de \textit{tokens} em uma sequência de vetores representativos (frequentemente chamada de estado oculto ou contexto), e o Decodificador (\textit{Decoder}), que utiliza o contexto gerado pelo codificador para produzir iterativamente uma sequência de \textit{tokens} de saída, um por vez \cite{tunstall2022natural}.
+Os Modelos de Linguagem de Grande Escala, do inglês \textit{Large Language Models} (LLMs), são sistemas computacionais baseados em redes neurais profundas, quase exclusivamente utilizando a arquitetura \textit{Transformer}, projetados para prever, gerar e interagir utilizando Linguagem Natural (\ref{subsec:linguagemnatural}) \cite{jurafsky2026speech}.
 \par
-Com o passar dos anos, esses blocos funcionais foram adaptados para atuar como modelos independentes. Embora existam centenas de variações de \textit{Transformers}, a maioria se encaixa em um desses três tipos:
+Segundo \citeonline{jurafsky2026speech}, uma LLM é um sistema probabilístico que, dado um contexto ou prefixo de palavras, atribui uma distribuição de probabilidade aos possíveis próximos símbolos (\textit{tokens}) do vocabulário.
 \par
-\textbf{Apenas Codificador (\textit{Encoder-only}):} Esses modelos convertem uma sequência de texto de entrada em uma representação numérica, sendo muito eficientes para tarefas como classificação de texto ou reconhecimento de entidades nomeadas. A representação calculada para cada \textit{token} nessa arquitetura depende tanto do contexto à esquerda (antes do \textit{token}) quanto à direita (depois do \textit{token}); esse mecanismo é geralmente denominado atenção bidirecional \cite{tunstall2022natural}.
+Existem três configurações principais de \textit{Transformers} (codificadores, decodificadores e codificadores-decodificadores), os LLMs generativos modernos (como a família GPT, Claude, Lhama, etc.) utilizam a arquitetura baseada estritamente em Decodificadores (\textit{Decoders}).
+Pela natureza de gerar iterativamente o próximo \textit{token} por vez e consumir a própria saída como entrada para o passo seguinte, esse processo é denominado geração causal ou autorregressiva (\textit{causal or autorregressive generation}) \cite{jurafsky2026speech}.
 \par
-\textbf{Apenas Decodificador (\textit{Decoder-only}):} Dada uma entrada de texto, esses modelos completam a sequência prevendo iterativamente a palavra subsequente mais provável.
-A família de modelos GPT pertence a essa classe. 
-Nesse caso, a representação de um \textit{token} depende exclusivamente do contexto à sua esquerda; esse comportamento é conhecido como atenção causal ou autorregressiva \cite{tunstall2022natural}.
+A ideia central, proposta por \citeonline{jurafsky2026speech}, que torna os LLMs possíveis í o pré-treinamento.
+Os modelos aprendem conhecimentos profundos sobre a linguagem, o contexto e o mundo simplesmente sendo ensinados de forma iterativa a prever a próxima palavra em \textit{corpora} gigantescos de texto.
 \par
-\textbf{Codificador-Decodificador (\textit{Encoder-decoder}):} Utilizados para modelar mapeamentos complexos de uma sequência de texto para outra (arquiteturas \textit{sequence-to-sequence}), esses modelos são projetados para tarefas como tradução automática e sumarização de textos \cite{tunstall2022natural}. 
+Esse processor é autossupervisionado (\textit{self-supervised}), pois a sequência natural de palavras serve como sua própria supervisão.
+O algoritmo ajusta bilhões de parâmetros da rede (pesos de atenção e \textit{feed-forward}) minimizando a função de perda de entropia cruzada (\textit{cross-entropy loss}), que penaliza o modelo quando ele atribui uma probabilidade baixa à palagbra que de fato é a correta no texto \cite{jurafsky2026speech}.
+\par
+Após o pré-treinamento, qualquer tarefa de Processamento de Linguagem Natural (\ref{sec:processamentoln}) pode ser modelada como uma geração condicional guiada por um \textit{prompt} \cite{jurafsky2026speech}.
+Sua capacidade de aprendizado em contexto (\textit{in-context learning}) permite que LLMs aprendem a executar novas tarefas durante a fase de inferência (quando estão apenas gerando texto) a partir das instruções ou demonstrações contidas no \textit{prompt}, sem que haja nenhuma atualização de parâmetros baseada em gradientes no modelo subjacente \cite{jurafsky2026speech}.
+\par
+Um modelo apenas pré-treinamento tende a simplesmente dar continuidade ao texto de forma passiva em vez de responder à intenção do usuário, além de ser suscetível a gerar alucinações (\textit{hallucinations}) ou saída inseguras \cite{jurafsky2026speech}.
+Para torná-los assistentes úteis, os LLMs passam por duas fases cruciais de Pós-Treinamento (\textit{Post-training}).
+\par
+Primeiro, o modelo é submetido a um ajuste fino (\textit{finetuning}) utilizando um conjunto de dados contendo pares de instruções e as respostas desejadas.
+Ensinando o modelo não apenas a resolver tarefas, mas atua como um meta-aprendizado para que ele se torne fundamentalmente melhor em seguir instruções de modo geral \cite{jurafsky2026speech}.
+\par
+Para garantir que o modelo seja útil e inofensivo (\textit{helpful and non-harmful}), técnicas de Aprendizado por Reforço (\textit{Rein-forcement Learning} - RL) ou Otimização Direta de Preferências (\textit{Direct Preference Optimization}) são utilizadas.
+O modelo é treinado para que suas saídas maximizem uma recompensa alinhada com os valores e preferências humanas, penalizando respostas indesejadas, rudes ou incorretas \cite{jurafsky2026speech}.
 
 \subsection{Métricas de Avaliação}
-\label{subsec:metricasavaliacao}
+\label{sec:metricasavaliacao}
+\par
+As métricas de avaliação para uma ferramenta de análise estática funcional requer métricas que permitam analisar não apenas a acurácia geral, mas o equilíbrio entre erros de falso positivo e falso negativo. 
+Neste trabalho, serão utilizadas diferentes métodos de avaliação, se dividindo em Validade Gramatical (\ref{sec:validadegramatica}), Validade Funcional (\ref{sec:validadefuncional}), Validação em \textit{Dataset} (\ref{sec:validadedataset}), Validação no mundo real (\ref{sec:validademundoreal}), Custo (\ref{sec:custo}).
 
+\subsubsection{Juliet Test Suite}
+\label{sec:juliet}
+\par
+O \textit{Juliet Test Suite} é uma coleção de programas escritos em C/C++ e Java, contendo casos de teste sintéticos, que foram desenvolvidas como exemplos de vulnerabilidades \cite{nistsard112juliet}.
+\par
+A coleção foi desenvolvida por \citeonline{nistsard112juliet}, um projeto de domínio público.
+A versão mais recente 1.3 para C/C++ possui mais de 64 mil casos de teste espalhados em mais de 100 mil arquivos.
+O \textit{dataset} não foca em problemas lógicos ou de arquitetura geral de \textit{software}, mas em vulnerabilidades de código categorizadas pelo sistema CWE (\ref{sec:cwes}).
+\par
+O propósito central é servir como um ``campo de provas'' padronizado para ferramentas de análise de código, como analisadores estáticos (do inglês \textit{Static Application Security Testing} - SAST).
+Esse conjunto será utilizado para analisar todos os CWEs selecionados para este trabalho, analisando a eficácia das regras produzidas.
+
+\subsubsection{Validade Gramatical}
+\label{sec:validadegramatica}
+\par
+Determina se uma regra é identificada com sucesso pela ferramenta de análise estática sem gerar erros de sintaxe.
+\par
+Para avaliar a validade de sua gramática, cada regra é aplicada na ferramenta para avaliar um código teste, avaliando somente se a ferramenta reporta ou não algum erro de sintaxe na própria regra durante a execução. 
+\par
+Sendo analisado também quais regras geram \textit{loops} de correção, quais o agente de correção não foi capaz de corrigir.
+
+\subsubsection{Validade Funcional}
+\label{sec:validadefuncional}
+\par
+Define a precisão da regra sobre distinguir corretamente um código defeituoso e corrigido.
+Para realizar essa avaliação, cada regra introduzida a ferramenta, é avaliado os relatórios gerados a partir dela sobre o código gerador da regra (defeituoso e corrigido).
+\par
+Analisando a verificação em ambos casos, é identificado o número de relatos no código com \textit{bugs} ($X_{identificados}$) e no código corrigido ($X_{corrigidos}$), sendo validado somente nos casos em que no código corrigido não seja identificado nenhum relatório ($X_{corrigidos} = 0$) e no código defeituoso todos os $N$ casos presentes ($X_{identificados} >= N$).
+
+\subsubsection{Validação em \textit{Dataset}}
+\label{sec:validadedataset}
+\par
+A métrica mais intuitiva para avaliar um modelo é a Acurácia (\textit{Accuracy}), medindo a proporção de previsões corretas em relação ao total de previsões.
+Porém, como em casos de aplicação de mundo real muitos códigos não estão categorizados e corretamente identificados, é perigosamente enganosa a sua métrica neste escopo.
+\par
+A alternativa é o \textbf{F1-Score}, sendo uma métrica utilizada para avaliar o desempenho de modelos de classificação.
+Cada previsão feita pelo modelo cai em uma das quatro categorias:
+
+\begin{itemize}
+  \item \textbf{Verdadeiros Positivos} (\textit{True Positive} - TP);
+  \item \textbf{Falsos Positivos} (\textit{False Positive} - FP);
+  \item \textbf{Falsos Negativos} (\textit{False Negative} - FN);
+  \item \textbf{Verdadeiros Negativos} (\textit{True Negative} - TN).
+\end{itemize}
+\par
+A \textbf{Precisão} (\textit{Precision - P)} indica a proporção de exemplos positivos que foram corretamente identificados.
+No contexto desse trabalho, representa a proporção de trechos de códigos classificados realmente eram \textit{bugs}.
+É especialmente importante sua corretude quando o custo de falsos positivos é alta, causando a inutilizáção da ferramenta \cite{aho2007compilers}.
+
+\begin{equation}
+  \textit{Precision} = \frac{TP}{TP + FP}
+\end{equation}
+
+\vspace{\onelineskip}
+\par
+A \textbf{Revocação ou Sensibilidade} (\textit{Recall} - R) mede a capacidade do modelo de encontrar todas as instâncias positivas reais.
+Neste caso, indica quantas das vulnerabilidades foram realmente identificadas pelo modelo.
+
+\begin{equation}
+  \textit{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+\vspace{\onelineskip}
+\par
+Avaliou-se especificamente se a ferramenta foi capaz de apontar o alerta diretamente nos pontos do programa já rotulados e conhecidos como vulneráveis.
+\par
+A métrica \textbf{F1-Score} representa a média harmônica entre a Precisão e Revocação, sendo particularmente útil quando se busca um equilíbrio entre as duas.
+Sua fórmula é calculada por:
+
+\begin{equation}
+  \textit{F1-Score} = 2 \times \frac{\textit{Precision} \times \textit{Recall}}{\textit{Precision} + \textit{Recall}}
+\end{equation}
+
+\vspace{\onelineskip}
+\par
+No cenário da Análise Estática, o F1-Score reflete competentemente o \textit{trade-off} entre as identificações corretas e falhas.
+
+\subsubsection{Validação no mundo real}
+\label{sec:validademundoreal}
+\par
+Na aplicação para projetos de código aberto, é desconhecido o número de vulnerabilidades.
+A partir desse conhecimento, este trabalho adotou as mesmas métricas utilizadas por \citeonline{li2026llmbased}, a \textbf{Taxa de Falsas Descobertas Amostradas} (do inglês \textit{Sampled False Discovery Rate} - SFDR).
+\par
+Na execução da ferramenta em projetos \textit{open-source} sem rótulos conhecidos, é extraído o \textbf{Número de Relatórios} ($\#Relatorios$) gerados, o \textbf{Número de Arquivos} ($\#Arquivos$) afetados, contendo pelo menos um aviso e \textbf{Número de Falsos Positivos} ($\#FPs$), instâncias incorretamente relatadas como vulnerabilidades.
+Baseado nessas categorias, estimamos o SFDR como:
+
+\begin{equation}
+  SFDR = \frac{\#FPs}{\#Relatorios}
+\end{equation}
+
+\vspace{\onelineskip}
+A partir desses dados, é possível avaliar o quão eficiente será a ferramenta em problemas no mundo real.
+
+\subsubsection{Custo}
+\label{sec:custo}
+\par
+Para analisar de forma adequada o custo gerado pela geração e análise, este trabalho utiliza as mesmas avaliações adotadas na área.
+Será analisado o número de consumo de \textit{tokens} processados nas entradas e saídas para cada projeto, bem como a medição do tempo exato de execução que a ferramenta levou para analisar o repositório.
 
 % ---------------------------------------------------------------
 \section{Referencial teórico}
@@ -601,56 +839,6 @@ Nesse caso, a representação de um \textit{token} depende exclusivamente do con
 O referencial teórico apresenta os conceitos fundamentais que sustentam o desenvolvimento deste projeto. 
 Propõe-se um contraponto analítico entre os métodos da análise estática tradicional e as novas abordagens voltadas à automatização da geração de regras. 
 A estruturação dos tópicos foi concebida para apresentar gradativamente as tecnologias envolvidas, destacando o papel das LLMs e sua relevância para a modernização das ferramentas de verificação de código na atualidade.
-
-\subsection{Análise estática baseada em regras}
-\label{sec:analiseestaticaregras}
-\par
-Em anos recentes, ferramentas de análise estática baseada em regras foram introduzidas.
-Complementando as ferramentas tradicionais, ao identificar previamente problemas durante o desenvolvimento pré-produção, reduzem significamente o custo e complexidade de \textit{debugging} e manutenção \cite{jiang2025factaligned}.
-Dos componentes mais utilizados, um dos mais relevantes são SemGrep e CodeQL \cite{jiang2025factaligned, hou2025generation}.
-\par 
-Formalmente, SemGrep é uma ferramenta de análise estática que suporta estruturas complexas e verificações básicas de fluxo de dados no código, permitindo inspeções sem execução para identificar vulnerabilidades de segurança, qualidade de código e violações a conformidade \cite{hou2025generation}.
-\par
-Sua gramática baseada em YAML mimetiza a sintaxe da linguagem alvo, reduzindo sua curva de aprendizado ao contrário de seu concorrente CodeQL \cite{hou2025generation}, que possui sua própria gramática lógica, tratando o código como um banco de dados relacional, sendo possível realizar análises profundas porém custosa em tempo de aprendizado.
-\par
-SemGrep converte código em uma árvore de sintaxe abstrata universal (UAST), aplicando um \textit{pattern-matching} uniforme em mais de 30 linguagens \cite{hou2025generation}.
-Com sua ativa continuidade e plataforma capaz de compartilhar regras existentes melhora sua adaptabilidade e desenvolvimento colaborativo.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.95\textwidth]{Images/Semgrep-java.png}
-    \caption{Exemplo de regra simplificada para detecção de falhas OSCI em Java.}
-    {\small Fonte: Adaptado de \cite{jiang2025factaligned}.}
-    \label{fig:semgrepjava}
-\end{figure}
-
-\par
-\citeonline{jiang2025factaligned} explica com a figura \ref{fig:semgrepjava} que a partir de uma regra no SemGrep com o propósito de identificar uma falha de segurança (como a injeção de comandos no sistema operacional), do inglês \textit{Operating System Command Injection} (OSCI), em Java, sendo possível visualizar a utilidade prática desse \textit{framework}.
-\par
-Para que a busca seja flexível e rastrear fluxo de dados, o SemGrep utiliza dois recursos fundamentais: (i) \textbf{Metavariáveis} (ex.: \textit{\$USER\_DATA}, \textit{\$X}), a partir de um cifrão e nome da variável em letras maiúsculas.
-Essas variáveis são atribuídas quando SemGrep identifica um padrão que se encaixa, sendo "salvo" o valor na metavariável, consequentemente, se a metavariável é reutilizada na mesma regra, o SemGrep exigirá que o valor capturado seja exatamente o mesmo, o que permite \textit{Data Flow}.
-(ii) \textbf{Ellipsis/Curinga} (...), representando qualquer sequência de coisas.
-Assim independente da quantidade de argumentos em uma função, número de linhas de código entre duas instruções, é possível omitir detalhes não importantes com (...), tornando SemGrep uma ferramenta abstraída.
-\par
-Os predicados são as afirmações que procuram o código.
-\textit{Tags} como \textit{pattern} ou \textit{pattern-inside} são predicados, com \textit{\textbf{pattern}} sendo uma afirmação exata, como na linha 5, e \textit{\textbf{pattern-inside}} define o contexto, não apontando a vulnerabilidade exata, mas exige que qualquer correspondência subsequente aconteça dentro da estrutura dele, como na linha 2.
-\par
-A partir destes predicados, é possível combinar operações lógicas (\textit{AND}, \textit{OR}, \textit{NOT}) sendo, respectivamente, \textit{patterns}, \textit{pattern-either}, \textit{pattern-not}.
-(i) O predicado \textit{\textbf{patterns}} representa a lógica \textit{AND} (E), para toda regra ou condição listada abaixo deste bloco devem ser verdadeiras simultaneamente.
-Como na linha 1, o bloco principal exige que o código esteja dentro da função (linha 2) \textbf{E} corresponda a um dos casos de injeção (linha 4).
-(ii) \textbf{\textit{pattern-either}} representa a lógica \textit{OR} (OU), se o código corresponde a qualquer uma das condições aninhadas sob este predicado, a avaliação será verdadeira. Na linha 4, a regra procura um fluxo direto de \textit{\$USER\_DATA} ou um fluxo indireto por atribuição.
-(iii) \textbf{\textit{pattern-not}} representa a lógica \textit{NOT} (NÃO).
-Não presente no exemplo, porém usado para excluir falsos positivos, anulando caso a regra bater coma  condição aninhada no predicado.
-\par
-Com estes conhecimentos, é possível compreender mais profundamente como a ferramenta utilizada funciona. SemGrep possui maneiras de lidar com falsos positivas nativamente, nos permitindo liberdade para aperfeiçoar a análise de regras.
-
-\subsection{Aplicação de LLMs em análise estática}
-\label{sec:llmsanaliseestatica}
-\par
-
-\subsection{Abstração de Regras}
-\label{sec:regrasabstracao}
-\par
 
 
 % ---------------------------------------------------------------
@@ -676,8 +864,8 @@ Com um \textit{commit} como entrada, KNighter retorna como saída um analisador 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Images/Overview-KNighter.png}
     \caption{\textit{Overview} do KNighter}
+    \includegraphics[width=1\textwidth]{Images/Overview-KNighter.png}
     {\small Fonte: Adaptado para o português para melhor compreensão \cite{yang2025knighter}.}
     \label{fig:overviewknighter}
 \end{figure}
@@ -794,17 +982,17 @@ Em particular, já que códigos não vulneráveis nos projetos são imensos e n�
 
 \par
 Dentre os projetos \textit{open-source} de mundo real, é desconhecido o número de vulnerabilidades presentes.
-Logo, \citeonline{li2026llmbased}, para cada projeto, foi capturado: \textbf{(i) \#Reportes}, o total de número de avisos produzidos, \textbf{(ii) \#Arquivos}, o número de arquivos fontes distintos que contém pelo menos um aviso, e \textbf{(iii) \#Amostras FPs}, o número de falsos positivos identificados pelas ferramentas dentre os avisos.
+Logo, \citeonline{li2026llmbased}, para cada projeto, foi capturado: \textbf{(i) \#Relatorios}, o total de número de avisos produzidos, \textbf{(ii) \#Arquivos}, o número de arquivos fontes distintos que contém pelo menos um aviso, e \textbf{(iii) \#Amostras FPs}, o número de falsos positivos identificados pelas ferramentas dentre os avisos.
 A partir desses títulos, foi estimado a taxa de detecção de falsos positivos em amostras, do inglês \textit{Sampled False Discovery Rate} (SFDR) como:
 
 \begin{align}
-  SFDR &= \frac{\#Amostras FPs}{\#Reportes}.
+  SFDR &= \frac{\#Amostras FPs}{\#Relatorios}.
 \end{align}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.65\textwidth]{Images/LLM-Based-Analise.png}
     \caption{Análide de CWEs (\textit{Memory Leak}, \textit{Use After Free}, \textit{Null Pointer Dereference})}
+    \includegraphics[width=0.65\textwidth]{Images/LLM-Based-Analise.png}
     {\small Fonte: Adaptado para o português para melhor compreensão \cite{li2026llmbased}.}
     \label{fig:cwescomparation}
 \end{figure}
@@ -925,16 +1113,16 @@ Essa decisão visa viabilizar a execução do \textit{framework} em infraestrutu
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Images/Pipeline.png}
     \caption{\textit{Pipeline} para gerador de regras.}
+    \includegraphics[width=1\textwidth]{Images/Pipeline.png}
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:pipeline}
 \end{figure}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Images/QuartoAgente.png}
     \caption{Pós-processamento para otimizar regras e abranger \textit{corner-cases}}
+    \includegraphics[width=1\textwidth]{Images/QuartoAgente.png}
     {\small Fonte: Elaborado pelo autor (2026)}
     \label{fig:quartoagente}
 \end{figure}
