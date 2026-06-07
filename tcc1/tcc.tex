@@ -117,9 +117,11 @@
 % RESUMO
 % ---------------------------------------------------------------
 \begin{resumo}
-  Este documento apresenta a proposta inicial do Trabalho de Conclusão de Curso (TCC1) desenvolvido no SENAC Santo Amaro. 
-O objetivo deste trabalho é desenvolver e avaliar um \textit{framework} iterativo baseado em LLMs capaz de sintetizar automaticamente regras de análise estática para a ferramenta SemGrep, com foco em vulnerabilidades críticas da linguagem C/C++.
-A justificativa baseia-se na necessidade de reduzir custos computacionais na inferência direta por IAs e mitigar a dependência de engenharia manual e rígida de regras.
+  As ferramentas de análise estática são fundamentais na detecção precoce de vulnerabilidades de \textit{software}, porém as abordagens tradicionais enfrentam limitações devido à dependência de lógicas rígidas criadas manualmente, o que prejudica a escalabilidade e a detecção de \textit{corner-cases}. 
+Em contrapartida, a aplicação direta de Modelos de Linguagem de Larga Escala (LLMs) para o escaneamento integral de bases de código acarreta custos computacionais proibitivos e riscos de alucinação. 
+Diante deste cenário, o objetivo deste trabalho é desenvolver e avaliar um \textit{framework} multi-agente baseado em LLMs, capaz de sintetizar e otimizar automaticamente regras de análise estática para a ferramenta SemGrep, com foco em vulnerabilidades críticas (CWEs) da linguagem C. 
+A pesquisa adota a metodologia \textit{Design Science Research} (DSR) e propõe um ciclo de quatro fases: construção de um \textit{dataset} baseado no Juliet Test Suite e históricos de \textit{commits} reais, geração de regras por agentes LLM, avaliação rigorosa de métricas (Precisão, \textit{Recall} e F1-Score) e aplicação prática em projetos de código aberto.
+A hipótese central é que este modelo automatizado apresente taxas de detecção estatisticamente superiores às abordagens tradicionais, reduzindo a necessidade de engenharia manual e mitigando os altos custos da inferência direta por inteligência artificial.
 
 \vspace{\onelineskip}
 \noindent
@@ -237,7 +239,7 @@ CFGs são muitas vezes utilizados para a análise clássica de fluxo de dados, d
         Falta de Extensibilidade Multilinguagem &
         A maioria das regras é desenvolvida com lógica rigidamente codificada (\textit{hard-coded}) para uma linguagem de programação específica. A necessidade de construir e manter \textit{parsers} específicos para cada nova linguagem exige alta especialização técnica, o que inviabiliza a portabilidade e gera altos custos na adaptação de analisadores para ecossistemas poliglotas \cite{hou2025generation}. \\
         \midrule
-        Falsos Positivos & 
+        Falsos Positivos e Falsos Negativos & 
         Devido à complexidade dos sistemas de \textit{software} e à riqueza de gramáticas de programação, é inviável que regras manuais prevejam todas as variações estruturais. Essa generalização falha resulta em uma abundância de alarmes imprecisos no mundo real \cite{jiang2025factaligned}. \\
         \bottomrule
     \end{tabular}
@@ -297,9 +299,9 @@ Porém estudos concluíram que métodos de análise estática baseado em LLMs id
 \par
 \citeonline{hou2025generation} citam a ferramenta \textit{Semgrep}, uma ferramenta utilizada para montagem de regras personalizadas para análise estática, como na Figura \ref{fig:semgrep}, tal que a utilizam para o \textit{ruleset} que geram via LLMs.
 \par
-Portanto, a justificativa deste trabalho reside na urgência de preencher essa lacuna de eficácia e escalabilidade.
+Portanto, a justificativa deste trabalho reside no objetivo de preencher essa lacuna de eficácia e escalabilidade.
 O desenvolvimento de um \textit{framework} iterativo e focado na geração automatizada de regras para o motor do SemGrep justifica-se pela necessidade de mitigar a dependência de engenharia manual e contornar os altos custos da inferência direta por IAs.
-Ao propor um sistema especializado nas vulnerabilidades críticas (CWEs) da linguagem C/C++, essa pesquisa busca entregar uma solução capaz de identificar padrões semânticos e \textit{corner-cases} com maior precisão e viabilidade técnica do que os analisadores estáticos tradicionais ou métodos generalistas baseados puramente em LLMs.
+Ao propor um sistema especializado nas vulnerabilidades críticas (CWEs) da linguagem C, essa pesquisa busca entregar uma solução capaz de identificar padrões semânticos e \textit{corner-cases} com maior precisão e viabilidade técnica do que os analisadores estáticos tradicionais ou métodos generalistas baseados puramente em LLMs.
 
 \begin{figure}[h]
     \centering
@@ -313,7 +315,7 @@ Ao propor um sistema especializado nas vulnerabilidades críticas (CWEs) da ling
 \section{Hipótese}
 \label{sec:hipotese}
 \par
-A hipótese desta pesquisa busca comprovar que a geração automatizada de regras por meio de um \textit{framework} multi-agente baseado em LLMs, integrado ao motor do SemGrep, produzirá taxas de detecção (\textit{Recall} e \textit{F1-Score}) de vulnerabilidades (CWEs) em C/C++ estatisticamente superiores e com maior identificação de \textit{corner-cases} quando comparada aos conjuntos de regras predefinidas dos analisadores estáticos tradicionais.
+A hipótese desta pesquisa busca comprovar que a geração automatizada de regras por meio de um \textit{framework} multi-agente baseado em LLMs, integrado ao motor do SemGrep, produzirá taxas de detecção (\textit{Recall} e \textit{F1-Score}) de vulnerabilidades (CWEs) em C estatisticamente superiores e com maior identificação de \textit{corner-cases} quando comparada aos conjuntos de regras predefinidas dos analisadores estáticos tradicionais (como por exemplo \textit{ruleset} tradicional do SemGrep).
 
 \section{Objetivo}
 \label{sec:objetivo}
@@ -323,7 +325,7 @@ Os objetivos desta pesquisa estruturam-se em duas frentes: o objetivo geral, foc
 \subsection{Objetivo Geral}
 \label{sec:objgeral}
 \par
-O objetivo geral deste trabalho é demonstrar que um \textit{framework} de síntese automatizada de regras, integrando Modelos de Linguagem de Larga Escala e integrado à ferramenta SemGrep, apresenta precisão e \textit{recall} estatisticamente superiores às abordagens estáticas tradicionais na detecção de vulnerabilidades críticas em linguagem C/C++.
+O objetivo geral deste trabalho é demonstrar que um \textit{framework} de síntese automatizada de regras, integrando Modelos de Linguagem de Larga Escala e integrado à ferramenta SemGrep, apresenta precisão e \textit{recall} estatisticamente superiores às abordagens estáticas tradicionais na detecção de vulnerabilidades críticas em linguagem C.
 Busca-se demonstrar que este modelo supera abordagens estáticas tradicionais na identificação precisa de, no mínimo, cinco categorias de vulnerabilidades de software, em inglês \textit{Common Weakness Enumeration} (CWE).
 
 \subsection{Objetivos específicos}
@@ -334,7 +336,7 @@ Sobre os objetivos específicos, temos:
 \begin{enumerate}
   \item Quantificar as taxas de falsos positivos e falsos negativos geradas por regras sintetizadas via LLMs em comparação com os \textit{rulesets} predefinidos do ecossistema SemGrep.
   \item Identificar e categorizar os limites de detecção semântica (\textit{corner-cases}) superados pela abordagem gerativa na validação de vulnerabilidades.
-  \item Avaliar quantitativamente a precisão e revocação e \textit{F1-Score} das regras geradas pela LLM, estabelecendo uma análise comparativa direta com os resultados de analisadores estáticos tradicionais.
+  \item Avaliar quantitativamente a precisão e \textit{recall} e \textit{F1-Score} das regras geradas pela LLM, estabelecendo uma análise comparativa direta com os resultados de analisadores estáticos tradicionais.
   \item Avaliar a eficácia da geração de regras utilizando modelos de linguagem de menor escala (com contagem reduzida de parâmetros), visando garantir a viabilidade técnica da execução do \textit{framework} em infraestruturas locais com restrições de custo e \textit{hardware}.
 \end{enumerate}
 
@@ -369,7 +371,7 @@ Estes termos foram combinados por meio de operadores booleanos (\textit{AND}, \t
 \end{figure}
 
 \par
-Como critérios de inclusão, estabeleceram-se: (a) trabalhos publicados entre 2021 e 2026, de forma a capturar o estado da arte; (b) disponibilidade nos idiomas inglês ou português; e (c) relação direta com o tema, priorizando artigos que contivessem implementações ou experimentos aplicados a utilização de LLMs para geração de regras para a linguagem C/C++.
+Como critérios de inclusão, estabeleceram-se: (a) trabalhos publicados entre 2021 e 2026, de forma a capturar o estado da arte; (b) disponibilidade nos idiomas inglês ou português; e (c) relação direta com o tema, priorizando artigos que contivessem implementações ou experimentos aplicados a utilização de LLMs para geração de regras para a linguagem C.
 \par
 Em contrapartida, os critérios de exclusão adotados foram: (a) trabalhos publicados antes de 2021, com exceção de referências clássicas ou seminais indispensáveis para a teoria; (b) artigos sem alinhamento direto com análise estática ou geração de regras de código; e (c) duplicidades de publicações entre as bases de dados consultadas.
 \par
@@ -389,7 +391,7 @@ Na segunda fase (afunilamento), os trabalhos restantes passaram por uma leitura 
 \par
 A avaliação de 0 a 10 foi a partir de seu resumo, palavras-chave, tecnologia aplicada. Caso o trabalho possui similaridades com outros artigos bem avaliados é considerado como suporte ou alta relevância. 
 Esse processo de filtragem resultou em 6 artigos classificados com notas entre 9 e 10 (alta relevância), além de 9 artigos categorizados como material de suporte, totalizando 15 trabalhos contemporâneos para compor a fundamentação teórica. 
-Adicionalmente, foram incorporados 4 trabalhos seminais anteriores a 2021, essenciais para a consolidação dos conceitos clássicos abordados neste estudo.
+Adicionalmente, foram incorporados 5 trabalhos seminais anteriores a 2021, essenciais para a consolidação dos conceitos clássicos abordados neste estudo.
 
 % ---------------------------------------------------------------
 \section{Fundamentos}
@@ -433,7 +435,7 @@ Nós auxiliares exigidos pela gramática para contornar ambiguidades ou definir 
 \par
 Tomando como exemplo, na figura \ref{fig:ast}, a expressão matemática 9 - 5 + 2, a raiz da AST representaria o operador +, tendo como filho esquerdo a subexpressão correspondente a 9 - 5 e como filho direito a constante 2.
 Esse agrupamento estrutural reflete a precedência e a associatividade à esquerda dos operadores, tornando redundante a presença de nós sintáticos adicionais.
-Em ferramentas de análise estática voltadas para linguagens complexas como C/C++, operar sobre a AST é essencial, pois permite que a verificação de propriedades e a busca por vulnerabilidades sejam conduzidas diretamente sobre a lógica estrutural do código, isolando a análise de variações gramaticais irrelevantes \cite{aho2007compilers}.
+Em ferramentas de análise estática voltadas para linguagens complexas como C, operar sobre a AST é essencial, pois permite que a verificação de propriedades e a busca por vulnerabilidades sejam conduzidas diretamente sobre a lógica estrutural do código, isolando a análise de variações gramaticais irrelevantes \cite{aho2007compilers}.
 \par
 No contexto da análise de vulnerabilidades, a AST é fundamental para identificar padrões estruturais perigosos.
 Ao invés de realizar buscas textuais limitadas, os analisadores percorrem a árvore em busca de composições específicas de nós.
@@ -477,7 +479,7 @@ O fluxo pode acontecer ``para frente'' (\textit{forward}), onde a entrada molda 
 Essencialmente, o valor do fluxo de dados que entra em uma instrução é matematicamente determinado pela combinação dos valores que saem das instruções ou blocos predecessores \cite{aho2007compilers}.
 \par
 No contexto da segurança de \textit{software} e da detecção de falhas abordadas neste trabalho, a abstração fornecida pela DFA é o motor principal que permite analisadores estáticos avançados identificarem vulnerabilidades complexas.
-É através do rastreamento do estado das variáveis pelos caminhos de controle que se torna viável detectar comportamentos críticos em linguagens como C/C++, como \textit{Null Pointer Dereference} (CWE-476) ou uso de variáveis não inicializadas (CWE-457).
+É através do rastreamento do estado das variáveis pelos caminhos de controle que se torna viável detectar comportamentos críticos em linguagens como C, como \textit{Null Pointer Dereference} (CWE-476) ou uso de variáveis não inicializadas (CWE-457).
 
 \subsubsection{Sensibilidade de Fluxo}
 \label{sec:sensifluxo}
@@ -581,9 +583,9 @@ Para o escopo deste trabalho, serão consideradas primariamente cinco vulnerabil
 São elas:
 
 \begin{itemize}
-  \item \textbf{CWE-401}: \textit{Memory Leak}; 
+  \item \textbf{CWE-401}: \textit{Missing Release of Memory after Effective Lifetime}; 
   \item \textbf{CWE-415}: \textit{Double Free}; 
-  \item \textbf{CWE-416}: \textit{Dangling Pointer}; 
+  \item \textbf{CWE-416}: \textit{Use After Free}; 
   \item \textbf{CWE-457}: \textit{Use of Uninitialized Variable};
   \item \textbf{CWE-476}: \textit{Null Pointer Dereference}. 
 \end{itemize}
@@ -964,7 +966,7 @@ Um \textit{checker} é considerado válido se $N_{\text{buggy}}$ > $N_{\text{pat
 Apesar de seu forte pioneirismo, \citeonline{yang2025knighter} analisa suas falhas com seu projeto, com 36,06\% dos \textit{commits} não sendo possível gerar um analisador a partir disso, com sua maioria falhando por implementações incorretas, com o problema comum são otimizações realizadas pelo respectivo compilador (como strcp e memset), impedindo que o \textit{checker} lidasse com essas chamadas.
 Além disso, notaram limitações relacionadas a \textit{Buffer Overflow} e \textit{Use of Uninitialized Variable}, quais os autores acreditam que a razão é por dois fatores principais: a análise estática inerentemente possui limitações com determinar valores precisos, principalmente quando é preciso determinar limites de \textit{buffers}, e sua dificuldade para análises de código \textit{multi-thread}, como gerenciar uso correto de \textit{locks} \cite{yang2025knighter}. 
 \par 
-KNighter relata dentre 32 \textit{checkers} plausíveis, com 16 não identificando novas falhas, foram relatados 90 novos \textit{bugs}, que depois de uma inspeção manual, 32,2\% foram falsos positivos \cite{yang2025knighter}.
+KNighter relata dentre 37 \textit{checkers} plausíveis, foram relatados 92 novos \textit{bugs}, que depois de uma inspeção manual, 32,2\% foram falsos positivos \cite{yang2025knighter}.
 Sendo o principal erro envolve os analisadores com seu padrão correto e regras para \textit{matching} corretos, porém o \textit{checker} falha em gerenciar \textit{triggers} ou a condição do estado corretamente (como identificar um ponteiro já verificado antes de seu uso) \cite{yang2025knighter}.
 \par
 Para o presente trabalho, a contribuição de \citeonline{yang2025knighter} é insubstituível no ponto de vista conceitual: a automatização para um sistema de análise estática, gerenciamento de mais de um agente para refinamento e correção, cobrindo CWEs relevantes adotados neste TCC.
@@ -1043,7 +1045,7 @@ Apesar dessa conclusão, os autores afirmam que esses métodos, comparado com fe
 \par
 Segunda conclusão foi \textbf{ambos os métodos de análise estática (tradicionais e baseada em LLMs) exibem uma alta taxa de falsos positivos}, com a melhor ferramenta analisada ainda teve \textbf{85,3\%} de taxa média de falsos positivos \cite{li2026llmbased}.
 Dentre a avaliação das 385 detecções, foi estudado a razão de cada falso positivo e quantificado sua distribuição dentre ferramentas, mostrando que raciocínios superficiais de fluxo de dados, a identificação imprecisa de fontes e negligência de pontos críticos do programa em contextos complexos constituem as causas-raiz predominantes para falsos positivos analisados \cite{li2026llmbased}.
-A última conclusão é a \textbf{análise de detecção de vulnerabilidades baseada em LLMs para projetos de larga escala continua computacionalmente caro}, \citeonline{li2026llmbased} realizou uma análise de custo em que mostrou que se pode custar entre cem mil \textit{tokens} à cem milhões de \textit{tokens} por projeto (p. ex., até 38,31 milhões de tokens de entrada e 38,07 milhões de tokens de saída), além do processamento de múltiplas horas para múltiplos dias (p. ex., até 4.368 minutos), criando uma limitação crítica para sua escalabilidade.
+A última conclusão é a \textbf{análise de detecção de vulnerabilidades baseada em LLMs para projetos de larga escala continua computacionalmente caro}, \citeonline{li2026llmbased} realizou uma análise de custo em que mostrou que se pode custar entre cem mil \textit{tokens} à cem milhões de \textit{tokens} por projeto (p. ex., até 38,31 milhões de tokens de entrada e 38,07 milhões de tokens de saída), além do processamento de múltiplas horas para múltiplos dias (p. ex., até 4.638 minutos), criando uma limitação crítica para sua escalabilidade.
 \par
 Com o foco na linguagem C/C++, \citeonline{li2026llmbased} utilizou KNighter de \citeonline{yang2025knighter} e RepoAudit de \citeonline{guo2025repoaudit} e para métodos tradicionais, utilizaram SemGrep (\textit{ruleset} padrão) e CodeQL.
 \par
@@ -1075,7 +1077,7 @@ A partir desses títulos, foi estimado a taxa de detecção de falsos positivos 
 \par
 Dentre essas ferramentas, RepoAudit ganhou destaque sendo a ferramenta com melhor \textit{recall} dentre todas as vulnerabilidades de C/C++ avaliadas.
 Superando CodeQl, SemGrep e KNighter em todas as CWEs analisadas \cite{li2026llmbased}.
-Após a avaliação manual dos autores, \citeonline{li2026llmbased} mostra na \ref{fig:cwescomparation} que a maioria das faltas de detecções são de identificação de fontes e APIs incorretos ou incompletos.
+Após a avaliação manual dos autores, \citeonline{li2026llmbased} mostra na figura \ref{fig:cwescomparation} que a maioria das faltas de detecções são de identificação de fontes e APIs incorretos ou incompletos.
 
 Para o presente TCC, o trabalho de \citeonline{li2026llmbased} é essencial para a definição das fraquezas dos métodos implementados até o momento.
 Com sua análise profunda nas razões de falsos positivos, comparando com métodos tradicionais e baseados em LLMs, \citeonline{li2026llmbased} revela um padrão no desafio de minimizar falsos positivos, onde tanto métodos tradicionais e baseados em LLMs possuem.
