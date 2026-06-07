@@ -123,8 +123,68 @@ A justificativa baseia-se na necessidade de reduzir custos computacionais na inf
 
 \vspace{\onelineskip}
 \noindent
-\textbf{Palavras-chave}: análise estática. semgrep. LLM. regras. C. C++.
+\textbf{Palavras-chave}: análise estática. semgrep. LLM. regras. C.
 \end{resumo}
+
+% ---------------------------------------------------------------
+% LISTA DE ABREVIATURAS E SIGLAS
+% ---------------------------------------------------------------
+% Esta lista deve vir antes do início do trabalho (elementos pré-textuais).
+% Em ordem alfabética, relacione APENAS as abreviaturas e siglas que
+% realmente aparecem no texto. Edite a tabela conforme o seu trabalho.
+\pdfbookmark[0]{Lista de Abreviaturas e Siglas}{loas}
+\chapter*{Lista de Abreviaturas e Siglas}
+
+\noindent A lista a seguir reúne, em ordem alfabética, as abreviaturas e siglas utilizadas neste trabalho, acompanhadas de seus respectivos significados.
+
+\vspace{\onelineskip}
+\begin{center}
+\begin{tabular}{@{}p{3.2cm}p{0.6\textwidth}@{}}
+\toprule
+\textbf{Abreviatura} & \textbf{Significado} \\
+\midrule
+AST  & \textit{Abstract Syntax Tree} (Árvore de Sintaxe Abstrata) \\
+APR  & \textit{Application Programming Interface} (Reparo de Programa Automatizado) \\
+BNF  & \textit{Backus-Naur Form} (Forma de Backus-Naur) \\
+CFG  & \textit{Control Flow Graphs} (Grafos de Fluxo de Controle) \\
+CNN  & \textit{Convolucional Neural Networks} (Redes Neurais Convolucionais) \\
+CSA  & \textit{Clang Static Analyser} \\
+CVE  & \textit{Common Vulnerabilities and Exposures} (Enumeração Comum de Vulnerabilidades e Exposições)  \\
+CWE  & \textit{Common Weakness Enumeration} (Enumeração de Fraquezas Comuns) \\
+DFA  & \textit{Data Flow Analysis} (Análise de Fluxo de Dados) \\
+DoS  & \textit{Denial of Service} (Negação de Serviço) \\
+DSR  & \textit{Design Science Research} \\ 
+FIA  & \textit{Flow-Insensitive Analysis} (Análise Insensível ao Fluxo) \\
+FN   & \textit{False Negative} (Falsos Negativos) \\
+FP   & \textit{False Positive} (Falsos Positivos) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{@{}p{3.2cm}p{0.6\textwidth}@{}}
+\toprule
+\textbf{Abreviatura} & \textbf{Significado} \\
+\midrule
+FSA  & \textit{Flow-Sensitive Analysis} (Análise Sensível ao Fluxo) \\
+CFG  & \textit{Context-Free Grammar} (Gramática Livre de Contexto) \\
+LLM  & \textit{Large Language Models} (Modelos de Larga Escala) \\
+NLG  & \textit{Natural Language Generation} (Geração de Linguagem Natural) \\
+NLP  & \textit{Natural Language Processing} (Processamento de Linguagem Natural) \\
+NLU  & \textit{Natural Language Understanding} (Compreensão de Linguagem Natural) \\
+OSCI & \textit{Operating System Command Injection} (Injeção de Comandos no Sistema Operacional) \\
+RL   & \textit{Reinforcement Learning} (Aprendizado por Reforço) \\
+RNN  & \textit{Recurrent Neural Network} (Redes Neurais Recorrentes) \\
+UAF  & \textit{Use After Free} (Uso Após Liberação) \\
+SAST & \textit{Static Application Security Testing} \\
+SFDR & \textit{Sampled False Discovery Rate} (Taxa de Falsas Descobertas Amostradas) \\
+TN   & \textit{True Negative} (Verdadeiros Negativos) \\
+TP   & \textit{True Positive} (Verdadeiros Positivos) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\cleardoublepage
 
 % ---------------------------------------------------------------
 % SUMÁRIO
@@ -601,10 +661,10 @@ Parceiros como \textit{National Vulnerability Database} (NVD) adicionam o regist
 \subsection{Linguagem Natural}
 \label{subsec:linguagemnatural}
 \par
-Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (GLC). 
-Também conhecidas como gramáticas de estrutura de frase (\textit{phrase-structure grammars}), as GLCs utilizam um formalismo que é equivalente à Forma de Backus-Naur (BNF), padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
+Um sistema formal amplamente utilizado para modelar a estrutura constituinte em linguagens naturais é a Gramática Livre de Contexto (\textit{Context-Free Grammar} - CFG). 
+Também conhecidas como gramáticas de estrutura de frase (\textit{phrase-structure grammars}), as CFGs utilizam um formalismo que é equivalente à Forma de Backus-Naur (BNF), padrão universal para a especificação da sintaxe em computação \cite{jurafsky2026speech}.
 \par
-Uma GLC consiste em um conjunto de regras ou produções, onde cada uma expressa como os símbolos podem ser ordenados e agrupados, e um léxico de palavras e símbolos.
+Uma CFG consiste em um conjunto de regras ou produções, onde cada uma expressa como os símbolos podem ser ordenados e agrupados, e um léxico de palavras e símbolos.
 Tal estrutura define uma linguagem formal, na qual existe uma separação estrita: sentenças que podem ser derivadas pelas regras são consideradas gramaticais, enquanto as que não podem são denomidadas agramaticais \cite{jurafsky2026speech}.
 \par
 Contudo, essa distinção rígida é uma característica das gramáticas formais e serve apenas como um modelo simplificado das linguagens naturais.
@@ -629,7 +689,7 @@ Graças à capacidade de aprendizado em contexto (\textit{in-context learning}) 
 \subsection{Arquitetura \textit{Transformer}}
 \label{sec:modelostransformers}
 \par
-A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017attention} inicialmente para tarefas como a tradução automática, é um modelo de transdução de sequências que dispensa o uso total de Redes Neurais Recorrentes (RNNs) e convolucionais (CNNs).
+A arquitetura \textit{Transformer}, proposta por \citeonline{vaswani2017attention} inicialmente para tarefas como a tradução automática, é um modelo de transdução de sequências que dispensa o uso total de Redes Neurais Recorrentes (\textit{Recurrent Neural Networks} RNNs) e convolucionais (\textit{Convolucional Neural Networks} - CNNs).
 Ao invés disso, ela se baseia exclusivamente em mecanismos de atenção para capturar dependências globais entre as sequências de entrada e saída.
 \par
 A arquitetura segue uma estrutura de \textbf{Codificador-Decodificador} (\textit{Encoder-Decoder}).
